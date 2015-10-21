@@ -1,9 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
     <plugin id="ibm-mfp-push" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
         <name>MFPPush</name>
+
         <js-module name="MFPPush" src="www/MFPPush.js">
             <clobbers target="cordova.plugins.MFPPush" />
         </js-module>
+
         <platform name="android">
             <config-file parent="/*" target="res/xml/config.xml">
                 <feature name="MFPPush">
@@ -11,14 +13,19 @@
                 </feature>
             </config-file>
             <config-file parent="/*" target="AndroidManifest.xml" />
-            <source-file src="src/android/MFPPush.java" target-dir="src/ibm-mfp-push/MFPPush" />
+            <source-file src="src/android/CDVMFPPush.java" target-dir="src/main/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
         </platform>
+
         <platform name="ios">
             <config-file parent="/*" target="config.xml">
                 <feature name="MFPPush">
-                    <param name="ios-package" value="MFPPush" />
+                    <param name="ios-package" value="CDVMFPPush" />
                 </feature>
             </config-file>
             <source-file src="src/ios/MFPPush.m" />
         </platform>
+
+        <header-file src="src/ios/Bridging-Header.h" />
+        <source-file src="src/ios/CDVMFPPush.swift" />
+
     </plugin>
