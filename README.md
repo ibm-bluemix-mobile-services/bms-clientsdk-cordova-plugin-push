@@ -1,4 +1,4 @@
-# IBM Bluemix Mobile Services - Client SDK Cordova
+# IBM Bluemix Mobile Services - Push SDK Cordova
 
 Cordova Plugin for IBM Bluemix Mobile Services Push SDK
 
