@@ -23,7 +23,9 @@ var MFPPush = {
 	 * @param success callback - recieves array of subscribed tags
 	 * @param failure callback 
 	 */
-	getSubscriptionStatus: function(success, failure) {},
+	getSubscriptionStatus: function(success, failure) {
+		cordova.exec(success, failure, "MFPPush", "getSubscriptionStatus", []);
+	},
 
 	/**
 	 * Gets all the available Tags for the backend mobile application
@@ -31,7 +33,9 @@ var MFPPush = {
 	 * @param success callback
 	 * @param failure callback
 	 */
-	retrieveAvailableTags: function(success, failure) {},
+	retrieveAvailableTags: function(success, failure) {
+		cordova.exec(success, failure, "MFPPush", "retrieveAvailableTags", []);
+	},
 
 	/**
 	 * Subscribes to a particular backend mobile application Tag(s)
@@ -40,7 +44,9 @@ var MFPPush = {
 	 * @param success callback
 	 * @param failure callback
 	 */
-	subscribe: function(tags, success, failure) {},
+	subscribe: function(tags, success, failure) {
+		cordova.exec(success, failure, "MFPPush", "subscribe", []);
+	},
 
 	/**
 	 * Unsubscribes from an backend mobile application Tag(s)
@@ -49,15 +55,22 @@ var MFPPush = {
 	 * @param  success callback
 	 * @param  failure callback
 	 */
-	unsubscribe: function(tags, success, failure) {},
+	unsubscribe: function(tags, success, failure) {
+		cordova.exec(success, failure, "MFPPush", "unsubscribe", []);
+	},
 
 	/**
 	 * Registers the device on to the IMFPush Notification Server
-	 * 
+	 *
+	 * @param settings:
+	 *        iOS: { alert: boolean, badge: boolean, sound: boolean }
+	 *        Android: { null }
 	 * @param success callback
 	 * @param failure callback
 	 */
-	register: function(success, failure) {},
+	register: function(settings, success, failure) {
+		cordova.exec(success, failure, "MFPPush", "register", [settings]);
+	},
 
 	/**
 	 * Unregisters the device from the IMFPush Notification Server
@@ -65,14 +78,18 @@ var MFPPush = {
 	 * @param success callback
 	 * @param failure callback
 	 */
-	unregister: function(success, failure) {},
+	unregister: function(success, failure) {
+		cordova.exec(success, failure, "MFPPush", "unregister", []);
+	},
 
 	/**
 	 * [registerIncomingNotificationListener description]
 	 * 
 	 * @param callback [description]
 	 */
-	registerIncomingNotificationListener: function(callback) {}
+	registerIncomingNotificationListener: function(callback) {
+		cordova.exec(success, failure, "MFPPush", "registerIncomingNotificationListener", []);
+	}
 };
 
 module.exports = MFPPush;
