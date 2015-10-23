@@ -33,7 +33,7 @@ Function | Use
 `retrieveAvailableTags(success, failure)` | Gets all the available Tags for the backend mobile application.
 `subscribe(tags, success, failure)` | Subscribes to a particular backend mobile application Tag(s).
 `unsubscribe(success, failure)` | Unsubscribes from an backend mobile application Tag(s).
-`register(success, failure)` | Registers the device on to the IMFPush Notification Server.
+`register(settings, success, failure)` | Registers the device on to the IMFPush Notification Server.
 `unregister(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerIncomingNotificationListener` | description
 
