@@ -28,7 +28,6 @@
         </platform>
 
         <header-file src="src/ios/Bridging-Header.h" />
-        <source-file src="src/ios/AppDelegate+PushRegister.swift" />
         <source-file src="src/ios/CDVMFPPush.swift" />
 
     </plugin>
