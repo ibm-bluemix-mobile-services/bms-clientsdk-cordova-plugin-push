@@ -40,6 +40,36 @@ exports.defineAutoTests = function() {
 				expect(typeof MFPPush.getSubscriptionStatus == 'function').toBe(true);
 			});
 
+            it('MFPPush.retrieveAvailableTags() should exist and is a function', function(){
+                expect(typeof MFPPush.retrieveAvailableTags).toBeDefined();
+                expect(typeof MFPPush.retrieveAvailableTags == 'function').toBe(true);
+            });
+
+            it('MFPPush.subscribe() should exist and is a function', function(){
+                expect(typeof MFPPush.subscribe).toBeDefined();
+                expect(typeof MFPPush.subscribe == 'function').toBe(true);
+            });
+
+            it('MFPPush.unsubscribe() should exist and is a function', function(){
+                expect(typeof MFPPush.unsubscribe).toBeDefined();
+                expect(typeof MFPPush.unsubscribe == 'function').toBe(true);
+            });
+
+            it('MFPPush.register() should exist and is a function', function(){
+                expect(typeof MFPPush.register).toBeDefined();
+                expect(typeof MFPPush.register == 'function').toBe(true);
+            });
+
+            it('MFPPush.unregister() should exist and is a function', function(){
+                expect(typeof MFPPush.unregister).toBeDefined();
+                expect(typeof MFPPush.unregister == 'function').toBe(true);
+            });
+
+            it('MFPPush.registerIncomingNotificationListener() should exist and is a function', function(){
+                expect(typeof MFPPush.registerIncomingNotificationListener).not.toBeDefined();
+                expect(typeof MFPPush.registerIncomingNotificationListener == 'function').not.toBe(true);
+            });
+
 		});
 	});
 };
