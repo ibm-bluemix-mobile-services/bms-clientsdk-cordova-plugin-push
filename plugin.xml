@@ -3,7 +3,7 @@
         <name>MFPPush</name>
 
         <js-module name="MFPPush" src="www/MFPPush.js">
-            <clobbers target="cordova.plugins.MFPPush" />
+            <clobbers target="MFPPush" />
         </js-module>
 
         <platform name="android">
