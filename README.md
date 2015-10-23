@@ -32,5 +32,8 @@ Function | Use
 `getSubscriptionStatus(success, failure)` | Gets the Tags that are subscribed by the device.
 `retrieveAvailableTags(success, failure)` | Gets all the available Tags for the backend mobile application.
 `subscribe(tags, success, failure)` | Subscribes to a particular backend mobile application Tag(s).
-`unsubscribe(success, failure)` | Unsubscribes from an backend mobile application Tag(s)
-`unregisterAuthenticationListener(realm)` | Unregisters the authentication callback for the specified realm.
+`unsubscribe(success, failure)` | Unsubscribes from an backend mobile application Tag(s).
+`register(success, failure)` | Registers the device on to the IMFPush Notification Server.
+`unregister(success, failure)` | Unregisters the device from the IMFPush Notification Server.
+`registerIncomingNotificationListener` | description
+
