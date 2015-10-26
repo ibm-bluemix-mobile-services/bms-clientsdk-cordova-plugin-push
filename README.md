@@ -18,12 +18,12 @@ Cordova Plugin for IBM Bluemix Mobile Services Push SDK
 MFPPush is... 
 
 Example:
-```
-var success = function(message) { console.log("Success: " + messgae); };
-var failure = function(message) { console.log("Error: " + message); };
 
-MFPPush.register(success, failure);
-```
+    var success = function(message) { console.log("Success: " + messgae); };
+    var failure = function(message) { console.log("Error: " + message); };
+    
+    MFPPush.register(success, failure);
+    
 
 MFPPush functions available:
 
