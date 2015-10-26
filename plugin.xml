@@ -26,7 +26,6 @@
             </config-file>
             <source-file src="src/ios/MFPPush.m" />
         </platform>
-        <!--comment -->
 
         <header-file src="src/ios/Bridging-Header.h" />
         <source-file src="src/ios/CDVMFPPush.swift" />
