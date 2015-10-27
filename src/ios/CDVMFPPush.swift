@@ -14,29 +14,120 @@ limitations under the License.
 import Foundation
 import IMFCore
 import IMFPush
+import UIKit
 
 @objc(CDVMFPPush) class CDVMFPPush : CDVPlugin {
     
     let push = IMFPushClient.sharedInstance()
     
-    func getSubscriptionStatus(command: CDVInvokedUrlCommand) {
+    /*
+    * Registers the device on to the IMFPush Notification Server
+    */
+    func register(command: CDVInvokedUrlCommand) {
+        
         self.commandDelegate!.runInBackground({
+            guard let settings = command.arguments[0] as? NSDictionary else {
+                let message = "Settings Parameter is Invalid."
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                // call error callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                return
+            }
+            
+            // Check which notification types the user enabled.
+            // TODO: CLEAN UP
+            var types = UIUserNotificationType()
+            let ios: NSDictionary = settings["ios"] as! NSDictionary
+            if ((ios["alert"]) as! Bool) {
+                types.insert(.Alert)
+            }
+            if ((ios["badge"]) as! Bool) {
+                types.insert(.Badge)
+            }
+            if ((ios["sound"]) as! Bool) {
+                types.insert(.Sound)
+            }
+            
+            let notificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
+            
+            UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+        })
+    }
+    
+    /*
+    * After the token is received from APNs, pass the token to Push Notifications
+    */
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+        //IMFClient.sharedInstance().initializeWithBackendRoute(applicationRoute, backendGUID: applicationId)
+        //IMFGoogleAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
+        //let push = IMFPushClient.sharedInstance()
+        self.push.registerDeviceToken(deviceToken, completionHandler: { (response, error) -> Void in
+            if error != nil {
+                print("Error during device registration \(error.description)")
+            }
+            else {
+                print("Response during device registration json: \(response.responseJson.description)")
+            }
+        })
+    }
+    
+    /*
+    * Gets the Tags that are subscribed by the device
+    */
+    func getSubscriptionStatus(command: CDVInvokedUrlCommand) {
+        
+        self.commandDelegate!.runInBackground({
+            
             self.push.retrieveSubscriptionsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
                 let tags = response.availableTags()
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
+            
         })
     }
     
+    /*
+    * Gets all the available Tags for the backend mobile application
+    */
     func retrieveAvailableTags(command: CDVInvokedUrlCommand) {
+        
         self.commandDelegate!.runInBackground({
+            
             self.push.retrieveAvailableTagsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
                 let tags = response.availableTags()
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
+                // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
+            
+        })
+    }
+    
+    /*
+    * Subscribes to a particular backend mobile application Tag(s)
+    */
+    func subscribeToTags(command: CDVInvokedUrlCommand) {
+        
+        self.commandDelegate!.runInBackground({
+            
+            guard let tagsArray = command.arguments[0] as? [AnyObject] else {
+                let message = "Tags Array Parameter is Invalid."
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                // call error callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                return
+            }
+            self.push.subscribeToTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
+                let message = "Subscribed to the following tags: " + tagsArray.description
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                // call success callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+            })
+            
         })
     }
 }
