@@ -20,14 +20,15 @@
 
         <platform name="ios">
             <config-file parent="/*" target="config.xml">
+
                 <feature name="MFPPush">
                     <param name="ios-package" value="CDVMFPPush" />
                 </feature>
-            </config-file>
-            <source-file src="src/ios/MFPPush.m" />
-        </platform>
 
-        <header-file src="src/ios/Bridging-Header.h" />
-        <source-file src="src/ios/CDVMFPPush.swift" />
+            </config-file>
+            <!--<header-file src="src/ios/Bridging-Header.h" />-->
+            <source-file src="src/ios/CDVMFPPush.swift" />
+            <!--<source-file src="src/ios/MFPPush.m" />-->
+        </platform>
 
     </plugin>
