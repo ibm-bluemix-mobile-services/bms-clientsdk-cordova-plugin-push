@@ -20,12 +20,13 @@ import IMFPush
     let push = IMFPushClient.sharedInstance()
     
     func getSubscriptionStatus(command: CDVInvokedUrlCommand) {
-        
         self.commandDelegate!.runInBackground({
-            let str = "got to native"
-            let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: str)
-            // call success callback
-            self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+            self.push.retrieveSubscriptionsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
+                let tags = response.availableTags()
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
+                // call success callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+            }
         })
     }
     
@@ -35,7 +36,6 @@ import IMFPush
                 let tags = response.availableTags()
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                print(tags)
             }
         })
     }
