@@ -37,7 +37,6 @@ public class CDVMFPPush extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext());
         pushLogger.debug("In execute");
 
         if ("register".equals(action)) {
