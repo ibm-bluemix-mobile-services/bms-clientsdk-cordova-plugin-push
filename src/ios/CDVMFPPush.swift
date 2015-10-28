@@ -22,7 +22,7 @@ import UIKit
     
     /*
     * Registers the device on to the IMFPush Notification Server
-    */
+    *
     func register(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
@@ -54,25 +54,6 @@ import UIKit
             UIApplication.sharedApplication().registerForRemoteNotifications()
         })
     }
-    
-    /*
-    * After the token is received from APNs, pass the token to Push Notifications
-
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        
-        //IMFClient.sharedInstance().initializeWithBackendRoute(applicationRoute, backendGUID: applicationId)
-        //IMFGoogleAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
-        //let push = IMFPushClient.sharedInstance()
-        print(deviceToken)
-        self.push.registerDeviceToken(deviceToken, completionHandler: { (response, error) -> Void in
-            if error != nil {
-                print("Error during device registration \(error.description)")
-            }
-            else {
-                print("Response during device registration json: \(response.responseJson.description)")
-            }
-        })
-    }
     */
     
     /*
@@ -83,8 +64,8 @@ import UIKit
         self.commandDelegate!.runInBackground({
             
             self.push.retrieveSubscriptionsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
-                let tags = response.availableTags()
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
+                let tags = response.subscriptions() as! [NSObject : AnyObject]
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: tags)
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
@@ -100,7 +81,7 @@ import UIKit
         self.commandDelegate!.runInBackground({
             
             self.push.retrieveAvailableTagsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
-                let tags = response.availableTags()
+                let tags = response.availableTags() as! [String]
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
@@ -124,7 +105,7 @@ import UIKit
                 return
             }
             self.push.subscribeToTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
-
+                
                 let message = "Subscribed to the following tags: " + tagsArray.description
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                 // call success callback
