@@ -23,6 +23,7 @@ import UIKit
     /*
     * Registers the device on to the IMFPush Notification Server
     *
+    *
     func register(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
