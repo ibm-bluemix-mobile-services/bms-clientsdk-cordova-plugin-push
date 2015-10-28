@@ -9,13 +9,26 @@
         <platform name="android">
             <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
 
+            <config-file target="AndroidManifest.xml" parent="/manifest">
+                <uses-permission android:name="android.permission.INTERNET"/>
+                <uses-permission android:name="com.ibm.clientsdk.android.app.permission.C2D_MESSAGE" />
+                <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+                <uses-permission android:name="android.permission.WAKE_LOCK" />
+                <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+                <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+                <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+                <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            </config-file>
+
             <config-file parent="/*" target="res/xml/config.xml">
                 <feature name="MFPPush">
-                    <param name="android-package" value="ibm-mfp-push.MFPPush" />
+                    <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVMFPPush" />
                 </feature>
             </config-file>
+
             <config-file parent="/*" target="AndroidManifest.xml" />
-            <source-file src="src/android/CDVMFPPush.java" target-dir="src/main/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
+
+            <source-file src="src/android/CDVMFPPush.java"   target-dir="src/main/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
         </platform>
 
         <platform name="ios">
