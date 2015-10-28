@@ -57,12 +57,13 @@ import UIKit
     
     /*
     * After the token is received from APNs, pass the token to Push Notifications
-    */
+
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
         //IMFClient.sharedInstance().initializeWithBackendRoute(applicationRoute, backendGUID: applicationId)
         //IMFGoogleAuthenticationHandler.sharedInstance().registerWithDefaultDelegate()
         //let push = IMFPushClient.sharedInstance()
+        print(deviceToken)
         self.push.registerDeviceToken(deviceToken, completionHandler: { (response, error) -> Void in
             if error != nil {
                 print("Error during device registration \(error.description)")
@@ -72,6 +73,7 @@ import UIKit
             }
         })
     }
+    */
     
     /*
     * Gets the Tags that are subscribed by the device
@@ -122,6 +124,7 @@ import UIKit
                 return
             }
             self.push.subscribeToTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
+
                 let message = "Subscribed to the following tags: " + tagsArray.description
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                 // call success callback
