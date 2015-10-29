@@ -22,8 +22,7 @@ import UIKit
     
     /*
     * Registers the device on to the IMFPush Notification Server
-    *
-    *
+    */
     func register(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
@@ -55,7 +54,26 @@ import UIKit
             UIApplication.sharedApplication().registerForRemoteNotifications()
         })
     }
-    */
+    
+    func unregister(command: CDVInvokedUrlCommand) {
+        
+        self.commandDelegate!.runInBackground({
+            self.push.unregisterDevice({ (response:IMFResponse!, error:NSError!) -> Void in
+                if (error != nil) {
+                    let message = error.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
+                else {
+                    let message = response.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
+            })
+        })
+    }
     
     /*
     * Gets the Tags that are subscribed by the device
@@ -65,7 +83,7 @@ import UIKit
         self.commandDelegate!.runInBackground({
             
             self.push.retrieveSubscriptionsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
-                let tags = response.subscriptions() as! [NSObject : AnyObject]
+                let tags = response.subscriptions() as [NSObject : AnyObject]
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: tags)
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
@@ -108,6 +126,31 @@ import UIKit
             self.push.subscribeToTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
                 let message = "Subscribed to the following tags: " + tagsArray.description
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                // call success callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+            })
+            
+        })
+    }
+    
+    /*
+    * Unsubscribes from particular backend mobile application Tag(s)
+    */
+    func unsubscribeFromTags(command: CDVInvokedUrlCommand) {
+        
+        self.commandDelegate!.runInBackground({
+            
+            guard let tagsArray = command.arguments[0] as? [AnyObject] else {
+                let message = "Tags Array Parameter is Invalid."
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                // call error callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                return
+            }
+            self.push.unsubscribeFromTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
+                
+                let message = "Unsubscribed from the following tags: " + tagsArray.description
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
