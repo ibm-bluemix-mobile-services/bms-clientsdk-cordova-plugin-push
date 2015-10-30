@@ -20,6 +20,27 @@
                 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
             </config-file>
 
+            <config-file target="AndroidManifest.xml" parent="/manifest/application">
+                <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
+                <service android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService" />
+
+                <receiver
+                        android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
+                        android:permission="com.google.android.c2dm.permission.SEND" >
+                    <intent-filter>
+                        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                        <category android:name="$PACKAGE_NAME" />
+                    </intent-filter>
+                    <intent-filter>
+                        <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                        <category android:name="$PACKAGE_NAME" />
+                    </intent-filter>
+                </receiver>
+
+            </config-file>
+
             <config-file parent="/*" target="res/xml/config.xml">
                 <feature name="MFPPush">
                     <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVMFPPush" />

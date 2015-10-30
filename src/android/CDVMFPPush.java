@@ -68,10 +68,24 @@ public class CDVMFPPush extends CordovaPlugin {
 
             return true;
         } else if ("registerIncomingNotificationListener".equals(action)) {
+            this.registerIncomingNotificationListener(callbackContext);
 
             return true;
         }
         return false;
+    }
+
+    private void registerIncomingNotificationListener(final CallbackContext callbackContext) {
+        pushLogger.debug("registerIncomingNotificationListener");
+        /*
+        pushInstance.listen(new MFPPushNotificationListener() {
+            @Override
+            public void onReceive(MFPSimplePushNotification mfpSimplePushNotification) {
+                pushLogger.debug("mfpSimplePushNotification.toString()" + mfpSimplePushNotification.toString());
+                callbackContext.success("listener Received a message");
+            }
+        });
+        */
     }
 
     /**
@@ -98,14 +112,14 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void unregister(final CallbackContext callbackContext) {
-        pushInstance.unregisterDevice(new MFPPushResponseListener<String>() {
+        pushInstance.unregister(new MFPPushResponseListener<String>() {
             @Override
             public void onSuccess(String s) {
                 pushLogger.debug("unregister() Successfully unregistered");
                 callbackContext.success();
             }
             @Override
-            public void onFailure(MFPPushException e) {
+            public void onFailure(MFPPushException ex) {
                 pushLogger.debug("unregister() ERROR unregistering device");
                 callbackContext.error(ex.toString());
             }
