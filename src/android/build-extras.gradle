@@ -1,7 +1,6 @@
 dependencies {
-	compile group: 'com.ibm.mobilefirstplatform.clientsdk.android',
-        name: 'core',
-        version: '1.+',
-        ext: 'aar',
-        transitive: true
+    compile('com.ibm.mobilefirstplatform.clientsdk.android:push:1.0.+') {
+        transitive=true
+        exclude group: 'com.android.support'
+    }
 }
