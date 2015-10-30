@@ -84,7 +84,8 @@ import UIKit
             
             self.push.retrieveSubscriptionsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
                 let tags = response.subscriptions() as [NSObject : AnyObject]
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: tags)
+                let tagsArray = tags["subscriptions"] as! [AnyObject]
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tagsArray)
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
             }
