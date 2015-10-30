@@ -1,6 +1,6 @@
 # IBM Bluemix Mobile Services - Push SDK Cordova
 
-Cordova Plugin for IBM Bluemix Mobile Services Push SDK
+Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 
 ## Contents
 - <a href="#installation">Installation</a>
@@ -15,9 +15,57 @@ Cordova Plugin for IBM Bluemix Mobile Services Push SDK
 
 <h3 id="mfppush">MFPPush</h3>
 
-MFPPush is... 
+MFPPush provides methods to let you set up your application for registering and receiving push notifications.
 
-Example:
+<h2 id="installation">Installation</h2>
+
+### Add the Cordova plugin
+
+Run the following command from your Cordova application's root directory to add the ibm-mfp-push plugin:
+
+    $ cordova plugin install ibm-mfp-push
+
+You can check if the plugin installed successfully by running the following command, which lists your installed Cordova plugins:
+
+    $ cordova plugin list
+
+<h2 id="configuration">Configuration</h2>
+
+<h3 id="configure-ios">Configure Your iOS Development Environment</h3>
+
+<h3 id="configure-android">Configure Your Android Development Environment</h3>
+
+Add the notification intent settings for the activity. This setting starts the application when the user clicks the received notification from the notification area. 
+
+    !--Notification Intent -->
+    <intent-filter>
+        <action android:name="YOUR.PKG.NAME.IBMPushNotification>
+        <category  android:name="android.intent.category.DEFAULT
+    </intent-filter>"
+  
+Add the Google Cloud Messaging (GCM) intent service and intent filters for the RECEIVE event notifications. 
+
+    <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
+    <service android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService" />
+        <receiver
+            android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+    
+            <category android:name="YOUR.PKG.NAME" />
+        </intent-filter>
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+    
+            <category android:name="YOUR.PKG.NAME" />
+        </intent-filter>
+    </receiver>
+    <!-- Push Settings End -->
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="bmsclient">MFPPush</h3>
 
     var success = function(message) { console.log("Success: " + messgae); };
     var failure = function(message) { console.log("Error: " + message); };
