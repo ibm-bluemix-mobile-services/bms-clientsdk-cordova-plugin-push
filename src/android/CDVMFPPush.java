@@ -57,12 +57,12 @@ public class CDVMFPPush extends CordovaPlugin {
             this.retrieveAvailableTags(callbackContext);
 
             return true;
-        } else if ("subscribe".equals(action)) {
+        } else if ("subscribeToTags".equals(action)) {
             final List<String> tagsList = convertJSONArrayToList(args.getJSONArray(0));
             this.subscribe(tagsList, callbackContext);
 
             return true;
-        } else if ("unsubscribe".equals(action)) {
+        } else if ("unsubscribeFromTags".equals(action)) {
             final List<String> tagsList = convertJSONArrayToList(args.getJSONArray(0));
             this.unsubscribe(tagsList, callbackContext);
 
