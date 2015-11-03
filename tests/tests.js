@@ -71,5 +71,38 @@ exports.defineAutoTests = function() {
             });
 
 		});
+
+        describe('MFPPush instance', function() {
+
+            it('should call register and call the success callback', function(done) {
+                spyOn(MFPPush, 'register').and.callFake(
+                    function() {
+                        cordova.exec(succeed.bind(null, done), fail.bind(null, done), "MFPPush", "register");
+                });
+            });
+
+            it('should call unregister and call the success callback', function(done) {
+                spyOn(MFPPush, 'unregister').and.callFake(
+                    function() {
+                        cordova.exec(succeed.bind(null, done), fail.bind(null, done), "MFPPush", "unregister");
+                    });
+            });
+
+            it('should call retrieveAvailableTags and call the success callback', function(done) {
+                spyOn(MFPPush, 'retrieveAvailableTags').and.callFake(
+                    function() {
+                        cordova.exec(succeed.bind(null, done), fail.bind(null, done), "MFPPush", "retrieveAvailableTags");
+                    });
+            });
+
+            it('should call getSubscriptionStatus and call the success callback', function(done) {
+                spyOn(MFPPush, 'getSubscriptionStatus').and.callFake(
+                    function() {
+                        cordova.exec(succeed.bind(null, done), fail.bind(null, done), "MFPPush", "getSubscriptionStatus");
+                    });
+            });
+
+        });
+
 	});
 };

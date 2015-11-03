@@ -93,18 +93,24 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void register(final CallbackContext callbackContext) {
-        pushInstance.register(new MFPPushResponseListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                pushLogger.debug("register() Successfully registered");
-                callbackContext.success();
-            }
-            @Override
-            public void onFailure(MFPPushException ex) {
-                pushLogger.debug("register() ERROR registering device");
-                callbackContext.error(ex.toString());
+
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                pushInstance.register(new MFPPushResponseListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        pushLogger.debug("register() Successfully registered");
+                        callbackContext.success();
+                    }
+                    @Override
+                    public void onFailure(MFPPushException ex) {
+                        pushLogger.debug("register() ERROR registering device");
+                        callbackContext.error(ex.toString());
+                    }
+                });
             }
         });
+
     }
 
     /**
@@ -112,18 +118,24 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void unregister(final CallbackContext callbackContext) {
-        pushInstance.unregister(new MFPPushResponseListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                pushLogger.debug("unregister() Successfully unregistered");
-                callbackContext.success();
-            }
-            @Override
-            public void onFailure(MFPPushException ex) {
-                pushLogger.debug("unregister() ERROR unregistering device");
-                callbackContext.error(ex.toString());
+
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                pushInstance.unregister(new MFPPushResponseListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        pushLogger.debug("unregister() Successfully unregistered");
+                        callbackContext.success();
+                    }
+                    @Override
+                    public void onFailure(MFPPushException ex) {
+                        pushLogger.debug("unregister() ERROR unregistering device");
+                        callbackContext.error(ex.toString());
+                    }
+                });
             }
         });
+
     }
 
     /**
@@ -131,17 +143,23 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void retrieveAvailableTags(final CallbackContext callbackContext) {
-        pushInstance.getTags(new MFPPushResponseListener<List<String>>() {
-            @Override
-            public void onSuccess(List<String> tags) {
-                callbackContext.success(new JSONArray(tags));
-            }
 
-            @Override
-            public void onFailure(MFPPushException ex) {
-                callbackContext.error(ex.toString());
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                pushInstance.getTags(new MFPPushResponseListener<List<String>>() {
+                    @Override
+                    public void onSuccess(List<String> tags) {
+                        callbackContext.success(new JSONArray(tags));
+                    }
+
+                    @Override
+                    public void onFailure(MFPPushException ex) {
+                        callbackContext.error(ex.toString());
+                    }
+                });
             }
         });
+
     }
 
     /**
@@ -149,17 +167,23 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void getSubscriptionStatus(final CallbackContext callbackContext) {
-        pushInstance.getSubscriptions(new MFPPushResponseListener<List<String>>() {
-            @Override
-            public void onSuccess(List<String> tags) {
-                callbackContext.success(new JSONArray(tags));
-            }
 
-            @Override
-            public void onFailure(MFPPushException ex) {
-                callbackContext.error(ex.toString());
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                pushInstance.getSubscriptions(new MFPPushResponseListener<List<String>>() {
+                    @Override
+                    public void onSuccess(List<String> tags) {
+                        callbackContext.success(new JSONArray(tags));
+                    }
+
+                    @Override
+                    public void onFailure(MFPPushException ex) {
+                        callbackContext.error(ex.toString());
+                    }
+                });
             }
         });
+
     }
 
     /**
@@ -168,21 +192,27 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void subscribe(final List<String> tagsList, final CallbackContext callbackContext) {
-        for(final String individualTag : tagsList) {
-            pushInstance.subscribe(individualTag, new MFPPushResponseListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    pushLogger.debug("subscribe() Success: Subscribed to " + individualTag);
-                    callbackContext.success();
-                }
 
-                @Override
-                public void onFailure(MFPPushException ex) {
-                    pushLogger.debug("subscribe() Error: Unable to subscribe to " + individualTag);
-                    callbackContext.error(ex.toString());
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                for(final String individualTag : tagsList) {
+                    pushInstance.subscribe(individualTag, new MFPPushResponseListener<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            pushLogger.debug("subscribe() Success: Subscribed to " + individualTag);
+                            callbackContext.success();
+                        }
+
+                        @Override
+                        public void onFailure(MFPPushException ex) {
+                            pushLogger.debug("subscribe() Error: Unable to subscribe to " + individualTag);
+                            callbackContext.error(ex.toString());
+                        }
+                     });
                 }
-             });
-        }
+            }
+        });
+
     }
 
     /**
@@ -191,21 +221,27 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void unsubscribe(final List<String> tagsList, final CallbackContext callbackContext) {
-        for(final String individualTag : tagsList) {
-            pushInstance.unsubscribe(individualTag, new MFPPushResponseListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    pushLogger.debug("subscribe() Success: Subscribed to " + individualTag);
-                    callbackContext.success();
-                }
 
-                @Override
-                public void onFailure(MFPPushException ex) {
-                    pushLogger.debug("subscribe() Error: Unable to subscribe to " + individualTag);
-                    callbackContext.error(ex.toString());
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                for(final String individualTag : tagsList) {
+                    pushInstance.unsubscribe(individualTag, new MFPPushResponseListener<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            pushLogger.debug("subscribe() Success: Subscribed to " + individualTag);
+                            callbackContext.success();
+                        }
+
+                        @Override
+                        public void onFailure(MFPPushException ex) {
+                            pushLogger.debug("subscribe() Error: Unable to subscribe to " + individualTag);
+                            callbackContext.error(ex.toString());
+                        }
+                     });
                 }
-             });
-        }
+            }
+        });
+
     }
 
     /**
