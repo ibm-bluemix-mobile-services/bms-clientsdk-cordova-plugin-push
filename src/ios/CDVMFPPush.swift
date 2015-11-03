@@ -20,6 +20,9 @@ import UIKit
     
     let push = IMFPushClient.sharedInstance()
     
+    // persist register command callback to use in didRegisterForRemoteNotifications
+    // to be used with registerDevice() js plugin function
+    
     /*
     * Registers the device on to the IMFPush Notification Server
     */
@@ -78,16 +81,24 @@ import UIKit
     /*
     * Gets the Tags that are subscribed by the device
     */
-    func getSubscriptionStatus(command: CDVInvokedUrlCommand) {
+    func retrieveSubscriptionStatus(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
             
             self.push.retrieveSubscriptionsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
-                let tags = response.subscriptions() as [NSObject : AnyObject]
-                let tagsArray = tags["subscriptions"] as! [AnyObject]
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tagsArray)
-                // call success callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                if (error != nil) {
+                    let message = error.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
+                else {
+                    let tags = response.subscriptions() as [NSObject : AnyObject]
+                    let tagsArray = tags["subscriptions"] as! [AnyObject]
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tagsArray)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
             }
             
         })
@@ -101,14 +112,27 @@ import UIKit
         self.commandDelegate!.runInBackground({
             
             self.push.retrieveAvailableTagsWithCompletionHandler { (response:IMFResponse!, error:NSError!) -> Void in
-                let tags = response.availableTags() as! [String]
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
-                // call success callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                if (error != nil) {
+                    let message = error.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
+                else {
+                    let tags = response.availableTags() as! [String]
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: tags)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
             }
             
         })
     }
+    
+    // MAY NEED TO CHANGE
+    // JS PASSES ONE TAG AS STRING
+    // CREATE ARRAY AND ADD ONE TAG
+    // THEN CALL SUBSCRIBE/UNSUBSCRIBE
     
     /*
     * Subscribes to a particular backend mobile application Tag(s)
@@ -126,10 +150,18 @@ import UIKit
             }
             self.push.subscribeToTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
-                let message = "Subscribed to the following tags: " + tagsArray.description
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
-                // call success callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                if (error != nil) {
+                    let message = error.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
+                else {
+                    let message = response.responseText
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
             })
             
         })
@@ -151,12 +183,32 @@ import UIKit
             }
             self.push.unsubscribeFromTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
-                let message = "Unsubscribed from the following tags: " + tagsArray.description
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
-                // call success callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                if (error != nil) {
+                    let message = error.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
+                else {
+                    let message = response.responseText
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                }
             })
             
         })
+    }
+    
+    public func didRegisterForRemoteNotifications(deviceToken: NSData) {
+        
+        push.registerDeviceToken(deviceToken) { (response:IMFResponse!, error:NSError!) -> Void in
+            if ((error) != nil) {
+                
+            }
+            else {
+                
+            }
+        }
     }
 }
