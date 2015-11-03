@@ -33,6 +33,8 @@ You can check if the plugin installed successfully by running the following comm
 
 <h3 id="configure-ios">Configure Your iOS Development Environment</h3>
 
+Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
+
 <h3 id="configure-android">Configure Your Android Development Environment</h3>
 
 Add the notification intent settings for the activity. This setting starts the application when the user clicks the received notification from the notification area. 
@@ -85,3 +87,67 @@ Function | Use
 `unregister(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerIncomingNotificationListener(callback)` | description
 
+<h2 id="examples">Examples</h2>
+
+<h3 id="using-mfppush">Using MFPPush</h3>
+
+#### Register for Push Notifications
+
+    var settings = {
+        ios: {
+            alert: true,
+            badge: true,
+            sound: true
+        },
+        android: {
+        
+        }
+    }
+    
+    var success = function(message) { console.log("Success: " + messgae); };
+    var failure = function(message) { console.log("Error: " + message); };
+    
+    MFPPush.register(settings, success, failure);
+
+The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and only changed the boolean value of each notification setting.
+
+To unregister for push notifications simply call the following:
+
+    MFPPush.unregister();
+    
+#### Retrieve Tags
+
+Return an array of tags the the user is currently subscribed using the following:
+
+    MFPPush.getSubscriptionStatus(function(tags) {
+        alert(tags);
+    }, null);
+    
+Return an array of tags that are available to subscribe to using the following:
+
+    MFPPush.retrieveAvailableTags(function(tags) {
+        alert(tags);
+    }, null);
+    
+In both examples the success callback contains a parameter for the array of tags which is returned. The second null parameter is callback function called on error.
+
+#### Subscribe to Tags
+
+    var success = function(message) { console.log("Success: " + messgae); };
+    var failure = function(message) { console.log("Error: " + message); };
+    
+    var tags = ["tag1", "tag2", "tag3"]
+    
+    MFPPush.subscribeToTags(tags, success, failure);
+    
+    MFPPush.unsubscribeFromTags(tags, success, failure);
+    
+<h2 id="release-notes">Release Notes</h2>
+
+Copyright 2015 IBM Corp.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
