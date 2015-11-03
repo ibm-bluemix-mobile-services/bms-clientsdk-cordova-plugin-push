@@ -10,9 +10,9 @@
             <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
 
             <config-file target="AndroidManifest.xml" parent="/manifest">
-                <uses-permission android:name="android.permission.INTERNET"/>
-                <uses-permission android:name="com.ibm.clientsdk.android.app.permission.C2D_MESSAGE" />
+                <uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" />
                 <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+                <uses-permission android:name="android.permission.INTERNET"/>
                 <uses-permission android:name="android.permission.WAKE_LOCK" />
                 <uses-permission android:name="android.permission.GET_ACCOUNTS" />
                 <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -20,13 +20,22 @@
                 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
             </config-file>
 
+
+            <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+                <!--Notification Intent -->
+                <intent-filter>
+                    <action android:name="$PACKAGE_NAME.IBMPushNotification" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </config-file>
+
+
             <config-file target="AndroidManifest.xml" parent="/manifest/application">
                 <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
                 <service android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService" />
 
-                <receiver
-                        android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
-                        android:permission="com.google.android.c2dm.permission.SEND" >
+                <receiver android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
+                          android:permission="com.google.android.c2dm.permission.SEND" >
                     <intent-filter>
                         <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
