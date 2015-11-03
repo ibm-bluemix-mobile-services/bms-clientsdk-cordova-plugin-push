@@ -12,9 +12,6 @@
 */
 var exec = require('cordova/exec');
 
-var success = function(message) { console.log("Success: " + messgae); };
-var failure = function(message) { console.log("Error: " + message); };
-
 var MFPPush = {
 
 	/**
@@ -23,8 +20,8 @@ var MFPPush = {
 	 * @param success callback - recieves array of subscribed tags
 	 * @param failure callback 
 	 */
-	getSubscriptionStatus: function(success, failure) {
-		cordova.exec(success, failure, "MFPPush", "getSubscriptionStatus", []);
+	retrieveSubscriptionStatus: function(success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "retrieveSubscriptionStatus", []);
 	},
 
 	/**
@@ -34,31 +31,31 @@ var MFPPush = {
 	 * @param failure callback
 	 */
 	retrieveAvailableTags: function(success, failure) {
-		cordova.exec(success, failure, "MFPPush", "retrieveAvailableTags", []);
+		cordova.exec(success, failure, "MFPPushPlugin", "retrieveAvailableTags", []);
 	},
 
 	/**
 	 * Subscribes to a particular backend mobile application Tag(s)
 	 * 
-	 * @param tagsArray - The Tag array to subscribe to.
+	 * @param tags - The Tag array to subscribe to.
 	 * @param success callback
 	 * @param failure callback
 	 */
 
-	subscribeToTags: function(tags, success, failure) {
-		cordova.exec(success, failure, "MFPPush", "subscribeToTags", [tags]);
+	subscribe: function(tags, success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "subscribeToTags", [tags]);
 	},
 
 	/**
 	 * Unsubscribes from an backend mobile application Tag(s)
 	 * 
-	 * @param  tagsArray - The Tag name array to unsubscribe from.
+	 * @param  tags - The Tag name array to unsubscribe from.
 	 * @param  success callback
 	 * @param  failure callback
 	 */
 
-	unsubscribeFromTags: function(tags, success, failure) {
-		cordova.exec(success, failure, "MFPPush", "unsubscribeFromTags", [tags]);
+	unsubscribe: function(tags, success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "unsubscribeFromTags", [tags]);
 	},
 
 	/**
@@ -70,8 +67,8 @@ var MFPPush = {
 	 * @param success callback
 	 * @param failure callback
 	 */
-	register: function(settings, success, failure) {
-		cordova.exec(success, failure, "MFPPush", "register", [settings]);
+	registerDevice: function(settings, success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "register", [settings]);
 	},
 
 	/**
@@ -80,8 +77,8 @@ var MFPPush = {
 	 * @param success callback
 	 * @param failure callback
 	 */
-	unregister: function(success, failure) {
-		cordova.exec(success, failure, "MFPPush", "unregister", []);
+	unregisterDevice: function(success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "unregister", []);
 	},
 
 	/**
@@ -89,8 +86,8 @@ var MFPPush = {
 	 * 
 	 * @param callback [description]
 	 */
-	registerIncomingNotificationListener: function(callback) {
-		cordova.exec(success, failure, "MFPPush", "registerIncomingNotificationListener", []);
+	registerNotificationsCallback: function(callback) {
+		cordova.exec(success, failure, "MFPPushPlugin", "registerIncomingNotificationListener", [callback]);
 	}
 };
 

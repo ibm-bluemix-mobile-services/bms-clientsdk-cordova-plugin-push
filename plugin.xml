@@ -51,7 +51,7 @@
             </config-file>
 
             <config-file parent="/*" target="res/xml/config.xml">
-                <feature name="MFPPush">
+                <feature name="MFPPushPlugin">
                     <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVMFPPush" />
                 </feature>
             </config-file>
@@ -64,7 +64,7 @@
         <platform name="ios">
             <config-file parent="/*" target="config.xml">
 
-                <feature name="MFPPush">
+                <feature name="MFPPushPlugin">
                     <param name="ios-package" value="CDVMFPPush" />
                 </feature>
 
