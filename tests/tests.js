@@ -45,14 +45,14 @@ exports.defineAutoTests = function() {
                 expect(typeof MFPPush.retrieveAvailableTags == 'function').toBe(true);
             });
 
-            it('MFPPush.subscribe() should exist and is a function', function(){
-                expect(typeof MFPPush.subscribe).toBeDefined();
-                expect(typeof MFPPush.subscribe == 'function').toBe(true);
+            it('MFPPush.subscribeToTags() should exist and is a function', function(){
+                expect(typeof MFPPush.subscribeToTags).toBeDefined();
+                expect(typeof MFPPush.subscribeToTags == 'function').toBe(true);
             });
 
             it('MFPPush.unsubscribe() should exist and is a function', function(){
-                expect(typeof MFPPush.unsubscribe).toBeDefined();
-                expect(typeof MFPPush.unsubscribe == 'function').toBe(true);
+                expect(typeof MFPPush.unsubscribeFromTags).toBeDefined();
+                expect(typeof MFPPush.unsubscribeFromTags == 'function').toBe(true);
             });
 
             it('MFPPush.register() should exist and is a function', function(){
