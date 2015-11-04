@@ -16,19 +16,26 @@ import IMFCore
 import IMFPush
 import UIKit
 
+
 @objc(CDVMFPPush) class CDVMFPPush : CDVPlugin {
     
-    let push = IMFPushClient.sharedInstance()
+    static let sharedInstance = CDVMFPPush()
     
-    // persist register command callback to use in didRegisterForRemoteNotifications
-    // to be used with registerDevice() js plugin function
+    let push = IMFPushClient.sharedInstance()
+
+    var registerCallbackId: String?
+    var registerCommandDelegate: CDVCommandDelegate?
     
     /*
-    * Registers the device on to the IMFPush Notification Server
+    * Registers the device with APNs
     */
     func register(command: CDVInvokedUrlCommand) {
         
+        CDVMFPPush.sharedInstance.registerCallbackId = command.callbackId
+        CDVMFPPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+
         self.commandDelegate!.runInBackground({
+            
             guard let settings = command.arguments[0] as? NSDictionary else {
                 let message = "Settings Parameter is Invalid."
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
@@ -58,9 +65,13 @@ import UIKit
         })
     }
     
+    /*
+    * Unregisters the device with IMFPush Notification Server
+    */
     func unregister(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
+            
             self.push.unregisterDevice({ (response:IMFResponse!, error:NSError!) -> Void in
                 if (error != nil) {
                     let message = error.description
@@ -130,9 +141,10 @@ import UIKit
     }
     
     // MAY NEED TO CHANGE
-    // JS PASSES ONE TAG AS STRING
-    // CREATE ARRAY AND ADD ONE TAG
-    // THEN CALL SUBSCRIBE/UNSUBSCRIBE
+    //
+    // JS passes one tag as String
+    // Create an array and add the one tag,
+    // then call subscribe/unsubscribe
     
     /*
     * Subscribes to a particular backend mobile application Tag(s)
@@ -200,15 +212,31 @@ import UIKit
         })
     }
     
-    public func didRegisterForRemoteNotifications(deviceToken: NSData) {
+    /*
+    * Function called after registered for remote notifications. Registers device token from APNs with IMFPush Server.
+    * Called by sharedInstance
+    * Uses command delegate stored in sharedInstance for callback
+    */
+    func didRegisterForRemoteNotifications(deviceToken: NSData) {
         
-        push.registerDeviceToken(deviceToken) { (response:IMFResponse!, error:NSError!) -> Void in
-            if ((error) != nil) {
+        CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
+
+            self.push.registerDeviceToken(deviceToken, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
-            }
-            else {
-                
-            }
-        }
+                if (error != nil) {
+                    let message = error.description
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                }
+                else {
+                    let message = response.responseText
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                    // call success callback
+                    CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                }
+            })
+            
+        })
     }
 }
