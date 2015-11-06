@@ -149,17 +149,18 @@ import UIKit
     /*
     * Subscribes to a particular backend mobile application Tag(s)
     */
-    func subscribeToTags(command: CDVInvokedUrlCommand) {
+    func subscribe(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
             
-            guard let tagsArray = command.arguments[0] as? [AnyObject] else {
-                let message = "Tags Array Parameter is Invalid."
+            guard let tag = command.arguments[0] as? String else {
+                let message = "Tag Parameter is Invalid."
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
                 // call error callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                 return
             }
+            let tagsArray = [tag]
             self.push.subscribeToTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
                 if (error != nil) {
@@ -182,17 +183,18 @@ import UIKit
     /*
     * Unsubscribes from particular backend mobile application Tag(s)
     */
-    func unsubscribeFromTags(command: CDVInvokedUrlCommand) {
+    func unsubscribe(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
             
-            guard let tagsArray = command.arguments[0] as? [AnyObject] else {
-                let message = "Tags Array Parameter is Invalid."
+            guard let tag = command.arguments[0] as? String else {
+                let message = "Tag Parameter is Invalid."
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
                 // call error callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                 return
             }
+            let tagsArray = [tag]
             self.push.unsubscribeFromTags(tagsArray, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
                 if (error != nil) {

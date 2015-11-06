@@ -42,8 +42,8 @@ var MFPPush = {
 	 * @param failure callback
 	 */
 
-	subscribe: function(tags, success, failure) {
-		cordova.exec(success, failure, "MFPPushPlugin", "subscribeToTags", [tags]);
+	subscribe: function(tag, success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "subscribe", [tag]);
 	},
 
 	/**
@@ -54,8 +54,8 @@ var MFPPush = {
 	 * @param  failure callback
 	 */
 
-	unsubscribe: function(tags, success, failure) {
-		cordova.exec(success, failure, "MFPPushPlugin", "unsubscribeFromTags", [tags]);
+	unsubscribe: function(tag, success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "unsubscribe", [tag]);
 	},
 
 	/**
