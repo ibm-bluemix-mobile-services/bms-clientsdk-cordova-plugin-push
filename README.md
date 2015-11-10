@@ -10,7 +10,10 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 - <a href="#usage">Usage</a>
     - <a href="#mfppush">MFPPush</a>
 - <a href="#examples">Examples</a> 
-    - <a href="#using-mfppush">Using MFPPush</a>
+    - <a href="#ex-register">Register for Push Notifications</a>
+    - <a href="#ex-subscribe">Subscribe and Unsubscribe to/from Tags</a>
+    - <a href="#ex-retrieve">Retrieve Tags</a>
+    - <a href="#ex-notification">Receiving a Notification</a>
 - <a href="#release-notes">Release Notes</a> 
 
 <h3 id="mfppush">MFPPush</h3>
@@ -71,11 +74,11 @@ MFPPush functions available:
 
 Function | Use
 --- | ---
-`retrieveSubscriptions(success, failure)` | Gets the tags that are subscribed by the device.
-`retrieveAvailableTags(success, failure)` | Gets all the available tags for the backend mobile application.
+`retrieveSubscriptions(success, failure)` | Retrieves the tags that are subscribed by the device.
+`retrieveAvailableTags(success, failure)` | Retrieves all the available tags for the backend mobile application.
 `subscribe(tag, success, failure)` | Subscribes to a particular backend mobile application tag.
 `unsubscribe(tag, success, failure)` | Unsubscribes from an backend mobile application tag.
-`registerDevice(settings, success, failure)` | Registers the device on to the IMFPush Notification Server.
+`registerDevice(settings, success, failure)` | Registers the device with the IMFPush Notification Server.
 `unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
 
@@ -83,7 +86,7 @@ Function | Use
 
 <h3 id="using-mfppush">Using MFPPush</h3>
 
-#### Register for Push Notifications
+<h4 id="ex-register">Register for Push Notifications</h4>
 
     var settings = {
         ios: {
@@ -104,7 +107,7 @@ To unregister for push notifications simply call the following:
 
     MFPPush.unregisterDevice(success, failure);
     
-#### Retrieve Tags
+<h4 id="ex-retrieve">Retrieve Tags</h4>
 
 Return an array of tags the the user is currently subscribed using the following:
 
@@ -120,7 +123,7 @@ Return an array of tags that are available to subscribe to using the following:
     
 In both examples the success callback contains a parameter for the array of tags which is returned. The second null parameter is callback function called on error.
 
-#### Subscribe to Tags
+<h4 id="ex-subscribe">Subscribe and Unsubscribe to/from Tags</h4>
 
     var tag = "YourTag";
 
@@ -128,7 +131,7 @@ In both examples the success callback contains a parameter for the array of tags
     
     MFPPush.unsubscribe(tag, success, failure);
     
-#### Receiving a Notification
+<h4 id="ex-notification">Receiving a Notification</h4>
 
     var handleNotification = function(notif) {
         // notif is a dictionary containing your notification 
