@@ -88,6 +88,8 @@ Function | Use
 
 <h4 id="ex-register">Register for Push Notifications</h4>
 
+TODO: Add iOS specific lines required in native app delegate (Swift and Obj-C)
+
     var settings = {
         ios: {
             alert: true,
@@ -135,7 +137,7 @@ In both examples the first parameter is a success callback that contains the arr
 
 TODO: Instructions for where to put this code.
 
-TODO: Add iOS specific lines required in app delegate (Swift and Obj-C)
+TODO: Add iOS specific lines required in native app delegate (Swift and Obj-C)
 
     var handleNotification = function(notif) {
         // notif is a dictionary containing your notification 
