@@ -67,14 +67,6 @@ Add the Google Cloud Messaging (GCM) intent service and intent filters for the R
 
 <h2 id="usage">Usage</h2>
 
-<h3 id="bmsclient">MFPPush</h3>
-
-    var success = function(message) { console.log("Success: " + messgae); };
-    var failure = function(message) { console.log("Error: " + message); };
-    
-    MFPPush.register(success, failure);
-    
-
 MFPPush functions available:
 
 Function | Use
