@@ -87,7 +87,7 @@ var MFPPush = {
 	 * @param callback [description]
 	 */
 	registerNotificationsCallback: function(callback) {
-		cordova.exec(success, failure, "MFPPushPlugin", "registerIncomingNotificationListener", [callback]);
+		cordova.exec(callback, failure, "MFPPushPlugin", "registerIncomingNotificationListener", []);
 	}
 };
 

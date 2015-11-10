@@ -26,6 +26,9 @@ import UIKit
     var registerCallbackId: String?
     var registerCommandDelegate: CDVCommandDelegate?
     
+    var notifCallbackId: String?
+    var notifCommandDelegate: CDVCommandDelegate?
+    
     /*
     * Registers the device with APNs
     */
@@ -87,6 +90,13 @@ import UIKit
                 }
             })
         })
+    }
+    
+    func registerNotificationsCallback(command: CDVInvokedUrlCommand) {
+        
+        CDVMFPPush.sharedInstance.notifCallbackId = command.callbackId
+        CDVMFPPush.sharedInstance.notifCommandDelegate = self.commandDelegate
+        
     }
     
     /*
@@ -214,6 +224,8 @@ import UIKit
         })
     }
     
+    // Internal functions
+    
     /*
     * Function called after registered for remote notifications. Registers device token from APNs with IMFPush Server.
     * Called by sharedInstance
@@ -238,6 +250,31 @@ import UIKit
                     CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
             })
+            
+        })
+    }
+    
+    /*
+    * Function called after registered for remote notifications. Registers device token from APNs with IMFPush Server.
+    * Called by sharedInstance
+    * Uses command delegate stored in sharedInstance for callback
+    */
+    func didReceiveRemoteNotification(notification: NSDictionary?) {
+        
+        CDVMFPPush.sharedInstance.notifCommandDelegate!.runInBackground({
+
+            if (notification == nil) {
+                let message = "Error in receiving notification"
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                // call error callback
+                CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
+            }
+            else {
+                let message = notification
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: message as! [NSObject : AnyObject])
+                // call success callback
+                CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
+            }
             
         })
     }
