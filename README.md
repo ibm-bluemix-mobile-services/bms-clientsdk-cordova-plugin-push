@@ -134,6 +134,7 @@ In both examples the first parameter is a success callback that contains the arr
 <h4 id="ex-notification">Receiving a Notification</h4>
 
 TODO: Instructions for where to put this code.
+
 TODO: Add iOS specific lines required in app delegate (Swift and Obj-C)
 
     var handleNotification = function(notif) {
