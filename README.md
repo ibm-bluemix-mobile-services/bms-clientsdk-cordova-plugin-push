@@ -121,7 +121,7 @@ Return an array of tags that are available to subscribe to using the following:
         // alert(tags);
     }, failure);
     
-In both examples the success callback contains a parameter for the array of tags which is returned. The second null parameter is callback function called on error.
+In both examples the first parameter is a success callback that contains the array of tags which is returned. The second parameter is a callback function called on error.
 
 <h4 id="ex-subscribe">Subscribe and Unsubscribe to/from Tags</h4>
 
@@ -132,6 +132,9 @@ In both examples the success callback contains a parameter for the array of tags
     MFPPush.unsubscribe(tag, success, failure);
     
 <h4 id="ex-notification">Receiving a Notification</h4>
+
+TODO: Instructions for where to put this code.
+TODO: Add iOS specific lines required in app delegate (Swift and Obj-C)
 
     var handleNotification = function(notif) {
         // notif is a dictionary containing your notification 
