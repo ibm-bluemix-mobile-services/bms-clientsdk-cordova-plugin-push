@@ -79,13 +79,13 @@ MFPPush functions available:
 
 Function | Use
 --- | ---
-`getSubscriptionStatus(success, failure)` | Gets the Tags that are subscribed by the device.
-`retrieveAvailableTags(success, failure)` | Gets all the available Tags for the backend mobile application.
-`subscribe(tags, success, failure)` | Subscribes to a particular backend mobile application Tag(s).
-`unsubscribe(tags, success, failure)` | Unsubscribes from an backend mobile application Tag(s).
-`register(settings, success, failure)` | Registers the device on to the IMFPush Notification Server.
-`unregister(success, failure)` | Unregisters the device from the IMFPush Notification Server.
-`registerIncomingNotificationListener(callback)` | description
+`retrieveSubscriptions(success, failure)` | Gets the tags that are subscribed by the device.
+`retrieveAvailableTags(success, failure)` | Gets all the available tags for the backend mobile application.
+`subscribe(tag, success, failure)` | Subscribes to a particular backend mobile application tag.
+`unsubscribe(tag, success, failure)` | Unsubscribes from an backend mobile application tag.
+`registerDevice(settings, success, failure)` | Registers the device on to the IMFPush Notification Server.
+`unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
+`registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
 
 <h2 id="examples">Examples</h2>
 
@@ -98,49 +98,51 @@ Function | Use
             alert: true,
             badge: true,
             sound: true
-        },
-        android: {
-        
         }
     }
     
-    var success = function(message) { console.log("Success: " + messgae); };
+    var success = function(message) { console.log("Success: " + message); };
     var failure = function(message) { console.log("Error: " + message); };
     
-    MFPPush.register(settings, success, failure);
+    MFPPush.registerDevice(settings, success, failure);
 
 The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and only changed the boolean value of each notification setting.
 
 To unregister for push notifications simply call the following:
 
-    MFPPush.unregister();
+    MFPPush.unregisterDevice(success, failure);
     
 #### Retrieve Tags
 
 Return an array of tags the the user is currently subscribed using the following:
 
-    MFPPush.getSubscriptionStatus(function(tags) {
-        alert(tags);
-    }, null);
+    MFPPush.retrieveSubscriptions(function(tags) {
+        // alert(tags);
+    }, failure);
     
 Return an array of tags that are available to subscribe to using the following:
 
     MFPPush.retrieveAvailableTags(function(tags) {
-        alert(tags);
-    }, null);
+        // alert(tags);
+    }, failure);
     
 In both examples the success callback contains a parameter for the array of tags which is returned. The second null parameter is callback function called on error.
 
 #### Subscribe to Tags
 
-    var success = function(message) { console.log("Success: " + messgae); };
-    var failure = function(message) { console.log("Error: " + message); };
+    var tag = "YourTag";
+
+    MFPPush.subscribe(tag, success, failure);
     
-    var tags = ["tag1", "tag2", "tag3"]
+    MFPPush.unsubscribe(tag, success, failure);
     
-    MFPPush.subscribeToTags(tags, success, failure);
-    
-    MFPPush.unsubscribeFromTags(tags, success, failure);
+#### Receiving a Notification
+
+    var handleNotification = function(notif) {
+        // notif is a dictionary containing your notification 
+    }
+
+    MFPPush.registerNotificationsCallback(handleNotification);
     
 <h2 id="release-notes">Release Notes</h2>
 
