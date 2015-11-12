@@ -5,8 +5,6 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 ## Contents
 - <a href="#installation">Installation</a>
 - <a href="#configuration">Configuration</a>
-    - <a href="#configure-ios">Configure Your iOS Development Environment</a>
-    - <a href="#configure-android">Configure Your Android Development Environment</a>
 - <a href="#usage">Usage</a>
     - <a href="#mfppush">MFPPush</a>
 - <a href="#examples">Examples</a> 
@@ -40,33 +38,7 @@ Follow the instructions here to configure your Xcode environment [https://github
 
 <h3 id="configure-android">Configure Your Android Development Environment</h3>
 
-Add the notification intent settings for the activity. This setting starts the application when the user clicks the received notification from the notification area. 
-
-    !--Notification Intent -->
-    <intent-filter>
-        <action android:name="YOUR.PKG.NAME.IBMPushNotification>
-        <category  android:name="android.intent.category.DEFAULT
-    </intent-filter>"
-  
-Add the Google Cloud Messaging (GCM) intent service and intent filters for the RECEIVE event notifications. 
-
-    <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
-    <service android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService" />
-        <receiver
-            android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-        <intent-filter>
-            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-    
-            <category android:name="YOUR.PKG.NAME" />
-        </intent-filter>
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-    
-            <category android:name="YOUR.PKG.NAME" />
-        </intent-filter>
-    </receiver>
-    <!-- Push Settings End -->
+Follow the instructions here to configure your Android environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android)
 
 <h2 id="usage">Usage</h2>
 
