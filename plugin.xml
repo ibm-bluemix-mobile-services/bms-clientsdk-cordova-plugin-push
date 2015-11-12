@@ -71,7 +71,6 @@
             </config-file>
             <!--<header-file src="src/ios/Bridging-Header.h" />-->
             <source-file src="src/ios/CDVMFPPush.swift" />
-            <!--<source-file src="src/ios/MFPPush.m" />-->
         </platform>
 
     </plugin>
