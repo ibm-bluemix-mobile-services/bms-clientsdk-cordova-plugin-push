@@ -69,7 +69,6 @@
                 </feature>
 
             </config-file>
-            <!--<header-file src="src/ios/Bridging-Header.h" />-->
             <source-file src="src/ios/CDVMFPPush.swift" />
         </platform>
 
