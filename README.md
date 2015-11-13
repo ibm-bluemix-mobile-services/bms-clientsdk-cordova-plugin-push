@@ -34,7 +34,7 @@ Follow the instructions here to configure your Xcode environment [https://github
 
 ### Update your client application to use the Push SDK. 
 
-A common place to put the initialization code is in the AppDelegate class.
+The following code must be added to the specific application functions in the AppDelegate class.
 
 Objective-C:
 
