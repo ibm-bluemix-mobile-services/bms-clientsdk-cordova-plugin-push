@@ -36,7 +36,9 @@ You can check if the plugin installed successfully by running the following comm
 
 Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
 
-Update your client application to use the Push SDK. A common place to put the initialization code is in the AppDelegate class.
+### Update your client application to use the Push SDK. 
+
+A common place to put the initialization code is in the AppDelegate class.
 
 Objective-C:
 
