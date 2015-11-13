@@ -14,10 +14,6 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
     - <a href="#ex-notification">Receiving a Notification</a>
 - <a href="#release-notes">Release Notes</a> 
 
-<h3 id="mfppush">MFPPush</h3>
-
-MFPPush provides methods to let you set up your application for registering and receiving push notifications.
-
 <h2 id="installation">Installation</h2>
 
 ### Add the Cordova plugin
