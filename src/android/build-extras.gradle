@@ -1,6 +1,5 @@
 dependencies {
-    compile('com.ibm.mobilefirstplatform.clientsdk.android:push:1.0.+') {
+    compile('com.ibm.mobilefirstplatform.clientsdk.android:push:1.0.2') {
         transitive=true
-        exclude group: 'com.android.support'
     }
 }
