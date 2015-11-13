@@ -14,6 +14,7 @@ package com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push;
 
 import com.ibm.mobilefirstplatform.clientsdk.android.logger.api.Logger;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPSimplePushNotification;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushResponseListener;
@@ -21,6 +22,7 @@ import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPSimplePushNotif
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,14 +34,18 @@ import java.util.ArrayList;
 public class CDVMFPPush extends CordovaPlugin {
 
     private static String TAG = "CDVMFPPush";
+
+    private static CallbackContext notificationCallback;
     private static final Logger pushLogger = Logger.getInstance("CDVMFPPush");
 
+    private static MFPPushNotificationListener notificationListener;
+
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        pushLogger.debug("execute() : action() " + action);
+    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        pushLogger.debug("execute() : action = " + action);
 
         if ("registerDevice".equals(action)) {
-            MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext());
+
             this.registerDevice(callbackContext);
 
             return true;
@@ -73,24 +79,12 @@ public class CDVMFPPush extends CordovaPlugin {
         return false;
     }
 
-    private void registerNotificationsCallback(final CallbackContext callbackContext) {
-        pushLogger.debug("registerNotificationsCallback");
-        /*
-        MFPPush.getInstance().listen(new MFPPushNotificationListener() {
-            @Override
-            public void onReceive(MFPSimplePushNotification mfpSimplePushNotification) {
-                pushLogger.debug("mfpSimplePushNotification.toString()" + mfpSimplePushNotification.toString());
-                callbackContext.success("listener Received a message");
-            }
-        });
-        */
-    }
-
     /**
      * Registers the device for Push notifications with the given alias and consumerId
      * @param callbackContext Javascript callback
      */
     private void registerDevice(final CallbackContext callbackContext) {
+        MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext());
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -242,12 +236,39 @@ public class CDVMFPPush extends CordovaPlugin {
 
     }
 
-    private static List<String> convertJSONArrayToList(JSONArray tagsList) throws JSONException {
-        List<String> convertedList = new ArrayList<String>();
-        for(int i=0; i < tagsList.length(); i++) {
-            convertedList.add(tagsList.getString(i));
+    private void registerNotificationsCallback(final CallbackContext callbackContext) {
+        pushLogger.debug("In registerNotificationsCallback");
+
+        notificationCallback = callbackContext;
+
+        notificationListener = new MFPPushNotificationListener() {
+            @Override
+            public void onReceive(final MFPSimplePushNotification message) {
+                PluginResult result = new PluginResult(PluginResult.Status.OK, message.toString());
+                result.setKeepCallback(true);
+                notificationCallback.sendPluginResult(result);
+            }
+        };
+        MFPPush.getInstance().listen(notificationListener);
+
+    }
+
+    @Override
+    public void onResume(boolean multitasking) {
+        super.onResume(multitasking);
+        pushLogger.debug("In onResume");
+        if(MFPPush.getInstance() != null) {
+            MFPPush.getInstance().listen(notificationListener);
         }
-        return convertedList;
+    }
+
+    @Override
+    public void onPause(boolean multitasking) {
+        super.onPause(multitasking);
+        pushLogger.debug("In onPause");
+        if(MFPPush.getInstance() != null) {
+            MFPPush.getInstance().hold();
+        }
     }
 
 }
