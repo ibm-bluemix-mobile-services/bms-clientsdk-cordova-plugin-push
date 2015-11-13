@@ -5,6 +5,8 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 ## Contents
 - <a href="#installation">Installation</a>
 - <a href="#configuration">Configuration</a>
+    - <a href="#configure-ios">Configure Your iOS Development Environment</a>
+    - <a href="#configure-android">Configure Your Android Development Environment</a>
 - <a href="#usage">Usage</a>
     - <a href="#usagem">MFPPush</a>
     - <a href="#sequence-diagrams">SDK Sequence Diagrams</a>
@@ -33,7 +35,7 @@ You can check if the plugin installed successfully by running the following comm
 
 Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
 
-### Update your client application to use the Push SDK. 
+#### Update your client application to use the Push SDK. 
 
 The following code must be added to the specified application functions in the AppDelegate class.
 
