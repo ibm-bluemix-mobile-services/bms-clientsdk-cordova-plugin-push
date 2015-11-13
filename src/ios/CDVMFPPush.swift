@@ -32,7 +32,7 @@ import UIKit
     /*
     * Registers the device with APNs
     */
-    func register(command: CDVInvokedUrlCommand) {
+    func registerDevice(command: CDVInvokedUrlCommand) {
         
         CDVMFPPush.sharedInstance.registerCallbackId = command.callbackId
         CDVMFPPush.sharedInstance.registerCommandDelegate = self.commandDelegate
@@ -71,7 +71,7 @@ import UIKit
     /*
     * Unregisters the device with IMFPush Notification Server
     */
-    func unregister(command: CDVInvokedUrlCommand) {
+    func unregisterDevice(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
             
