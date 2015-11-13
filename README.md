@@ -8,17 +8,14 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
     - <a href="#configure-ios">Configure Your iOS Development Environment</a>
     - <a href="#configure-android">Configure Your Android Development Environment</a>
 - <a href="#usage">Usage</a>
-    - <a href="#mfppush">MFPPush</a>
+    - <a href="#usage">MFPPush</a>
+    - <a href="#sequence-diagrams">SDK Sequence Diagrams</a>
 - <a href="#examples">Examples</a> 
     - <a href="#ex-register">Register for Push Notifications</a>
     - <a href="#ex-retrieve">Retrieve Tags</a>
     - <a href="#ex-subscribe">Subscribe and Unsubscribe to/from Tags</a>
     - <a href="#ex-notification">Receiving a Notification</a>
 - <a href="#release-notes">Release Notes</a> 
-
-<h3 id="mfppush">MFPPush</h3>
-
-MFPPush provides methods to let you set up your application for registering and receiving push notifications.
 
 <h2 id="installation">Installation</h2>
 
@@ -38,35 +35,53 @@ You can check if the plugin installed successfully by running the following comm
 
 Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
 
+#### Update your client application to use the Push SDK
+
+The following code must be added to the specified application functions in the AppDelegate class.
+
+Objective-C:
+
+    // Register device token with Bluemix Push Notification Service
+    - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+        
+        [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
+    }
+    
+    // Handle error when failed to register device token with APNs
+    - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+    
+        [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
+    }
+    
+    // Handle receiving a remote notification
+    -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+        
+        [[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
+    }
+    
+Swift:
+    
+    // Register device token with Bluemix Push Notification Service
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+        CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
+    }
+    
+    // Handle error when failed to register device token with APNs
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
+        
+        CDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)
+    }
+    
+    // Handle receiving a remote notification
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: ) {
+        
+        CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
+    }
+
 <h3 id="configure-android">Configure Your Android Development Environment</h3>
 
-Add the notification intent settings for the activity. This setting starts the application when the user clicks the received notification from the notification area. 
-
-    !--Notification Intent -->
-    <intent-filter>
-        <action android:name="YOUR.PKG.NAME.IBMPushNotification>
-        <category  android:name="android.intent.category.DEFAULT
-    </intent-filter>"
-  
-Add the Google Cloud Messaging (GCM) intent service and intent filters for the RECEIVE event notifications. 
-
-    <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
-    <service android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService" />
-        <receiver
-            android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-        <intent-filter>
-            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-    
-            <category android:name="YOUR.PKG.NAME" />
-        </intent-filter>
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-    
-            <category android:name="YOUR.PKG.NAME" />
-        </intent-filter>
-    </receiver>
-    <!-- Push Settings End -->
+Follow the instructions here to configure your Android environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android)
 
 <h2 id="usage">Usage</h2>
 
@@ -82,13 +97,17 @@ Function | Use
 `unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
 
+<h3 id="sequence-diagrams">SDK Sequence Diagrams</h3>
+
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
+
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
+
 <h2 id="examples">Examples</h2>
 
 <h3 id="using-mfppush">Using MFPPush</h3>
 
 <h4 id="ex-register">Register for Push Notifications</h4>
-
-TODO: Add iOS specific lines required in native app delegate (Swift and Obj-C)
 
     var settings = {
         ios: {
@@ -136,8 +155,6 @@ In both examples the first parameter is a success callback that contains the arr
 <h4 id="ex-notification">Receiving a Notification</h4>
 
 TODO: Instructions for where to put this code.
-
-TODO: Add iOS specific lines required in native app delegate (Swift and Obj-C)
 
     var handleNotification = function(notif) {
         // notif is a dictionary containing your notification 
