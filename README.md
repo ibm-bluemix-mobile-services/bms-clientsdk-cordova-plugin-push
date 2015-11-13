@@ -96,9 +96,9 @@ Function | Use
 
 TODO: (ADD SEQUENCE DIAGRAM IMAGES)
 
-<img src="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/blob/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
 
-<img src="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/blob/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
 
 <h2 id="examples">Examples</h2>
 
