@@ -55,6 +55,20 @@ Objective-C:
         
         [[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
     }
+    
+Swift:
+
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
+        CDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: ) {
+        CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
+    }
 
 <h3 id="configure-android">Configure Your Android Development Environment</h3>
 
