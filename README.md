@@ -57,15 +57,18 @@ Objective-C:
     }
     
 Swift:
-
+    
+    // Register device token with Bluemix Push Notification Service
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
     }
     
+    // Handle error when failed to register device token with APNs
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
         CDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)
     }
     
+    // Handle receiving a remote notification
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: ) {
         CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
     }
