@@ -7,7 +7,7 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 - <a href="#configuration">Configuration</a>
 - <a href="#usage">Usage</a>
     - <a href="#usagem">MFPPush</a>
-    - <a href="#sequence-diagrams">MFPPush Sequence Diagrams</a>
+    - <a href="#sequence-diagrams">SDK Sequence Diagrams</a>
 - <a href="#examples">Examples</a> 
     - <a href="#ex-register">Register for Push Notifications</a>
     - <a href="#ex-retrieve">Retrieve Tags</a>
@@ -95,9 +95,7 @@ Function | Use
 `unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
 
-<h3 id="sequence-diagrams">MFPPush Sequence Diagrams</h3>
-
-TODO: (ADD SEQUENCE DIAGRAM IMAGES)
+<h3 id="sequence-diagrams">SDK Sequence Diagrams</h3>
 
 <img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
 
