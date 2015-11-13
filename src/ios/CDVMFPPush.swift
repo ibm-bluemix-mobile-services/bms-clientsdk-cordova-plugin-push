@@ -233,6 +233,10 @@ import UIKit
     */
     func didRegisterForRemoteNotifications(deviceToken: NSData) {
         
+        if (CDVMFPPush.sharedInstance.registerCallbackId == nil) {
+            return
+        }
+        
         CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
 
             self.push.registerDeviceToken(deviceToken, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
@@ -254,12 +258,31 @@ import UIKit
         })
     }
     
+    func didFailToRegisterForRemoteNotifications(error: NSError) {
+        
+        if (CDVMFPPush.sharedInstance.registerCallbackId == nil) {
+            return
+        }
+        
+        CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
+            
+            let message = error.description
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+            // call error callback
+            CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+        })
+    }
+    
     /*
     * Function called after registered for remote notifications. Registers device token from APNs with IMFPush Server.
     * Called by sharedInstance
     * Uses command delegate stored in sharedInstance for callback
     */
     func didReceiveRemoteNotification(notification: NSDictionary?) {
+        
+        if (CDVMFPPush.sharedInstance.notifCallbackId == nil) {
+            return
+        }
         
         CDVMFPPush.sharedInstance.notifCommandDelegate!.runInBackground({
 
