@@ -34,7 +34,7 @@ Follow the instructions here to configure your Xcode environment [https://github
 
 ### Update your client application to use the Push SDK. 
 
-The following code must be added to the specific application functions in the AppDelegate class.
+The following code must be added to the specified application functions in the AppDelegate class.
 
 Objective-C:
 
