@@ -8,7 +8,7 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
     - <a href="#configure-ios">Configure Your iOS Development Environment</a>
     - <a href="#configure-android">Configure Your Android Development Environment</a>
 - <a href="#usage">Usage</a>
-    - <a href="#usagem">MFPPush</a>
+    - <a href="#usage">MFPPush</a>
     - <a href="#sequence-diagrams">SDK Sequence Diagrams</a>
 - <a href="#examples">Examples</a> 
     - <a href="#ex-register">Register for Push Notifications</a>
