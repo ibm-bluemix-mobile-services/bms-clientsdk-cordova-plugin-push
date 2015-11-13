@@ -40,15 +40,19 @@ Update your client application to use the Push SDK.
 
 Objective-C:
 
+    // Register device token with Bluemix Push Notification Service
     - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         
         [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
     }
     
+    // Handle error when failed to register device token with APNs
     - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-        [[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:error];
+    
+        [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
     }
     
+    // Handle receiving a remote notification
     -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
         
         [[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
