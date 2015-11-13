@@ -68,7 +68,7 @@ var MFPPush = {
 	 * @param failure callback
 	 */
 	registerDevice: function(settings, success, failure) {
-		cordova.exec(success, failure, "MFPPushPlugin", "register", [settings]);
+		cordova.exec(success, failure, "MFPPushPlugin", "registerDevice", [settings]);
 	},
 
 	/**
@@ -78,7 +78,7 @@ var MFPPush = {
 	 * @param failure callback
 	 */
 	unregisterDevice: function(success, failure) {
-		cordova.exec(success, failure, "MFPPushPlugin", "unregister", []);
+		cordova.exec(success, failure, "MFPPushPlugin", "unregisterDevice", []);
 	},
 
 	/**
@@ -87,7 +87,7 @@ var MFPPush = {
 	 * @param callback [description]
 	 */
 	registerNotificationsCallback: function(callback) {
-		cordova.exec(callback, failure, "MFPPushPlugin", "registerIncomingNotificationListener", []);
+		cordova.exec(callback, failure, "MFPPushPlugin", "registerNotificationsCallback", []);
 	}
 };
 
