@@ -36,6 +36,24 @@ You can check if the plugin installed successfully by running the following comm
 
 Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
 
+Update your client application to use the Push SDK.
+
+Objective-C:
+
+    - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+        
+        [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
+    }
+    
+    - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+        [[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:error];
+    }
+    
+    -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+        
+        [[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
+    }
+
 <h3 id="configure-android">Configure Your Android Development Environment</h3>
 
 Follow the instructions here to configure your Android environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android)
