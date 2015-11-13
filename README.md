@@ -5,9 +5,11 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 ## Contents
 - <a href="#installation">Installation</a>
 - <a href="#configuration">Configuration</a>
+    - <a href="#configure-ios">Configure Your iOS Development Environment</a>
+    - <a href="#configure-android">Configure Your Android Development Environment</a>
 - <a href="#usage">Usage</a>
-    - <a href="#usagem">MFPPush</a>
-    - <a href="#sequence-diagrams">MFPPush Sequence Diagrams</a>
+    - <a href="#usage">MFPPush</a>
+    - <a href="#sequence-diagrams">SDK Sequence Diagrams</a>
 - <a href="#examples">Examples</a> 
     - <a href="#ex-register">Register for Push Notifications</a>
     - <a href="#ex-retrieve">Retrieve Tags</a>
@@ -33,7 +35,11 @@ You can check if the plugin installed successfully by running the following comm
 
 Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
 
-### Update your client application to use the Push SDK. 
+Go to Build Settings > Search Paths > Framework Search Paths and verify that the following parameter was added:
+
+    "[your-app-name]/Plugins/ibm-mfp-push"
+
+#### Update your client application to use the Push SDK
 
 The following code must be added to the specified application functions in the AppDelegate class.
 
@@ -61,16 +67,19 @@ Swift:
     
     // Register device token with Bluemix Push Notification Service
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
         CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
     }
     
     // Handle error when failed to register device token with APNs
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
+        
         CDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)
     }
     
     // Handle receiving a remote notification
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: ) {
+        
         CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
     }
 
@@ -92,9 +101,11 @@ Function | Use
 `unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
 
-<h3 id="sequence-diagrams">MFPPush Sequence Diagrams</h3>
+<h3 id="sequence-diagrams">SDK Sequence Diagrams</h3>
 
-TODO: (ADD SEQUENCE DIAGRAM IMAGES)
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
+
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
 
 <h2 id="examples">Examples</h2>
 
