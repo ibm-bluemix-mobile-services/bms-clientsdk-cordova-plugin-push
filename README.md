@@ -35,6 +35,10 @@ You can check if the plugin installed successfully by running the following comm
 
 Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
 
+Go to Build Settings > Search Paths > Framework Search Paths and verify that the following parameter was added:
+
+    "[your-app-name]/Plugins/ibm-mfp-push"
+
 #### Update your client application to use the Push SDK
 
 The following code must be added to the specified application functions in the AppDelegate class.
