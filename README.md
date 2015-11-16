@@ -54,7 +54,7 @@ Objective-C:
     // Handle error when failed to register device token with APNs
     - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
     
-        [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
+        [[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:deviceToken];
     }
     
     // Handle receiving a remote notification
