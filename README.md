@@ -126,7 +126,7 @@ Function | Use
     
     MFPPush.registerDevice(settings, success, failure);
 
-The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and only changed the boolean value of each notification setting.
+The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and should only change the boolean value of each notification setting.
 
 To unregister for push notifications simply call the following:
 
