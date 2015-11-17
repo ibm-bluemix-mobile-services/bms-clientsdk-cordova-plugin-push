@@ -39,26 +39,68 @@ import UIKit
 
         self.commandDelegate!.runInBackground({
             
-            guard let settings = command.arguments[0] as? NSDictionary else {
-                let message = "Settings Parameter is Invalid."
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
-                // call error callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                return
+            var types = UIUserNotificationType()
+            
+            // If settings parameter is null then use default settings
+            if (command.arguments[0] is NSNull) {
+                types.insert(.Alert)
+                types.insert(.Badge)
+                types.insert(.Sound)
             }
             
-            // Check which notification types the user enabled.
-            // TODO: CLEAN UP
-            var types = UIUserNotificationType()
-            let ios: NSDictionary = settings["ios"] as! NSDictionary
-            if ((ios["alert"]) as! Bool) {
-                types.insert(.Alert)
-            }
-            if ((ios["badge"]) as! Bool) {
-                types.insert(.Badge)
-            }
-            if ((ios["sound"]) as! Bool) {
-                types.insert(.Sound)
+            // Settings parameter not null, check which settings the user enabled
+            else {
+                
+                guard let settings = command.arguments[0] as? NSDictionary else {
+                    
+                    let message = "Registering for Push Notifications failed. Settings parameter is Invalid."
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                guard let ios = settings["ios"] as? NSDictionary else {
+                    let errorMessage = "Registering for Push Notifications failed. Settings ios parameter is Invalid."
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                guard let alert = ios["alert"] as? Bool else {
+                    let errorMessage = "Registering for Push Notifications failed. Settings alert parameter is Invalid."
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                guard let badge = ios["badge"] as? Bool else {
+                    let errorMessage = "Registering for Push Notifications failed. Settings badge parameter is Invalid."
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                guard let sound = ios["sound"] as? Bool else {
+                    let errorMessage = "Registering for Push Notifications failed. Settings sound parameter is Invalid."
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                    // call error callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                if (alert) {
+                    types.insert(.Alert)
+                }
+                if (badge) {
+                    types.insert(.Badge)
+                }
+                if (sound) {
+                    types.insert(.Sound)
+                }
             }
             
             let notificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
