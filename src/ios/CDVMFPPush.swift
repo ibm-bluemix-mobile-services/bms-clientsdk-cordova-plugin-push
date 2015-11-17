@@ -331,12 +331,14 @@ import UIKit
             if (notification == nil) {
                 let message = "Error in receiving notification"
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                pluginResult.setKeepCallbackAsBool(true)
                 // call error callback
                 CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
             }
             else {
                 let message = notification
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: message as! [NSObject : AnyObject])
+                pluginResult.setKeepCallbackAsBool(true)
                 // call success callback
                 CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
             }
