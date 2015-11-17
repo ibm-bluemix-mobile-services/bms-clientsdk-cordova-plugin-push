@@ -48,7 +48,7 @@ import UIKit
                 types.insert(.Sound)
             }
             
-            // Settings parameter not null, check which settings the user enabled
+            // Settings parameter not null
             else {
                 
                 guard let settings = command.arguments[0] as? NSDictionary else {
@@ -60,46 +60,56 @@ import UIKit
                     return
                 }
                 
-                guard let ios = settings["ios"] as? NSDictionary else {
-                    let errorMessage = "Registering for Push Notifications failed. Settings ios parameter is Invalid."
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
-                    // call error callback
-                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                    return
-                }
-                
-                guard let alert = ios["alert"] as? Bool else {
-                    let errorMessage = "Registering for Push Notifications failed. Settings alert parameter is Invalid."
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
-                    // call error callback
-                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                    return
-                }
-                
-                guard let badge = ios["badge"] as? Bool else {
-                    let errorMessage = "Registering for Push Notifications failed. Settings badge parameter is Invalid."
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
-                    // call error callback
-                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                    return
-                }
-                
-                guard let sound = ios["sound"] as? Bool else {
-                    let errorMessage = "Registering for Push Notifications failed. Settings sound parameter is Invalid."
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
-                    // call error callback
-                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                    return
-                }
-                
-                if (alert) {
+                // Empty settings object passed: {}
+                if (settings.count == 0) {
                     types.insert(.Alert)
-                }
-                if (badge) {
                     types.insert(.Badge)
-                }
-                if (sound) {
                     types.insert(.Sound)
+                }
+                // Check which settings the user enabled
+                else {
+                
+                    guard let ios = settings["ios"] as? NSDictionary else {
+                        let errorMessage = "Registering for Push Notifications failed. Settings ios parameter is Invalid."
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                        // call error callback
+                        self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                        return
+                    }
+                    
+                    guard let alert = ios["alert"] as? Bool else {
+                        let errorMessage = "Registering for Push Notifications failed. Settings alert parameter is Invalid."
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                        // call error callback
+                        self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                        return
+                    }
+                    
+                    guard let badge = ios["badge"] as? Bool else {
+                        let errorMessage = "Registering for Push Notifications failed. Settings badge parameter is Invalid."
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                        // call error callback
+                        self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                        return
+                    }
+                    
+                    guard let sound = ios["sound"] as? Bool else {
+                        let errorMessage = "Registering for Push Notifications failed. Settings sound parameter is Invalid."
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
+                        // call error callback
+                        self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                        return
+                    }
+                    
+                    if (alert) {
+                        types.insert(.Alert)
+                    }
+                    if (badge) {
+                        types.insert(.Badge)
+                    }
+                    if (sound) {
+                        types.insert(.Sound)
+                    }
                 }
             }
             
