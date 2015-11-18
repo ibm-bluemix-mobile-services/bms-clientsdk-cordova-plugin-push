@@ -166,7 +166,7 @@ In both examples the first parameter is a success callback that contains the arr
 TODO: Instructions for where to put this code.
 
     var handleNotification = function(notif) {
-        // notif is a dictionary containing your notification 
+        // notif is a json object containing your notification 
     }
 
     MFPPush.registerNotificationsCallback(handleNotification);
@@ -178,6 +178,14 @@ Property | Description
 `property 1` | Description 1.
 `property 2` | Description 2 (ios only).
 `property 3` | Description 3 (android only).
+
+Example Notification:
+
+    {
+        prop1 : val1,
+        prop2 : val2,
+        prop3 : val3
+    }
 
 <h2 id="release-notes">Release Notes</h2>
 
