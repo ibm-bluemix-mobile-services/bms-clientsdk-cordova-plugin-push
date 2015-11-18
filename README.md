@@ -187,7 +187,7 @@ Property | Description
 Example Notification:
 
     // iOS
-    var notif = {
+    notif = {
         message: "Message",
         payload: {},
         sound: null,
@@ -197,7 +197,7 @@ Example Notification:
     }
     
     // Android
-    var notif = {
+    notif = {
         message: "Message",
         payload: {},
         id: <id>,
