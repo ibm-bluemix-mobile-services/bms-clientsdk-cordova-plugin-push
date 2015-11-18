@@ -176,7 +176,7 @@ MFPPush Notification JSON Format:
 Property | Description
 --- | ---
 `message` | Push notification message.
-`payload` | JSON object to send with the push notification.
+`payload` | JSON object containing notification payload.
 `id` | Device id to which the notification is sent (Android only).
 `url` | URL that is part of the notification (Android only).
 `sound` | Notification sound file (iOS only).
@@ -189,7 +189,7 @@ Example Notification:
     // iOS
     var notif = {
         message: "Message",
-        payload: "Payload",
+        payload: {},
         sound: null,
         badge: null,
         action-loc-key: null,
@@ -199,7 +199,7 @@ Example Notification:
     // Android
     var notif = {
         message: "Message",
-        payload: "Payload",
+        payload: {},
         id: <id>,
         url: <url>
     }
