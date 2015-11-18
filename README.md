@@ -105,7 +105,7 @@ Function | Use
 
 Function | Use
 --- | ---
-`CDVMFPPush.setIgnoreIncomingNotifications(boolean ignore)` | Change the plugin's default behavior to ignore handling push notifications.
+`CDVMFPPush.setIgnoreIncomingNotifications(boolean ignore)` | By default, the Javascript API delegates Push Notification handling to the Push plugin. Use this method to override the plugin's default behavior -- ignore the notifications.
 <h3 id="sequence-diagrams">SDK Sequence Diagrams</h3>
 
 <img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
