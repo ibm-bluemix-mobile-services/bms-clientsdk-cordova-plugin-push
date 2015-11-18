@@ -289,7 +289,7 @@ public class CDVMFPPush extends CordovaPlugin {
 
     /**
      * Change the plugin's default behavior to ignore handling push notifications
-     * @param ignore boolean parameter to ignore notifications behavior
+     * @param ignore boolean parameter for the 'ignore notifications' behavior
      */
     public void setIgnoreIncomingNotifications(boolean ignore) {
         pushLogger.debug("In setIgnoreIncomingNotifications : ignore = " + ignore);
