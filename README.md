@@ -171,7 +171,7 @@ TODO: Instructions for where to put this code.
 
     MFPPush.registerNotificationsCallback(handleNotification);
 
-MFPPush Notification JSON Format:
+Notification JSON Format:
 
 Property | Description
 --- | ---
