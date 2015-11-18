@@ -175,16 +175,20 @@ MFPPush Notification JSON Format:
 
 Property | Description
 --- | ---
-`property 1` | Description 1.
-`property 2` | Description 2 (ios only).
-`property 3` | Description 3 (android only).
+`message` | push notification message.
+`payload` | a JSON object to send with the push notification.
+`id` | the device id to which the notification is sent (android only).
+`url` | the url that is part of the notification (android only).
+`sound` |  notification sound file (ios only).
+`badge` |  integer value to place on application icon (ios only).
+`action-loc-key` |  application loc key (ios only).
+`tag` |  the tag associated with this notification (ios only).
 
 Example Notification:
 
     {
-        prop1 : val1,
-        prop2 : val2,
-        prop3 : val3
+        message : "message text",
+        payload : "payload",
     }
 
 <h2 id="release-notes">Release Notes</h2>
