@@ -170,7 +170,15 @@ TODO: Instructions for where to put this code.
     }
 
     MFPPush.registerNotificationsCallback(handleNotification);
-    
+
+MFPPush Notification JSON Format:
+
+Property | Description
+--- | ---
+`property 1` | Description 1.
+`property 2` | Description 2 (ios only).
+`property 3` | Description 3 (android only).
+
 <h2 id="release-notes">Release Notes</h2>
 
 Copyright 2015 IBM Corp.
