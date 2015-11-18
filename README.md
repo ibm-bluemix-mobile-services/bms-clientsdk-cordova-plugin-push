@@ -133,6 +133,12 @@ Function | Use
 
 The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and should only change the boolean value of each notification setting.
 
+
+**Note**:
+Android does NOT make use of the settings parameter, but you must at least supply an empty object, e.g:
+    
+    MFPPush.registerDevice({}, success, failure);
+
 To unregister for push notifications simply call the following:
 
     MFPPush.unregisterDevice(success, failure);
