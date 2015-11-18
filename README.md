@@ -101,6 +101,11 @@ Function | Use
 `unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
 `registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
 
+**Android (Native)**
+
+Function | Use
+--- | ---
+`CDVMFPPush.setIgnoreIncomingNotifications(boolean ignore)` | Change the plugin's default behavior to ignore handling push notifications.
 <h3 id="sequence-diagrams">SDK Sequence Diagrams</h3>
 
 <img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
