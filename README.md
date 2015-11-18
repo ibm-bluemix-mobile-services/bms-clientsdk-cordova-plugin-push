@@ -135,7 +135,7 @@ The settings structure contains the settings that you want to enable for push no
 
 
 **Note**:
-Android does NOT make use of the settings parameter, but you must at least supply an empty object, e.g:
+Android does NOT make use of the settings parameter, but you must supply an empty object, e.g:
     
     MFPPush.registerDevice({}, success, failure);
 
