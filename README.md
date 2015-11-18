@@ -166,7 +166,7 @@ In both examples the first parameter is a success callback that contains the arr
 TODO: Instructions for where to put this code.
 
     var handleNotification = function(notif) {
-        // notif is a json object containing your notification 
+        // notif is a JSON object containing your notification 
     }
 
     MFPPush.registerNotificationsCallback(handleNotification);
@@ -175,20 +175,33 @@ MFPPush Notification JSON Format:
 
 Property | Description
 --- | ---
-`message` | push notification message.
-`payload` | a JSON object to send with the push notification.
-`id` | the device id to which the notification is sent (android only).
-`url` | the url that is part of the notification (android only).
-`sound` |  notification sound file (ios only).
-`badge` |  integer value to place on application icon (ios only).
-`action-loc-key` |  application loc key (ios only).
-`tag` |  the tag associated with this notification (ios only).
+`message` | Push notification message.
+`payload` | JSON object to send with the push notification.
+`id` | Device id to which the notification is sent (Android only).
+`url` | URL that is part of the notification (Android only).
+`sound` | Notification sound file (iOS only).
+`badge` |  Integer value to place on application icon (iOS only).
+`action-loc-key` | A localized string in your native Application. (iOS only).
+`tag` | Tag associated with this notification (iOS only, available only if no additional payload specified in Bluemix Push Dashboard).
 
 Example Notification:
 
-    {
-        message : "message text",
-        payload : "payload",
+    // iOS
+    var notif = {
+        message: "Message",
+        payload: "Payload",
+        sound: null,
+        badge: null,
+        action-loc-key: null,
+        tag: null
+    }
+    
+    // Android
+    var notif = {
+        message: "Message",
+        payload: "Payload",
+        id: <id>,
+        url: <url>
     }
 
 <h2 id="release-notes">Release Notes</h2>
