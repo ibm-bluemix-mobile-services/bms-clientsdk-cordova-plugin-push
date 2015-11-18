@@ -154,7 +154,7 @@ import UIKit
     /*
     * Gets the Tags that are subscribed by the device
     */
-    func retrieveSubscriptionStatus(command: CDVInvokedUrlCommand) {
+    func retrieveSubscriptions(command: CDVInvokedUrlCommand) {
         
         self.commandDelegate!.runInBackground({
             

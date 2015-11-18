@@ -20,8 +20,8 @@ var MFPPush = {
 	 * @param success callback - recieves array of subscribed tags
 	 * @param failure callback 
 	 */
-	retrieveSubscriptionStatus: function(success, failure) {
-		cordova.exec(success, failure, "MFPPushPlugin", "retrieveSubscriptionStatus", []);
+	retrieveSubscriptions: function(success, failure) {
+		cordova.exec(success, failure, "MFPPushPlugin", "retrieveSubscriptions", []);
 	},
 
 	/**
