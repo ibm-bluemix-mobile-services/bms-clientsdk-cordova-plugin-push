@@ -163,8 +163,6 @@ In both examples the first parameter is a success callback that contains the arr
     
 <h4 id="ex-notification">Receiving a Notification</h4>
 
-TODO: Instructions for where to put this code.
-
     var handleNotification = function(notif) {
         // notif is a JSON object containing your notification 
     }
