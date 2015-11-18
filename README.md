@@ -193,7 +193,7 @@ Example Notification:
         sound: null,
         badge: null,
         action-loc-key: null,
-        tag: null
+        tag: "Tag"
     }
     
     // Android
