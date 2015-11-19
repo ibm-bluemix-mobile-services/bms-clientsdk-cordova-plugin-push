@@ -43,6 +43,10 @@ Go to Build Settings > Search Paths > Framework Search Paths and verify that the
 
 The following code must be added to the specified application functions in the AppDelegate class.
 
+At the top of your AppDelegate.m:
+
+    #import "MyCordovaApp-Swift.h"
+
 Objective-C:
 
     // Register device token with Bluemix Push Notification Service
@@ -54,7 +58,7 @@ Objective-C:
     // Handle error when failed to register device token with APNs
     - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
     
-        [[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:deviceToken];
+        [[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:error];
     }
     
     // Handle receiving a remote notification

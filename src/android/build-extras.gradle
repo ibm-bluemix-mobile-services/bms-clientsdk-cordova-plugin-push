@@ -1,5 +1,15 @@
+// Minimum SDK Version
+if (!project.hasProperty('cdvMinSdkVersion') || cdvMinSdkVersion < 15) {
+    ext.cdvMinSdkVersion = 15;
+}
+// For Push SDK, SDK version must be at least 23
+if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 23) {
+    ext.cdvCompileSdkVersion = 23;
+}
+
+// Include Android Bluemix SDK dependency
 dependencies {
-    compile('com.ibm.mobilefirstplatform.clientsdk.android:push:1.0.2') {
+    compile('com.ibm.mobilefirstplatform.clientsdk.android:push:1.+') {
         transitive=true
     }
 }
