@@ -274,6 +274,7 @@ public class CDVMFPPush extends CordovaPlugin {
                 }
             });
         } else {
+            pushLogger.warning("Notification handling is currently off. Turn it back on by calling setIgnoreIncomingNotifications(true)");
             callbackContext.error("Error: Called registerNotificationsCallback() after IgnoreIncomingNotifications was set");
         }
     }
