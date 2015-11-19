@@ -332,6 +332,23 @@ import UIKit
     */
     func didReceiveRemoteNotification(notification: NSDictionary?) {
         
+        print( notification )
+        //print( notification?.valueForKey("aps") )
+        //print( notification?.valueForKey("aps")?.valueForKey("alert") )
+        
+        var notif: [String : AnyObject] = [:]
+        
+        notif["message"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("body");
+        notif["payload"] = notification?.valueForKey("payload")
+        notif["sound"] = notification?.valueForKey("aps")?.valueForKey("sound")
+        notif["badge"] = notification?.valueForKey("aps")?.valueForKey("badge")
+        notif["action-loc-key"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("action-loc-key")
+        //notif["tag"] = notification?.valueForKey("aps")?.valueForKey("sound")
+        
+        //print(notif)
+        //print(notif["message"])
+        
+        
         if (CDVMFPPush.sharedInstance.notifCallbackId == nil) {
             return
         }
@@ -346,8 +363,8 @@ import UIKit
                 CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
             }
             else {
-                let message = notification
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: message as! [NSObject : AnyObject])
+                let message = notif
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: message as! [String : AnyObject])
                 pluginResult.setKeepCallbackAsBool(true)
                 // call success callback
                 CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
