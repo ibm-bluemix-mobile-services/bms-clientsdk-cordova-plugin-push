@@ -25,6 +25,7 @@ import org.apache.cordova.PluginResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -250,17 +251,49 @@ public class CDVMFPPush extends CordovaPlugin {
                     notificationListener = new MFPPushNotificationListener() {
                         @Override
                         public void onReceive(final MFPSimplePushNotification message) {
-                            PluginResult result = new PluginResult(PluginResult.Status.OK, message.toString());
-                            result.setKeepCallback(true);
-                            notificationCallback.sendPluginResult(result);
+                            try {
+                                JSONObject notification = new JSONObject();
+
+                                notification.put("message", message.getAlert());
+                                notification.put("payload", message.getPayload());
+                                notification.put("id", message.getId());
+                                notification.put("url", message.getUrl());
+
+                                PluginResult result = new PluginResult(PluginResult.Status.OK, notification);
+                                result.setKeepCallback(true);
+                                notificationCallback.sendPluginResult(result);
+                            } catch(JSONException e) {
+                                PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.toString());
+                                result.setKeepCallback(true);
+                                notificationCallback.sendPluginResult(result);
+                            }
                         }
                     };
 
                     MFPPush.getInstance().listen(notificationListener);
                 }
             });
-
+        } else {
+            callbackContext.error("Error: Called registerNotificationsCallback() after IgnoreIncomingNotifications was set");
         }
+    }
+
+    /**
+     * Change the plugin's default behavior to ignore handling push notifications
+     * @param ignore boolean parameter for the 'ignore notifications' behavior
+     */
+    public static void setIgnoreIncomingNotifications(boolean ignore) {
+        pushLogger.debug("In setIgnoreIncomingNotifications : ignore = " + ignore);
+        ignoreIncomingNotifications = ignore;
+
+        if(notificationListener != null) {
+            if(ignore) {
+                MFPPush.getInstance().hold();
+            } else {
+                MFPPush.getInstance().listen(notificationListener);
+            }
+        }
+
     }
 
     @Override
@@ -285,24 +318,6 @@ public class CDVMFPPush extends CordovaPlugin {
         if(MFPPush.getInstance() != null) {
             MFPPush.getInstance().hold();
         }
-    }
-
-    /**
-     * Change the plugin's default behavior to ignore handling push notifications
-     * @param ignore boolean parameter for the 'ignore notifications' behavior
-     */
-    public void setIgnoreIncomingNotifications(boolean ignore) {
-        pushLogger.debug("In setIgnoreIncomingNotifications : ignore = " + ignore);
-        ignoreIncomingNotifications = ignore;
-
-        if(notificationListener != null) {
-            if(ignore) {
-                MFPPush.getInstance().hold();
-            } else {
-                MFPPush.getInstance().listen(notificationListener);
-            }
-        }
-
     }
 
 }
