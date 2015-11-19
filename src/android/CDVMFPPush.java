@@ -18,7 +18,6 @@ import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPSimplePushNotif
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushResponseListener;
-import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPSimplePushNotification;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -29,16 +28,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class CDVMFPPush extends CordovaPlugin {
-
-    private static String TAG = "CDVMFPPush";
 
     private static CallbackContext notificationCallback;
     private static final Logger pushLogger = Logger.getInstance("CDVMFPPush");
 
     private static MFPPushNotificationListener notificationListener;
+
+    private static boolean ignoreIncomingNotifications = false;
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -110,6 +108,7 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void unregisterDevice(final CallbackContext callbackContext) {
+        pushLogger.debug("In unregisterDevice");
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -135,6 +134,7 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void retrieveAvailableTags(final CallbackContext callbackContext) {
+        pushLogger.debug("In retrieveAvailableTags");
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -161,6 +161,7 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void retrieveSubscriptions(final CallbackContext callbackContext) {
+        pushLogger.debug("In unsubscribe");
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -188,6 +189,7 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void subscribe(final String tag, final CallbackContext callbackContext) {
+        pushLogger.debug("In subscribe");
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -215,6 +217,7 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void unsubscribe(final String tag, final CallbackContext callbackContext) {
+        pushLogger.debug("In unsubscribe");
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -239,17 +242,58 @@ public class CDVMFPPush extends CordovaPlugin {
     private void registerNotificationsCallback(final CallbackContext callbackContext) {
         pushLogger.debug("In registerNotificationsCallback");
 
-        notificationCallback = callbackContext;
+        if(!ignoreIncomingNotifications) {
 
-        notificationListener = new MFPPushNotificationListener() {
-            @Override
-            public void onReceive(final MFPSimplePushNotification message) {
-                PluginResult result = new PluginResult(PluginResult.Status.OK, message.toString());
-                result.setKeepCallback(true);
-                notificationCallback.sendPluginResult(result);
+            notificationCallback = callbackContext;
+
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    notificationListener = new MFPPushNotificationListener() {
+                        @Override
+                        public void onReceive(final MFPSimplePushNotification message) {
+                            try {
+                                JSONObject notification = new JSONObject();
+
+                                notification.put("message", message.getAlert());
+                                notification.put("payload", message.getPayload());
+                                notification.put("id", message.getId());
+                                notification.put("url", message.getUrl());
+
+                                PluginResult result = new PluginResult(PluginResult.Status.OK, notification);
+                                result.setKeepCallback(true);
+                                notificationCallback.sendPluginResult(result);
+                            } catch(JSONException e) {
+                                PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.toString());
+                                result.setKeepCallback(true);
+                                notificationCallback.sendPluginResult(result);
+                            }
+                        }
+                    };
+
+                    MFPPush.getInstance().listen(notificationListener);
+                }
+            });
+        } else {
+            pushLogger.warning("Notification handling is currently off. Turn it back on by calling setIgnoreIncomingNotifications(true)");
+            callbackContext.error("Error: Called registerNotificationsCallback() after IgnoreIncomingNotifications was set");
+        }
+    }
+
+    /**
+     * Change the plugin's default behavior to ignore handling push notifications
+     * @param ignore boolean parameter for the 'ignore notifications' behavior
+     */
+    public static void setIgnoreIncomingNotifications(boolean ignore) {
+        pushLogger.debug("In setIgnoreIncomingNotifications : ignore = " + ignore);
+        ignoreIncomingNotifications = ignore;
+
+        if(notificationListener != null) {
+            if(ignore) {
+                MFPPush.getInstance().hold();
+            } else {
+                MFPPush.getInstance().listen(notificationListener);
             }
-        };
-        MFPPush.getInstance().listen(notificationListener);
+        }
 
     }
 
@@ -257,6 +301,9 @@ public class CDVMFPPush extends CordovaPlugin {
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
         pushLogger.debug("In onResume");
+
+        if (!ignoreIncomingNotifications) return;
+
         if(MFPPush.getInstance() != null) {
             MFPPush.getInstance().listen(notificationListener);
         }
@@ -266,6 +313,9 @@ public class CDVMFPPush extends CordovaPlugin {
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
         pushLogger.debug("In onPause");
+
+        if (!ignoreIncomingNotifications) return;
+
         if(MFPPush.getInstance() != null) {
             MFPPush.getInstance().hold();
         }
