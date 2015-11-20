@@ -189,9 +189,9 @@ Property | Description
 `payload` | JSON object containing notification payload.
 `id` | Device id to which the notification is sent (Android only).
 `url` | URL that is part of the notification (Android only).
-`sound` | Notification sound file (iOS only).
-`badge` |  Integer value to place on application icon (iOS only).
-`action-loc-key` | A localized string in your native Application. (iOS only).
+`sound` | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container. (iOS only).
+`badge` | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0. (iOS only).
+`action-loc-key` | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View”. (iOS only).
 `tag` | Tag associated with this notification (iOS only, available only if no additional payload specified in Bluemix Push Dashboard).
 
 Example Notification:
