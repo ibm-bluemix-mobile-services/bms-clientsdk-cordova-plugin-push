@@ -90,7 +90,7 @@ public class CDVMFPPush extends CordovaPlugin {
                     @Override
                     public void onSuccess(String s) {
                         pushLogger.debug("registerDevice() Success : " + s);
-                        callbackContext.success();
+                        callbackContext.success(s);
                     }
                     @Override
                     public void onFailure(MFPPushException ex) {
@@ -252,12 +252,12 @@ public class CDVMFPPush extends CordovaPlugin {
                         @Override
                         public void onReceive(final MFPSimplePushNotification message) {
                             try {
+                                pushLogger.debug("Push notification received: " + message.toString());
+
                                 JSONObject notification = new JSONObject();
 
                                 notification.put("message", message.getAlert());
                                 notification.put("payload", message.getPayload());
-                                notification.put("id", message.getId());
-                                notification.put("url", message.getUrl());
 
                                 PluginResult result = new PluginResult(PluginResult.Status.OK, notification);
                                 result.setKeepCallback(true);
