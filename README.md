@@ -25,7 +25,7 @@ From your Cordova application root directory, enter the following command to ins
 
     $ cordova plugin install ibm-mfp-push
 
-From your-app-root-folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
+From your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
 
     $ cordova plugin list
 
