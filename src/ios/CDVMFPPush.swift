@@ -202,12 +202,6 @@ import UIKit
         })
     }
     
-    // MAY NEED TO CHANGE
-    //
-    // JS passes one tag as String
-    // Create an array and add the one tag,
-    // then call subscribe/unsubscribe
-    
     /*
     * Subscribes to a particular backend mobile application Tag(s)
     */
@@ -332,10 +326,6 @@ import UIKit
     */
     func didReceiveRemoteNotification(notification: NSDictionary?) {
         
-        print( notification )
-        //print( notification?.valueForKey("aps") )
-        //print( notification?.valueForKey("aps")?.valueForKey("alert") )
-        
         var notif: [String : AnyObject] = [:]
         
         notif["message"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("body");
@@ -343,11 +333,6 @@ import UIKit
         notif["sound"] = notification?.valueForKey("aps")?.valueForKey("sound")
         notif["badge"] = notification?.valueForKey("aps")?.valueForKey("badge")
         notif["action-loc-key"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("action-loc-key")
-        //notif["tag"] = notification?.valueForKey("aps")?.valueForKey("sound")
-        
-        //print(notif)
-        //print(notif["message"])
-        
         
         if (CDVMFPPush.sharedInstance.notifCallbackId == nil) {
             return
