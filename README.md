@@ -190,7 +190,6 @@ Property | Description
 `sound` | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container. (iOS only).
 `badge` | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0. (iOS only).
 `action-loc-key` | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View”. (iOS only).
-`tag` | Tag associated with this notification (iOS only, available only if no additional payload specified in Bluemix Push Dashboard).
 
 Example Notification:
 
@@ -200,8 +199,7 @@ Example Notification:
         payload: {},
         sound: null,
         badge: null,
-        action-loc-key: null,
-        tag: "Tag"
+        action-loc-key: null
     }
     
     // Android
