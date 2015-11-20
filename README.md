@@ -45,7 +45,7 @@ Add the following Objective-C code snippets to your application delegate class.
 
 At the top of your AppDelegate.m:
 
-    #import "MyCordovaApp-Swift.h"
+    #import "[your-app-name]-Swift.h"
 
 Objective-C:
 
