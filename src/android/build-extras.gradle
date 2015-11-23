@@ -2,6 +2,7 @@
 if (!project.hasProperty('cdvMinSdkVersion') || cdvMinSdkVersion < 15) {
     ext.cdvMinSdkVersion = 15;
 }
+
 // For Push SDK, SDK version must be at least 23
 if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 23) {
     ext.cdvCompileSdkVersion = 23;

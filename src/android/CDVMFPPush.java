@@ -31,8 +31,9 @@ import java.util.List;
 
 public class CDVMFPPush extends CordovaPlugin {
 
-    private static CallbackContext notificationCallback;
     private static final Logger pushLogger = Logger.getInstance("CDVMFPPush");
+
+    private static CallbackContext notificationCallback;
 
     private static MFPPushNotificationListener notificationListener;
 
