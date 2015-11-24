@@ -44,7 +44,6 @@ public class CDVMFPPush extends CordovaPlugin {
         pushLogger.debug("execute() : action = " + action);
 
         if ("registerDevice".equals(action)) {
-
             this.registerDevice(callbackContext);
 
             return true;
@@ -243,9 +242,9 @@ public class CDVMFPPush extends CordovaPlugin {
     private void registerNotificationsCallback(final CallbackContext callbackContext) {
         pushLogger.debug("In registerNotificationsCallback");
 
-        if(!ignoreIncomingNotifications) {
+        notificationCallback = callbackContext;
 
-            notificationCallback = callbackContext;
+        if(!ignoreIncomingNotifications) {
 
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
@@ -274,6 +273,7 @@ public class CDVMFPPush extends CordovaPlugin {
                     MFPPush.getInstance().listen(notificationListener);
                 }
             });
+
         } else {
             pushLogger.warn("Notification handling is currently off. Turn it back on by calling setIgnoreIncomingNotifications(true)");
             callbackContext.error("Error: Called registerNotificationsCallback() after IgnoreIncomingNotifications was set");
@@ -303,9 +303,7 @@ public class CDVMFPPush extends CordovaPlugin {
         super.onResume(multitasking);
         pushLogger.debug("In onResume");
 
-        if (!ignoreIncomingNotifications) return;
-
-        if(MFPPush.getInstance() != null) {
+        if (!ignoreIncomingNotifications && MFPPush.getInstance() != null) {
             MFPPush.getInstance().listen(notificationListener);
         }
     }
@@ -315,9 +313,7 @@ public class CDVMFPPush extends CordovaPlugin {
         super.onPause(multitasking);
         pushLogger.debug("In onPause");
 
-        if (!ignoreIncomingNotifications) return;
-
-        if(MFPPush.getInstance() != null) {
+        if (!ignoreIncomingNotifications && MFPPush.getInstance() != null) {
             MFPPush.getInstance().hold();
         }
     }
