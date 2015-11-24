@@ -2,7 +2,7 @@
     <plugin id="ibm-mfp-push" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
         <name>MFPPush</name>
 
-        <!-- Remove commit='development' attribute !-->
+        <!-- TODO: Remove commit='development' attribute once the plugin is finalized !-->
         <dependency id="ibm-mfp-core" url="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core" commit="development" />
 
         <js-module name="MFPPush" src="www/MFPPush.js">
