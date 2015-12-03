@@ -37,7 +37,7 @@ Follow the instructions here to configure your Xcode environment [https://github
 
 Go to Build Settings > Search Paths > Framework Search Paths and verify that the following parameter was added:
 
-    "[your-app-name]/Plugins/ibm-mfp-push"
+    "[your-project-name]/Plugins/ibm-mfp-push"
 
 #### Updating your client application to use the Push SDK
 
@@ -45,7 +45,12 @@ Add the following Objective-C code snippets to your application delegate class.
 
 At the top of your AppDelegate.m:
 
-    #import "[your-app-name]-Swift.h"
+    #import "[your-project-name]-Swift.h"
+    
+If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
+
+    // Project name is "Test Project" or "Test-Project"
+    #import "Test_Project-Swift.h"
 
 Objective-C:
 
