@@ -12,6 +12,10 @@
 */
 var exec = require('cordova/exec');
 
+var failure = function(res) {
+	alert(res);
+}
+
 var MFPPush = {
 
 	/**
