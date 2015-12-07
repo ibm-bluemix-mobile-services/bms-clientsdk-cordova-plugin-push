@@ -3,3 +3,4 @@
 .idea
 src/android/local.properties
 src/android/build.gradle
+npm-debug.log

@@ -46,6 +46,11 @@ Add the following Objective-C code snippets to your application delegate class.
 At the top of your AppDelegate.m:
 
     #import "[your-project-name]-Swift.h"
+    
+If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
+
+    // Project name is "Test Project" or "Test-Project"
+    #import "Test_Project-Swift.h"
 
 Objective-C:
 

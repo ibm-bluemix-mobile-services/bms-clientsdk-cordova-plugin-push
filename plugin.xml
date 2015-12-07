@@ -60,7 +60,7 @@
 
             <config-file parent="/*" target="AndroidManifest.xml" />
 
-            <source-file src="src/android/CDVMFPPush.java"   target-dir="src/main/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
+            <source-file src="src/android/CDVMFPPush.java"   target-dir="src/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
         </platform>
 
         <platform name="ios">
