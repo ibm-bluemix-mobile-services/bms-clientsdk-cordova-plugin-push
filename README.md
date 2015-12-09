@@ -3,6 +3,7 @@
 Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 
 [Configuration](#configuration)
+[Adding Cordova platforms](#adding-cordova-platforms)
 
 ## Installation
 
