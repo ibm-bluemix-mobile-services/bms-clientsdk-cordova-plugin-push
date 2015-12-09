@@ -2,220 +2,297 @@
 
 Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 
-## Contents
-- <a href="#installation">Installation</a>
-- <a href="#configuration">Configuration</a>
-    - <a href="#configure-ios">Configuring Your iOS Development Environment</a>
-    - <a href="#configure-android">Configuring Your Android Development Environment</a>
-- <a href="#usage">Usage</a>
-    - <a href="#usage">MFPPush</a>
-    - <a href="#sequence-diagrams">SDK Sequence Diagrams</a>
-- <a href="#examples">Examples</a> 
-    - <a href="#ex-register">Registering for Push Notifications</a>
-    - <a href="#ex-retrieve">Retrieving Tags</a>
-    - <a href="#ex-subscribe">Subscribing and Unsubscribe to/from Tags</a>
-    - <a href="#ex-notification">Receiving a Notification</a>
-- <a href="#release-notes">Release Notes</a> 
+## Installation
 
-<h2 id="installation">Installation</h2>
+### Installing necessary libraries
+
+You should already have Node.js/npm and the Cordova package installed. If you don't, you can download and install Node from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+
+The Cordova library is also required to use this plugin. You can find instructions to install Cordova and set up your Cordova app at [https://cordova.apache.org/#getstarted](https://cordova.apache.org/#getstarted).
+
+### Creating a Cordova application
+
+1. Run the following commands to create a new Cordova application. Alternatively you can use an existing application as well. 
+
+	```
+	$ cordova create {appName}
+	$ cd {appName}
+	```
+	
+1. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default HelloCordova.
+
+1. Continue editing `config.xml`. Update the `<platform name="ios">` element with a deployment target declaration as shown in the code snippet below.
+
+	```XML
+	<platform name="ios">
+		<preference name="deployment-target" value="8.0" />
+		// other properties
+	</platform>
+	```
+	
+1. Continue editing `config.xml`. Update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.
+
+	```XML
+	<platform name="android">
+		<preference name="android-minSdkVersion" value="15" />
+		<preference name="android-targetSdkVersion" value="23" />
+		// other properties
+	</platform>
+	```
+
+	> The minSdkVersion should be above 15.
+	
+	> The targetSdkVersion should always reflect the latest Android SDK available from Google.
+
+### Adding Cordova platforms
+
+Run the following commands according to which platform you want to add to your Cordova application
+
+```Bash
+cordova platform add ios
+
+cordova platform add android
+```
 
 ### Adding the Cordova plugin
 
 From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
 
-    $ cordova plugin install ibm-mfp-push
+```Bash
+cordova plugin install ibm-mfp-push
+```
 
 From your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
 
-    $ cordova plugin list
+```Bash
+cordova plugin list
+```
 
-<h2 id="configuration">Configuration</h2>
+## Configuration
 
-<h3 id="configure-ios">Configuring Your iOS Development Environment</h3>
+### Configuring Your iOS Development Environment
 
-Follow the instructions here to configure your Xcode environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-ios)
+Follow the Configuring Your iOS Development Environment instructions from [Bluemix Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core) 
 
-Go to Build Settings > Search Paths > Framework Search Paths and verify that the following parameter was added:
+Go to `Build Settings` > `Search Paths` > `Framework Search Paths` and verify that the following entry was added:
 
-    "[your-project-name]/Plugins/ibm-mfp-push"
+```
+"[your-project-name]/Plugins/ibm-mfp-push"
+```
 
 #### Updating your client application to use the Push SDK
 
-Add the following Objective-C code snippets to your application delegate class.
+By default Cordova creates a native iOS project built with iOS therefore you will need to import an automatically generated Swift header in order to use the Push SDK. Add the following Objective-C code snippets to your application delegate class.
 
 At the top of your AppDelegate.m:
 
-    #import "[your-project-name]-Swift.h"
+```Objective-C
+#import "[your-project-name]-Swift.h"
+```
     
 If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
 
-    // Project name is "Test Project" or "Test-Project"
-    #import "Test_Project-Swift.h"
+```Objective-C
+// Project name is "Test Project" or "Test-Project"
+#import "Test_Project-Swift.h"
+```
 
-Objective-C:
+Add below code to your application delegate
 
-    // Register device token with Bluemix Push Notification Service
-    - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-        
-        [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
-    }
-    
-    // Handle error when failed to register device token with APNs
-    - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-    
-        [[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:error];
-    }
-    
-    // Handle receiving a remote notification
-    -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-        
-        [[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
-    }
-    
-Swift:
-    
-    // Register device token with Bluemix Push Notification Service
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        
-        CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
-    }
-    
-    // Handle error when failed to register device token with APNs
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
-        
-        CDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)
-    }
-    
-    // Handle receiving a remote notification
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: ) {
-        
-        CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
-    }
+#### Objective-C:
 
-<h3 id="configure-android">Configuring Your Android Development Environment</h3>
+```
+// Register device token with Bluemix Push Notification Service
+- (void)application:(UIApplication *)application
+	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
 
-Follow the instructions here to configure your Android environment [https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core/tree/development#configure-android)
+	 [[CDVMFPPush sharedInstance] 
+	 	didRegisterForRemoteNotifications:deviceToken];
+}
+    
+// Handle error when failed to register device token with APNs
+- (void)application:(UIApplication*)application
+	 didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
 
-<h2 id="usage">Usage</h2>
+	[[CDVMFPPush sharedInstance]
+		didFailToRegisterForRemoteNotifications:error];
+}
+    
+// Handle receiving a remote notification
+-(void)application:(UIApplication *)application 
+	didReceiveRemoteNotification:(NSDictionary *)userInfo 
+	fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+
+	[[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
+}
+```
+
+#### Swift:
+
+```
+// Register device token with Bluemix Push Notification Service
+func application(application: UIApplication, 
+	didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+
+	CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
+}
+
+// Handle error when failed to register device token with APNs
+func application(application: UIApplication, 
+	didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
+        
+	CDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)
+}
+    
+// Handle receiving a remote notification
+func application(application: UIApplication, 
+	didReceiveRemoteNotification userInfo: [NSObject : AnyObject], 	fetchCompletionHandler completionHandler: ) {
+	
+	CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
+}
+```
+
+### Configuring Your Android Development Environment
+
+Follow the Configuring Your Android Development Environment instructions from [Bluemix Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core) 
+
+## Usage
 
 The following MFPPush Javascript functions are available:
 
 Javascript Function | Description
 --- | ---
-`retrieveSubscriptions(success, failure)` | Retrieves the tags that are subscribed by the device.
-`retrieveAvailableTags(success, failure)` | Retrieves all the available tags for the backend mobile application.
-`subscribe(tag, success, failure)` | Subscribes to a particular backend mobile application tag.
-`unsubscribe(tag, success, failure)` | Unsubscribes from an backend mobile application tag.
-`registerDevice(settings, success, failure)` | Registers the device with the IMFPush Notification Server.
-`unregisterDevice(success, failure)` | Unregisters the device from the IMFPush Notification Server.
-`registerNotificationsCallback(callback)` | Registers a callback for when a notification arrives on the device.
+registerDevice(settings, success, failure) | Registers the device with the Push Notifications Service.
+unregisterDevice(success, failure) | Unregisters the device from the Push Notifications Service
+retrieveSubscriptions(success, failure) | Retrieves the tags device is currently subscribed to
+retrieveAvailableTags(success, failure) | Retrieves all the tags available in a push notification service instance.
+subscribe(tag, success, failure) | Subscribes to a particular tag.
+unsubscribe(tag, success, failure) | Unsubscribes from a particular tag.
+registerNotificationsCallback(callback) | Registers a callback for when a notification arrives on the device.
 
 **Android (Native)**
 The following native Android function is available.
 
  Android function | Description
 --- | ---
-`CDVMFPPush.setIgnoreIncomingNotifications(boolean ignore)` | By default, the Javascript API delegates Push Notification handling to the Push plugin. Use this method to override the plugin's default behavior -- ignore the notifications.
+CDVMFPPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push notifications plugin handles all incoming Push Notification by tunnelling them to JavaScript callback. Use this method to override the plugin's default behavior in case you want to manually handle incoming push notifications in native code. 
 
-<h3 id="sequence-diagrams">SDK Sequence Diagrams</h3>
+## SDK Sequence Diagrams
 
-<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/master/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
 
-<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/development/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
+<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/master/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
 
-<h2 id="examples">Examples</h2>
+## Examples
 
-<h3 id="using-mfppush">Using MFPPush</h3>
+### Using MFPPush
 
-<h4 id="ex-register">Register for Push Notifications</h4>
+#### Register for Push Notifications
 
-    var settings = {
-        ios: {
-            alert: true,
-            badge: true,
-            sound: true
-        }
-    }
+```
+var settings = {
+	ios: {
+		alert: true,
+		badge: true,
+		sound: true
+	}
+}
     
-    var success = function(message) { console.log("Success: " + message); };
-    var failure = function(message) { console.log("Error: " + message); };
+var success = function(message) { console.log("Success: " + message); };
+var failure = function(message) { console.log("Error: " + message); };
     
-    MFPPush.registerDevice(settings, success, failure);
+MFPPush.registerDevice(settings, success, failure);
+```
 
 The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and should only change the boolean value of each notification setting.
 
-
-**Note**:
-Android does NOT make use of the settings parameter, but you must supply an empty object, e.g:
+> Android does NOT make use of the settings parameter. If you're only building Android app pass an empty object, e.g.
     
-    MFPPush.registerDevice({}, success, failure);
+```
+MFPPush.registerDevice({}, success, failure);
+```
 
 To unregister for push notifications simply call the following:
 
-    MFPPush.unregisterDevice(success, failure);
+```
+MFPPush.unregisterDevice(success, failure);
+```
     
-<h4 id="ex-retrieve">Retrieving Tags</h4>
+#### Retrieving Tags
 
 In the following examples, the function parameter is a success callback that receives an array of tags. The second parameter is a callback function called on error.
 
-To return an array of tags to which the user is currently subscribed, use the following Javascript function:
+To retrieve an array of tags to which the user is currently subscribed, use the following Javascript function:
 
-    MFPPush.retrieveSubscriptions(function(tags) {
-        // alert(tags);
-    }, failure);
+```
+MFPPush.retrieveSubscriptions(function(tags) {
+	alert(tags);
+}, failure);
+```
     
-To return an array of tags that are available to subscribe, use the following Javascript function:
+To retrieve an array of tags that are available to subscribe, use the following Javascript function:
 
-    MFPPush.retrieveAvailableTags(function(tags) {
-        // alert(tags);
-    }, failure);
+```
+MFPPush.retrieveAvailableTags(function(tags) {
+	alert(tags);
+}, failure);
+```
     
-<h4 id="ex-subscribe">Subscribe and Unsubscribe to/from Tags</h4>
+#### Subscribe and Unsubscribe to/from Tags
 
-    var tag = "YourTag";
-
-    MFPPush.subscribe(tag, success, failure);
+```
+var tag = "YourTag";
+MFPPush.subscribe(tag, success, failure);
+MFPPush.unsubscribe(tag, success, failure);
+```
     
-    MFPPush.unsubscribe(tag, success, failure);
-    
-<h4 id="ex-notification">Receiving a Notification</h4>
+### Receiving a Notification
 
-    var handleNotification = function(notif) {
-        // notif is a JSON object containing your notification
-    }
+```
+var handleNotificationCallback = function(notification) {
+	// notification is a JSON object
+	alert(notif);
+}
 
-    MFPPush.registerNotificationsCallback(handleNotification);
+MFPPush.registerNotificationsCallback(handleNotificationCallback);
+```
 
 The following table describes the properties of the notification object:
 
 Property | Description
 --- | ---
-`message` | Push notification message.
-`payload` | JSON object containing notification payload.
-`sound` | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container. (iOS only).
-`badge` | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0. (iOS only).
-`action-loc-key` | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View”. (iOS only).
+message | Push notification message text
+payload | JSON object containing additional notification payload.
+sound | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container (iOS only).
+badge | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0 (iOS only).
+action-loc-key | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View” (iOS only).
 
-Example Notification:
+Example Notification structure:
 
-    // iOS
-    notif = {
-        message: "Message",
-        payload: {},
-        sound: null,
-        badge: null,
-        action-loc-key: null
-    }
-    
-    // Android
-    notif = {
-        message: "Message",
-        payload: {},
-        id: <id>,
-        url: <url>
-    }
+```
+// iOS
+notification = {
+	message: "Something has happened",
+	payload: {
+		customProperty:12345
+	},
+	sound: "mysound.mp3",
+	badge: 7,
+	action-loc-key: "Click me"
+}
 
-<h2 id="release-notes">Release Notes</h2>
+// Android
+notification = {
+	message: "Something has happened",
+	payload: {
+		customProperty:12345
+	},
+	id: <id>,
+	url: <url>
+}
+```
+
+## Release Notes
 
 Copyright 2015 IBM Corp.
 
