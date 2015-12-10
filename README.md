@@ -14,9 +14,9 @@ The Cordova library is also required to use this plugin. You can find instructio
 
 1. Run the following commands to create a new Cordova application. Alternatively you can use an existing application as well. 
 
-	```
-	$ cordova create {appName}
-	$ cd {appName}
+	```Bash
+	cordova create [appName]
+	cd [appName]
 	```
 	
 1. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default HelloCordova.
@@ -26,7 +26,9 @@ The Cordova library is also required to use this plugin. You can find instructio
 	```XML
 	<platform name="ios">
 		<preference name="deployment-target" value="8.0" />
-		// other properties
+		...
+		<!-- other properties -->
+		...
 	</platform>
 	```
 	
@@ -36,7 +38,9 @@ The Cordova library is also required to use this plugin. You can find instructio
 	<platform name="android">
 		<preference name="android-minSdkVersion" value="15" />
 		<preference name="android-targetSdkVersion" value="23" />
-		// other properties
+		...
+		<!-- other properties -->
+		...
 	</platform>
 	```
 
@@ -62,6 +66,8 @@ From your Cordova application root directory, enter the following command to ins
 cordova plugin add ibm-mfp-push
 ```
 
+This also installs the Cordova Core plug-in, which initializes your connection to Bluemix.
+
 From your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
 
 ```Bash
@@ -74,15 +80,25 @@ cordova plugin list
 
 Follow the Configuring Your iOS Development Environment instructions from [Bluemix Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core) 
 
-Go to `Build Settings` > `Search Paths` > `Framework Search Paths` and verify that the following entry was added:
+1. Uncomment the following Push import statements in your bridging header. Go to `[your-project-name]/Plugins/ibm-mfp-core/Bridging-Header.h`:
+
+```
+  //#import <IMFPush/IMFPush.h>
+  //#import <IMFPush/IMFPushClient.h>
+  //#import <IMFPush/IMFResponse+IMFPushCategory.h>
+```
+
+<!---
+Verify that the Push SDK was added. Go to `Build Settings` > `Search Paths` > `Framework Search Paths` and verify that the following entry was added:
 
 ```
 "[your-project-name]/Plugins/ibm-mfp-push"
 ```
+-->
 
 #### Updating your client application to use the Push SDK
 
-By default Cordova creates a native iOS project built with iOS therefore you will need to import an automatically generated Swift header in order to use the Push SDK. Add the following Objective-C code snippets to your application delegate class.
+By default, Cordova creates a native iOS project built with iOS, therefore you will need to import an automatically generated Swift header to use the Push SDK. Add the following Objective-C code snippets to your application delegate class.
 
 At the top of your AppDelegate.m:
 
@@ -97,7 +113,7 @@ If your project name has spaces or hyphens, replace them with underscores in the
 #import "Test_Project-Swift.h"
 ```
 
-Add below code to your application delegate
+Add the code below to your application delegate
 
 #### Objective-C:
 
@@ -206,13 +222,13 @@ MFPPush.registerDevice(settings, success, failure);
 
 The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and should only change the boolean value of each notification setting.
 
-> Android does NOT make use of the settings parameter. If you're only building Android app pass an empty object, e.g.
+> Android does NOT make use of the settings parameter. If you're only building Android app, pass an empty object, e.g.
     
 ```
 MFPPush.registerDevice({}, success, failure);
 ```
 
-To unregister for push notifications simply call the following:
+To unregister for push notifications, simply call the following:
 
 ```
 MFPPush.unregisterDevice(success, failure);
