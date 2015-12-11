@@ -26,7 +26,7 @@ The Cordova library is also required to use this plugin. You can find instructio
 	```XML
 	<platform name="ios">
 		<preference name="deployment-target" value="8.0" />
-		<!-- other properties -->
+		<!-- add deployment target declaration -->
 	</platform>
 	```
 	
@@ -36,7 +36,7 @@ The Cordova library is also required to use this plugin. You can find instructio
 	<platform name="android">
 		<preference name="android-minSdkVersion" value="15" />
 		<preference name="android-targetSdkVersion" value="23" />
-		<!-- other properties -->
+		<!-- add minimum and target Android API level declaration -->
 	</platform>
 	```
 
