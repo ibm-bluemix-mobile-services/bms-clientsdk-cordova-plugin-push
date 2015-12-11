@@ -15,8 +15,8 @@ The Cordova library is also required to use this plugin. You can find instructio
 1. Run the following commands to create a new Cordova application. Alternatively you can use an existing application as well. 
 
 	```Bash
-	cordova create [your_app_name]
-	cd [your_app_name]
+	cordova create {your_app_name}
+	cd {your_app_name}
 	```
 	
 1. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default HelloCordova.
