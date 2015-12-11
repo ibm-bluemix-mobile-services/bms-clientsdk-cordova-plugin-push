@@ -118,16 +118,14 @@ Add the code below to your application delegate
 - (void)application:(UIApplication *)application
 	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
 
-	 [[CDVMFPPush sharedInstance] 
-	 	didRegisterForRemoteNotifications:deviceToken];
+	 [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];
 }
     
 // Handle error when failed to register device token with APNs
 - (void)application:(UIApplication*)application
 	 didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
 
-	[[CDVMFPPush sharedInstance]
-		didFailToRegisterForRemoteNotifications:error];
+	[[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:error];
 }
     
 // Handle receiving a remote notification
