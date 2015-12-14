@@ -261,7 +261,7 @@ MFPPush.unsubscribe(tag, success, failure);
 ```
 var handleNotificationCallback = function(notification) {
 	// notification is a JSON object
-	alert(notif);
+	alert(notification.message);
 }
 
 MFPPush.registerNotificationsCallback(handleNotificationCallback);
