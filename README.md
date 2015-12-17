@@ -113,7 +113,7 @@ Add the code below to your application delegate
 
 #### Objective-C:
 
-```
+```Objective-C
 // Register device token with Bluemix Push Notification Service
 - (void)application:(UIApplication *)application
 	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
@@ -139,7 +139,7 @@ Add the code below to your application delegate
 
 #### Swift:
 
-```
+```Swift
 // Register device token with Bluemix Push Notification Service
 func application(application: UIApplication, 
 	didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -199,7 +199,7 @@ CDVMFPPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 
 #### Register for Push Notifications
 
-```
+```Javascript
 var settings = {
 	ios: {
 		alert: true,
@@ -218,13 +218,13 @@ The settings structure contains the settings that you want to enable for push no
 
 > Android does NOT make use of the settings parameter. If you're only building Android app, pass an empty object, e.g.
     
-```
+```Javascript
 MFPPush.registerDevice({}, success, failure);
 ```
 
 To unregister for push notifications, simply call the following:
 
-```
+```Javascript
 MFPPush.unregisterDevice(success, failure);
 ```
     
@@ -234,7 +234,7 @@ In the following examples, the function parameter is a success callback that rec
 
 To retrieve an array of tags to which the user is currently subscribed, use the following Javascript function:
 
-```
+```Javascript
 MFPPush.retrieveSubscriptions(function(tags) {
 	alert(tags);
 }, failure);
@@ -242,7 +242,7 @@ MFPPush.retrieveSubscriptions(function(tags) {
     
 To retrieve an array of tags that are available to subscribe, use the following Javascript function:
 
-```
+```Javascript
 MFPPush.retrieveAvailableTags(function(tags) {
 	alert(tags);
 }, failure);
@@ -250,7 +250,7 @@ MFPPush.retrieveAvailableTags(function(tags) {
     
 #### Subscribe and Unsubscribe to/from Tags
 
-```
+```Javascript
 var tag = "YourTag";
 MFPPush.subscribe(tag, success, failure);
 MFPPush.unsubscribe(tag, success, failure);
@@ -258,7 +258,7 @@ MFPPush.unsubscribe(tag, success, failure);
     
 ### Receiving a Notification
 
-```
+```Javascript
 var handleNotificationCallback = function(notification) {
 	// notification is a JSON object
 	alert(notification.message);
@@ -279,7 +279,7 @@ action-loc-key | The string is used as a key to get a localized string in the cu
 
 Example Notification structure:
 
-```
+```Javascript
 // iOS
 notification = {
 	message: "Something has happened",
