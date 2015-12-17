@@ -78,10 +78,10 @@ cordova plugin list
 
 1. Uncomment the following Push import statements in your bridging header. Go to `[your-project-name]/Plugins/ibm-mfp-core/Bridging-Header.h`:
 
-```
-  //#import <IMFPush/IMFPush.h>
-  //#import <IMFPush/IMFPushClient.h>
-  //#import <IMFPush/IMFResponse+IMFPushCategory.h>
+```Objective-C
+//#import <IMFPush/IMFPush.h>
+//#import <IMFPush/IMFPushClient.h>
+//#import <IMFPush/IMFResponse+IMFPushCategory.h>
 ```
 
 <!---
