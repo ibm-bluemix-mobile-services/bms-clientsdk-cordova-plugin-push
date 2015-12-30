@@ -19,7 +19,9 @@ import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushResponseListener;
 
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 
@@ -38,6 +40,12 @@ public class CDVMFPPush extends CordovaPlugin {
     private static MFPPushNotificationListener notificationListener;
 
     private static boolean ignoreIncomingNotifications = false;
+
+    @Override
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+        MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext());
+    }
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -82,8 +90,6 @@ public class CDVMFPPush extends CordovaPlugin {
      * @param callbackContext Javascript callback
      */
     private void registerDevice(final CallbackContext callbackContext) {
-        MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext());
-
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 MFPPush.getInstance().register(new MFPPushResponseListener<String>() {
