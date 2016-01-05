@@ -17,7 +17,7 @@ Below videos demonstrate how to install and use the Cordova Plugin for the IBM B
 <a href="https://www.youtube.com/watch?v=YugImB6QB08" target="_blank">
 <img src="ios-video.png"/>
 </a>
-<a href="#" target="_blank">
+<a href="https://www.youtube.com/watch?v=vm5RsGUA5Gs" target="_blank">
 <img src="android-video.png"/>
 </a>
 
