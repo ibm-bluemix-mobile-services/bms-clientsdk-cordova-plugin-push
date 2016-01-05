@@ -1,4 +1,4 @@
-# IBM Bluemix Mobile Services - Push SDK Cordova
+# IBM Bluemix Mobile Services - Cordova Plugin Push SDK
 
 Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 
@@ -9,6 +9,19 @@ Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 You should already have Node.js/npm and the Cordova package installed. If you don't, you can download and install Node from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
 
 The Cordova library is also required to use this plugin. You can find instructions to install Cordova and set up your Cordova app at [https://cordova.apache.org/#getstarted](https://cordova.apache.org/#getstarted).
+
+## Video tutorials 
+
+Below videos demonstrate how to install and use the Cordova Plugin for the IBM Bluemix Mobile Services Push SDK in iOS and Android applications. 
+
+<a href="https://www.youtube.com/watch?v=YugImB6QB08" target="_blank">
+<img src="ios-video.png"/>
+</a>
+<a href="#" target="_blank">
+<img src="android-video.png"/>
+</a>
+
+## Installing the Cordova Plugin for Bluemix Mobile Services Push SDK
 
 ### Creating a Cordova application
 
@@ -187,11 +200,12 @@ The following native Android function is available.
 --- | ---
 CDVMFPPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push notifications plugin handles all incoming Push Notification by tunnelling them to JavaScript callback. Use this method to override the plugin's default behavior in case you want to manually handle incoming push notifications in native code. 
 
-## SDK Sequence Diagrams
+## Sequence Diagrams
 
-<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/master/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20iOS%20Apps.png">
+![image](sdk-flows-Cordova-ios-apps.png)
 
-<img src="https://raw.githubusercontent.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/master/Sequence%20diagrams/Push%20Notifications%20SDK%20flows%20for%20hybrid%20Android%20apps.png">
+![image](sdk-flows-Cordova-android-apps.png)
+
 
 ## Examples
 
