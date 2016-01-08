@@ -22,21 +22,30 @@ import UIKit
     static let sharedInstance = CDVMFPPush()
     
     let push = IMFPushClient.sharedInstance()
-
+    
     var registerCallbackId: String?
     var registerCommandDelegate: CDVCommandDelegate?
     
     var notifCallbackId: String?
     var notifCommandDelegate: CDVCommandDelegate?
     
+    override func pluginInitialize() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didRegisterForRemoteNotifications:", name: CDVRemoteNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didFailToRegisterForRemoteNotifications:", name: CDVRemoteNotificationError, object: nil)
+        super.pluginInitialize()
+    }
+    
     /*
     * Registers the device with APNs
     */
     func registerDevice(command: CDVInvokedUrlCommand) {
         
-        CDVMFPPush.sharedInstance.registerCallbackId = command.callbackId
-        CDVMFPPush.sharedInstance.registerCommandDelegate = self.commandDelegate
-
+        //CDVMFPPush.sharedInstance.registerCallbackId = command.callbackId
+        //CDVMFPPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+        
+        self.registerCallbackId = command.callbackId
+        self.registerCommandDelegate = self.commandDelegate
+        
         self.commandDelegate!.runInBackground({
             
             var types = UIUserNotificationType()
@@ -47,8 +56,8 @@ import UIKit
                 types.insert(.Badge)
                 types.insert(.Sound)
             }
-            
-            // Settings parameter not null
+                
+                // Settings parameter not null
             else {
                 
                 guard let settings = command.arguments[0] as? NSDictionary else {
@@ -66,9 +75,9 @@ import UIKit
                     types.insert(.Badge)
                     types.insert(.Sound)
                 }
-                // Check which settings the user enabled
+                    // Check which settings the user enabled
                 else {
-                
+                    
                     guard let ios = settings["ios"] as? NSDictionary else {
                         let errorMessage = "Registering for Push Notifications failed. Settings ios parameter is Invalid."
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: errorMessage)
@@ -148,7 +157,6 @@ import UIKit
         
         CDVMFPPush.sharedInstance.notifCallbackId = command.callbackId
         CDVMFPPush.sharedInstance.notifCommandDelegate = self.commandDelegate
-        
     }
     
     /*
@@ -279,25 +287,25 @@ import UIKit
     */
     func didRegisterForRemoteNotifications(deviceToken: NSData) {
         
-        if (CDVMFPPush.sharedInstance.registerCallbackId == nil) {
+        if (self.registerCallbackId == nil) {
             return
         }
         
-        CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
-
+        self.registerCommandDelegate!.runInBackground({
+            
             self.push.registerDeviceToken(deviceToken, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
                 if (error != nil) {
                     let message = error.description
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
                     // call error callback
-                    CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
                 else {
                     let message = response.responseText
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                     // call success callback
-                    CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
             })
             
@@ -306,16 +314,16 @@ import UIKit
     
     func didFailToRegisterForRemoteNotifications(error: NSError) {
         
-        if (CDVMFPPush.sharedInstance.registerCallbackId == nil) {
+        if (self.registerCallbackId == nil) {
             return
         }
         
-        CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
+        self.registerCommandDelegate!.runInBackground({
             
             let message = error.description
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
             // call error callback
-            CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+            self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
         })
     }
     
@@ -339,7 +347,7 @@ import UIKit
         }
         
         CDVMFPPush.sharedInstance.notifCommandDelegate!.runInBackground({
-
+            
             if (notification == nil) {
                 let message = "Error in receiving notification"
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
@@ -354,7 +362,6 @@ import UIKit
                 // call success callback
                 CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
             }
-            
         })
     }
 }
