@@ -285,7 +285,9 @@ import UIKit
     * Called by sharedInstance
     * Uses command delegate stored in sharedInstance for callback
     */
-    func didRegisterForRemoteNotifications(deviceToken: NSData) {
+    func didRegisterForRemoteNotifications(token: NSNotification) {
+        
+        let deviceToken = token.object!.data as NSData
         
         if (self.registerCallbackId == nil) {
             return
@@ -312,7 +314,9 @@ import UIKit
         })
     }
     
-    func didFailToRegisterForRemoteNotifications(error: NSError) {
+    func didFailToRegisterForRemoteNotifications(token: NSNotification) {
+        
+        let error = token.object!.data as NSError
         
         if (self.registerCallbackId == nil) {
             return
