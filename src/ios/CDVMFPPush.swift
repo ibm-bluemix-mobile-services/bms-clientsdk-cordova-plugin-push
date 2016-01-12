@@ -316,7 +316,7 @@ import UIKit
     
     func didFailToRegisterForRemoteNotifications(token: NSNotification) {
         
-        let error = token.object!.data as NSError
+        let error = token.object!.data as! NSError
         
         if (self.registerCallbackId == nil) {
             return
