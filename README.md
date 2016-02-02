@@ -241,11 +241,11 @@ You can access the contents of the message parameter in Javascript using JSON.pa
 var token = JSON.parse(message).token
 ```
 
-Available keys
----
-token
-userId
-deviceId
+Available keys |
+--- |
+token |
+userId |
+deviceId |
 
 To unregister for push notifications, simply call the following:
 
