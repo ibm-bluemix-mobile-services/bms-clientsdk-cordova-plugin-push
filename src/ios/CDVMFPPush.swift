@@ -29,22 +29,13 @@ import UIKit
     var notifCallbackId: String?
     var notifCommandDelegate: CDVCommandDelegate?
     
-    override func pluginInitialize() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didRegisterForRemoteNotifications:", name: CDVRemoteNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didFailToRegisterForRemoteNotifications:", name: CDVRemoteNotificationError, object: nil)
-        super.pluginInitialize()
-    }
-    
     /*
     * Registers the device with APNs
     */
     func registerDevice(command: CDVInvokedUrlCommand) {
         
-        //CDVMFPPush.sharedInstance.registerCallbackId = command.callbackId
-        //CDVMFPPush.sharedInstance.registerCommandDelegate = self.commandDelegate
-        
-        self.registerCallbackId = command.callbackId
-        self.registerCommandDelegate = self.commandDelegate
+        CDVMFPPush.sharedInstance.registerCallbackId = command.callbackId
+        CDVMFPPush.sharedInstance.registerCommandDelegate = self.commandDelegate
         
         self.commandDelegate!.runInBackground({
             
@@ -157,6 +148,7 @@ import UIKit
         
         CDVMFPPush.sharedInstance.notifCallbackId = command.callbackId
         CDVMFPPush.sharedInstance.notifCommandDelegate = self.commandDelegate
+        
     }
     
     /*
@@ -285,15 +277,13 @@ import UIKit
     * Called by sharedInstance
     * Uses command delegate stored in sharedInstance for callback
     */
-    func didRegisterForRemoteNotifications(token: NSNotification) {
+    func didRegisterForRemoteNotifications(deviceToken: NSData) {
         
-        let deviceToken = token.object!.data as NSData
-        
-        if (self.registerCallbackId == nil) {
+        if (CDVMFPPush.sharedInstance.registerCallbackId == nil) {
             return
         }
         
-        self.registerCommandDelegate!.runInBackground({
+        CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
             
             self.push.registerDeviceToken(deviceToken, completionHandler: { (response:IMFResponse!, error:NSError!) -> Void in
                 
@@ -301,33 +291,31 @@ import UIKit
                     let message = error.description
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
                     // call error callback
-                    self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
                 else {
                     let message = response.responseJson.description
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                     // call success callback
-                    self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
             })
             
         })
     }
     
-    func didFailToRegisterForRemoteNotifications(token: NSNotification) {
+    func didFailToRegisterForRemoteNotifications(error: NSError) {
         
-        let error = token.object!.data as! NSError
-        
-        if (self.registerCallbackId == nil) {
+        if (CDVMFPPush.sharedInstance.registerCallbackId == nil) {
             return
         }
         
-        self.registerCommandDelegate!.runInBackground({
+        CDVMFPPush.sharedInstance.registerCommandDelegate!.runInBackground({
             
             let message = error.description
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
             // call error callback
-            self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+            CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
         })
     }
     
@@ -366,6 +354,7 @@ import UIKit
                 // call success callback
                 CDVMFPPush.sharedInstance.notifCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.notifCallbackId)
             }
+            
         })
     }
 }
