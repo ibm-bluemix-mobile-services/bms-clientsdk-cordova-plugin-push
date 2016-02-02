@@ -235,6 +235,17 @@ The settings structure contains the settings that you want to enable for push no
 ```Javascript
 MFPPush.registerDevice({}, success, failure);
 ```
+You can access the contents of the message parameter in Javascript using JSON.parse:
+
+```Javascript
+var token = JSON.parse(message).token
+```
+
+Available keys
+---
+token
+userId
+deviceId
 
 To unregister for push notifications, simply call the following:
 
