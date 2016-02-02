@@ -305,7 +305,7 @@ import UIKit
                 }
                 else {
                     let message = response.responseJson.description
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: message)
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                     // call success callback
                     self.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
