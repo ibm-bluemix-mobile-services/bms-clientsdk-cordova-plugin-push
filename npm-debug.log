@@ -1,0 +1,99 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/4.1.1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@2.14.4
+3 info using node@v4.1.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/mparang/Development/Cordova-Plugins/mfppush-development/mfppush-plugin',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/mparang/.npm/ibm-mfp-push/1.0.9/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/mparang/.npm/ibm-mfp-push/1.0.9/package.tgz',
+9 verbose tar pack   '/Users/mparang/Development/Cordova-Plugins/mfppush-development/mfppush-plugin' ]
+10 verbose tarball /Users/mparang/.npm/ibm-mfp-push/1.0.9/package.tgz
+11 verbose folder /Users/mparang/Development/Cordova-Plugins/mfppush-development/mfppush-plugin
+12 info prepublish ibm-mfp-push@1.0.9
+13 verbose addLocalTarball adding from inside cache /Users/mparang/.npm/ibm-mfp-push/1.0.9/package.tgz
+14 silly cache afterAdd ibm-mfp-push@1.0.9
+15 verbose afterAdd /Users/mparang/.npm/ibm-mfp-push/1.0.9/package/package.json not in flight; writing
+16 verbose afterAdd /Users/mparang/.npm/ibm-mfp-push/1.0.9/package/package.json written
+17 silly publish { name: 'ibm-mfp-push',
+17 silly publish   version: '1.0.9',
+17 silly publish   description: 'Cordova Plugin for the IBM Bluemix Mobile Services Push SDK',
+17 silly publish   cordova: { id: 'ibm-mfp-push', platforms: [ 'android', 'ios' ] },
+17 silly publish   repository:
+17 silly publish    { type: 'git',
+17 silly publish      url: 'git+https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.git' },
+17 silly publish   keywords: [ 'ecosystem:cordova', 'cordova-android', 'cordova-ios' ],
+17 silly publish   author: { name: 'IBM Bluemix Mobile Services' },
+17 silly publish   license: 'Apache version 2.0',
+17 silly publish   bugs: { url: 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/issues' },
+17 silly publish   homepage: 'https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push#readme',
+17 silly publish   contributors:
+17 silly publish    [ { name: 'Larry Nickerson', email: 'lnickers@us.ibm.com' },
+17 silly publish      { name: 'Sergio Escoto', email: 'escotos@us.ibm.com' },
+17 silly publish      { name: 'Matthew Parangot', email: 'mparang@us.ibm.com' } ],
+17 silly publish   readme: '# IBM Bluemix Mobile Services - Cordova Plugin Push SDK\n\nCordova Plugin for the IBM Bluemix Mobile Services Push SDK\n\n## Installation\n\n### Installing necessary libraries\n\nYou should already have Node.js/npm and the Cordova package installed. If you don\'t, you can download and install Node from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).\n\nThe Cordova library is also required to use this plugin. You can find instructions to install Cordova and set up your Cordova app at [https://cordova.apache.org/#getstarted](https://cordova.apache.org/#getstarted).\n\n## Video tutorials \n\nBelow videos demonstrate how to install and use the Cordova Plugin for the IBM Bluemix Mobile Services Push SDK in iOS and Android applications. \n\n<a href="https://www.youtube.com/watch?v=YugImB6QB08" target="_blank">\n<img src="ios-video.png"/>\n</a>\n<a href="https://www.youtube.com/watch?v=vm5RsGUA5Gs" target="_blank">\n<img src="android-video.png"/>\n</a>\n\n## Installing the Cordova Plugin for Bluemix Mobile Services Push SDK\n\n### Creating a Cordova application\n\n1. Run the following commands to create a new Cordova application. Alternatively you can use an existing application as well. \n\n\t```Bash\n\tcordova create {your_app_name}\n\tcd {your_app_name}\n\t```\n\t\n1. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default HelloCordova.\n\n1. Continue editing `config.xml`. Update the `<platform name="ios">` element with a deployment target declaration as shown in the code snippet below.\n\n\t```XML\n\t<platform name="ios">\n\t\t<preference name="deployment-target" value="8.0" />\n\t\t<!-- add deployment target declaration -->\n\t</platform>\n\t```\n\t\n1. Continue editing `config.xml`. Update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.\n\n\t```XML\n\t<platform name="android">\n\t\t<preference name="android-minSdkVersion" value="15" />\n\t\t<preference name="android-targetSdkVersion" value="23" />\n\t\t<!-- add minimum and target Android API level declaration -->\n\t</platform>\n\t```\n\n\t> The minSdkVersion should be above 15.\n\t\n\t> The targetSdkVersion should always reflect the latest Android SDK available from Google.\n\n### Adding Cordova platforms\n\nRun the following commands according to which platform you want to add to your Cordova application\n\n```Bash\ncordova platform add ios\n\ncordova platform add android\n```\n\n### Adding the Cordova plugin\n\nFrom your Cordova application root directory, enter the following command to install the Cordova Push plugin.\n\n```Bash\ncordova plugin add ibm-mfp-push\n```\n\nThis also installs the Cordova Core plug-in, which initializes your connection to Bluemix.\n\nFrom your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.\n\n```Bash\ncordova plugin list\n```\n\n## Configuration\n\n### Configuring Your iOS Development Environment\n\n1. Follow the `Configuring Your iOS Development Environment` instructions from [Bluemix Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core#configuration) \n\n1. Uncomment the following Push import statements in your bridging header. Go to `[your-project-name]/Plugins/ibm-mfp-core/Bridging-Header.h`:\n\n```Objective-C\n//#import <IMFPush/IMFPush.h>\n//#import <IMFPush/IMFPushClient.h>\n//#import <IMFPush/IMFResponse+IMFPushCategory.h>\n```\n\n<!---\nVerify that the Push SDK was added. Go to `Build Settings` > `Search Paths` > `Framework Search Paths` and verify that the following entry was added:\n\n```\n"[your-project-name]/Plugins/ibm-mfp-push"\n```\n-->\n\n#### Updating your client application to use the Push SDK\n\nBy default, Cordova creates a native iOS project built with iOS, therefore you will need to import an automatically generated Swift header to use the Push SDK. Add the following Objective-C code snippets to your application delegate class.\n\nAt the top of your AppDelegate.m:\n\n```Objective-C\n#import "[your-project-name]-Swift.h"\n```\n    \nIf your project name has spaces or hyphens, replace them with underscores in the import statement. Example:\n\n```Objective-C\n// Project name is "Test Project" or "Test-Project"\n#import "Test_Project-Swift.h"\n```\n\nAdd the code below to your application delegate\n\n#### Objective-C:\n\n```Objective-C\n// Register device token with Bluemix Push Notification Service\n- (void)application:(UIApplication *)application\n\t didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{\n\n\t [[CDVMFPPush sharedInstance] didRegisterForRemoteNotifications:deviceToken];\n}\n    \n// Handle error when failed to register device token with APNs\n- (void)application:(UIApplication*)application\n\t didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {\n\n\t[[CDVMFPPush sharedInstance] didFailToRegisterForRemoteNotifications:error];\n}\n    \n// Handle receiving a remote notification\n-(void)application:(UIApplication *)application \n\tdidReceiveRemoteNotification:(NSDictionary *)userInfo \n\tfetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {\n\n\t[[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];\n}\n```\n\n#### Swift:\n\n```Swift\n// Register device token with Bluemix Push Notification Service\nfunc application(application: UIApplication, \n\tdidRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {\n\n\tCDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)\n}\n\n// Handle error when failed to register device token with APNs\nfunc application(application: UIApplication, \n\tdidFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {\n        \n\tCDVMFPPush.sharedInstance().didFailToRegisterForRemoteNotifications(error)\n}\n    \n// Handle receiving a remote notification\nfunc application(application: UIApplication, \n\tdidReceiveRemoteNotification userInfo: [NSObject : AnyObject], \tfetchCompletionHandler completionHandler: ) {\n\t\n\tCDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)\n}\n```\n\n### Configuring Your Android Development Environment\n\nAndroid development environment does not require any additional configuration. You can open the Android Project generated by Cordova in [your-app-name]/platforms/android directory with Android Studio or use Cordova CLI to build and run it.\n\n## Usage\n\nThe following MFPPush Javascript functions are available:\n\nJavascript Function | Description\n--- | ---\nregisterDevice(settings, success, failure) | Registers the device with the Push Notifications Service.\nunregisterDevice(success, failure) | Unregisters the device from the Push Notifications Service\nretrieveSubscriptions(success, failure) | Retrieves the tags device is currently subscribed to\nretrieveAvailableTags(success, failure) | Retrieves all the tags available in a push notification service instance.\nsubscribe(tag, success, failure) | Subscribes to a particular tag.\nunsubscribe(tag, success, failure) | Unsubscribes from a particular tag.\nregisterNotificationsCallback(callback) | Registers a callback for when a notification arrives on the device.\n\n**Android (Native)**\nThe following native Android function is available.\n\n Android function | Description\n--- | ---\nCDVMFPPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push notifications plugin handles all incoming Push Notification by tunnelling them to JavaScript callback. Use this method to override the plugin\'s default behavior in case you want to manually handle incoming push notifications in native code. \n\n## Sequence Diagrams\n\n![image](sdk-flows-Cordova-ios-apps.png)\n\n![image](sdk-flows-Cordova-android-apps.png)\n\n\n## Examples\n\n### Using MFPPush\n\n#### Register for Push Notifications\n\n```Javascript\nvar settings = {\n\tios: {\n\t\talert: true,\n\t\tbadge: true,\n\t\tsound: true\n\t}\n}\n    \nvar success = function(message) { console.log("Success: " + message); };\nvar failure = function(message) { console.log("Error: " + message); };\n    \nMFPPush.registerDevice(settings, success, failure);\n```\n\nThe settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and should only change the boolean value of each notification setting.\n\n> Android does NOT make use of the settings parameter. If you\'re only building Android app, pass an empty object, e.g.\n    \n```Javascript\nMFPPush.registerDevice({}, success, failure);\n```\n\nTo unregister for push notifications, simply call the following:\n\n```Javascript\nMFPPush.unregisterDevice(success, failure);\n```\n    \n#### Retrieving Tags\n\nIn the following examples, the function parameter is a success callback that receives an array of tags. The second parameter is a callback function called on error.\n\nTo retrieve an array of tags to which the user is currently subscribed, use the following Javascript function:\n\n```Javascript\nMFPPush.retrieveSubscriptions(function(tags) {\n\talert(tags);\n}, failure);\n```\n    \nTo retrieve an array of tags that are available to subscribe, use the following Javascript function:\n\n```Javascript\nMFPPush.retrieveAvailableTags(function(tags) {\n\talert(tags);\n}, failure);\n```\n    \n#### Subscribe and Unsubscribe to/from Tags\n\n```Javascript\nvar tag = "YourTag";\nMFPPush.subscribe(tag, success, failure);\nMFPPush.unsubscribe(tag, success, failure);\n```\n    \n### Receiving a Notification\n\n```Javascript\nvar handleNotificationCallback = function(notification) {\n\t// notification is a JSON object\n\talert(notification.message);\n}\n\nMFPPush.registerNotificationsCallback(handleNotificationCallback);\n```\n\nThe following table describes the properties of the notification object:\n\nProperty | Description\n--- | ---\nmessage | Push notification message text\npayload | JSON object containing additional notification payload.\nsound | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container (iOS only).\nbadge | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0 (iOS only).\naction-loc-key | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View” (iOS only).\n\nExample Notification structure:\n\n```Javascript\n// iOS\nnotification = {\n\tmessage: "Something has happened",\n\tpayload: {\n\t\tcustomProperty:12345\n\t},\n\tsound: "mysound.mp3",\n\tbadge: 7,\n\taction-loc-key: "Click me"\n}\n\n// Android\nnotification = {\n\tmessage: "Something has happened",\n\tpayload: {\n\t\tcustomProperty:12345\n\t},\n\tid: <id>,\n\turl: <url>\n}\n```\n\n## Release Notes\n\nCopyright 2015 IBM Corp.\n\nLicensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.\n',
+17 silly publish   readmeFilename: 'README.md',
+17 silly publish   gitHead: 'b971f348f3e8efcad23a51bc581134fade256497',
+17 silly publish   _id: 'ibm-mfp-push@1.0.9',
+17 silly publish   scripts: {},
+17 silly publish   _shasum: '2eac3b9b6c521375d04e3fa7df1836c1b1ceb071',
+17 silly publish   _from: '.' }
+18 verbose getPublishConfig undefined
+19 silly mapToRegistry name ibm-mfp-push
+20 silly mapToRegistry using default registry
+21 silly mapToRegistry registry https://registry.npmjs.org/
+22 silly mapToRegistry uri https://registry.npmjs.org/ibm-mfp-push
+23 verbose publish registryBase https://registry.npmjs.org/
+24 silly publish uploading /Users/mparang/.npm/ibm-mfp-push/1.0.9/package.tgz
+25 verbose request uri https://registry.npmjs.org/ibm-mfp-push
+26 verbose request sending authorization for write operation
+27 info attempt registry request try #1 at 12:09:42 PM
+28 verbose request using bearer token for auth
+29 verbose request id de3f766d2b972451
+30 http request PUT https://registry.npmjs.org/ibm-mfp-push
+31 http 403 https://registry.npmjs.org/ibm-mfp-push
+32 verbose headers { 'content-type': 'application/json',
+32 verbose headers   'cache-control': 'max-age=300',
+32 verbose headers   'content-length': '95',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   date: 'Tue, 02 Feb 2016 18:09:45 GMT',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   connection: 'keep-alive',
+32 verbose headers   'x-served-by': 'cache-dfw1822-DFW',
+32 verbose headers   'x-cache': 'MISS',
+32 verbose headers   'x-cache-hits': '0',
+32 verbose headers   'x-timer': 'S1454436582.910119,VS0,VE2628' }
+33 verbose request invalidating /Users/mparang/.npm/registry.npmjs.org/ibm-mfp-push on PUT
+34 error publish Failed PUT 403
+35 verbose stack Error: "You cannot publish over the previously published version 1.0.9." : ibm-mfp-push
+35 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:263:12)
+35 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:251:14)
+35 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:171:14)
+35 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:198:22)
+35 verbose stack     at emitTwo (events.js:87:13)
+35 verbose stack     at Request.emit (events.js:172:7)
+35 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1073:14)
+35 verbose stack     at emitOne (events.js:82:20)
+35 verbose stack     at Request.emit (events.js:169:7)
+35 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1019:12)
+36 verbose statusCode 403
+37 verbose pkgid ibm-mfp-push
+38 verbose cwd /Users/mparang/Development/Cordova-Plugins/mfppush-development/mfppush-plugin
+39 error Darwin 15.3.0
+40 error argv "/usr/local/Cellar/node/4.1.1/bin/node" "/usr/local/bin/npm" "publish"
+41 error node v4.1.1
+42 error npm  v2.14.4
+43 error code E403
+44 error "You cannot publish over the previously published version 1.0.9." : ibm-mfp-push
+45 error If you need help, you may report this error at:
+45 error     <https://github.com/npm/npm/issues>
+46 verbose exit [ 1, true ]
