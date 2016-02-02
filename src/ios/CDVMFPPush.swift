@@ -294,7 +294,12 @@ import UIKit
                     CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
                 }
                 else {
-                    let message = response.responseJson.description
+                    let pushToken = response.responseJson["token"] as! String
+                    let pushUserId = response.responseJson["userId"] as! String
+                    let pushDeviceId = response.responseJson["deviceId"] as! String
+                    let message = "{\"token\":\"" + pushToken + "\",\"userId\":\"" + pushUserId + "\",\"deviceId\":\"" + pushDeviceId + "\"}"
+                    print(message)
+                    
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                     // call success callback
                     CDVMFPPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)

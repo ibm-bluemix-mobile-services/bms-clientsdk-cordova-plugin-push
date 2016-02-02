@@ -95,8 +95,22 @@ public class CDVMFPPush extends CordovaPlugin {
                 MFPPush.getInstance().register(new MFPPushResponseListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        pushLogger.debug("registerDevice() Success : " + s);
-                        callbackContext.success(s);
+
+                        String message = s;
+                        try {
+                            JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
+                            JSONObject messageJson = new JSONObject();
+                            messageJson.put("token", responseJson.optString("token"));
+                            messageJson.put("userId", responseJson.optString("userId"));
+                            messageJson.put("deviceId", responseJson.optString("deviceId"));
+                            message = messageJson.toString();
+                            System.out.println(message);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        pushLogger.debug("registerDevice() Success : " + message);
+                        callbackContext.success(message);
                     }
                     @Override
                     public void onFailure(MFPPushException ex) {
@@ -323,5 +337,4 @@ public class CDVMFPPush extends CordovaPlugin {
             MFPPush.getInstance().hold();
         }
     }
-
 }
