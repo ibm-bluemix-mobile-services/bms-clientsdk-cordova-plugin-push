@@ -222,8 +222,8 @@ var settings = {
 	}
 }
     
-var success = function(message) { console.log("Success: " + message); };
-var failure = function(message) { console.log("Error: " + message); };
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
     
 MFPPush.registerDevice(settings, success, failure);
 ```
@@ -235,6 +235,17 @@ The settings structure contains the settings that you want to enable for push no
 ```Javascript
 MFPPush.registerDevice({}, success, failure);
 ```
+You can access the contents of the success response parameter in Javascript using `JSON.parse`:
+
+```Javascript
+var token = JSON.parse(response).token
+```
+
+Available keys |
+--- |
+token |
+userId |
+deviceId |
 
 To unregister for push notifications, simply call the following:
 
