@@ -104,7 +104,6 @@ public class CDVMFPPush extends CordovaPlugin {
                             messageJson.put("userId", responseJson.optString("userId"));
                             messageJson.put("deviceId", responseJson.optString("deviceId"));
                             message = messageJson.toString();
-                            System.out.println(message);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }

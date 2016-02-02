@@ -298,7 +298,6 @@ import UIKit
                     let pushUserId = response.responseJson["userId"] as! String
                     let pushDeviceId = response.responseJson["deviceId"] as! String
                     let message = "{\"token\":\"" + pushToken + "\",\"userId\":\"" + pushUserId + "\",\"deviceId\":\"" + pushDeviceId + "\"}"
-                    print(message)
                     
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                     // call success callback

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-    <plugin id="ibm-mfp-push" version="1.0.11" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <plugin id="ibm-mfp-push" version="1.0.12" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
         <name>MFPPush</name>
 
         <dependency id="ibm-mfp-core" url="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core" />
