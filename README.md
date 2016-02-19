@@ -185,6 +185,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
     
 	CDVMFPPush.sharedInstance().didReceiveRemoteNotificationOnLaunch(launchOptions)
 }
+```
 
 ### Configuring Your Android Development Environment
 
