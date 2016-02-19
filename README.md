@@ -154,7 +154,7 @@ Add the code below to your application delegate:
 
 	[[CDVMFPPush sharedInstance] didReceiveRemoteNotificationOnLaunch:launchOptions];
 }
-
+```
 
 #### Swift:
 
