@@ -387,7 +387,7 @@ import UIKit
         if let remoteNotification = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary {
             let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
             dispatch_after(time, dispatch_get_main_queue()) {
-                //put your code which should be executed with a delay here
+                // Executed with a delay
                 CDVMFPPush.sharedInstance.didReceiveRemoteNotification(remoteNotification)
             }
         }

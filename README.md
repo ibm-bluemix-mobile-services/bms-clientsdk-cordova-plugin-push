@@ -122,23 +122,7 @@ If your project name has spaces or hyphens, replace them with underscores in the
 #import "Test_Project-Swift.h"
 ```
 
-#### Objective-C:
-
-Add the code below inside the function `-(BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions` in your `AppDelegate.m`:
-
-```Objective-C
-[[CDVMFPPush sharedInstance] didReceiveRemoteNotificationOnLaunch:launchOptions];
-```
-
-#### Swift:
-
-Add the code below inside the function `func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {` in your `AppDelegate.swift`:
-    
-```Swift
-CDVMFPPush.sharedInstance().didReceiveRemoteNotificationOnLaunch(launchOptions)
-```
-
-Add the code below to your application delegate
+Add the code below to your application delegate:
 
 #### Objective-C:
 
@@ -164,7 +148,13 @@ Add the code below to your application delegate
 
 	[[CDVMFPPush sharedInstance] didReceiveRemoteNotification:userInfo];
 }
-```
+
+// Handle receiving a remote notification on launch
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+
+	[[CDVMFPPush sharedInstance] didReceiveRemoteNotificationOnLaunch:launchOptions];
+}
+
 
 #### Swift:
 
@@ -189,7 +179,12 @@ func application(application: UIApplication,
 	
 	CDVMFPPush.sharedInstance().didReceiveRemoteNotification(userInfo)
 }
-```
+
+// Handle receiving a remote notification on launch
+func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    
+	CDVMFPPush.sharedInstance().didReceiveRemoteNotificationOnLaunch(launchOptions)
+}
 
 ### Configuring Your Android Development Environment
 
