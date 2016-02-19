@@ -135,7 +135,7 @@ Add the code below inside the function `-(BOOL)application:(UIApplication*)appli
 Add the code below inside the function `func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {` in your `AppDelegate.swift`:
     
 ```Swift
-CDVMFPPush.sharedInstance().didRegisterForRemoteNotifications(deviceToken)
+CDVMFPPush.sharedInstance().didReceiveRemoteNotificationOnLaunch(launchOptions)
 ```
 
 Add the code below to your application delegate
