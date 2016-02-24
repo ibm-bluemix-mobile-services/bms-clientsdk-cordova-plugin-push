@@ -39,15 +39,6 @@ import UIKit
         
         self.commandDelegate!.runInBackground({
             
-            // Verify if user blocked the notifications
-            if (!self.hasPushEnabled()) {
-                let message = "The notification was blocked by user"
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
-                // call error callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                return
-            }
-            
             var types = UIUserNotificationType()
             
             // If settings parameter is null then use default settings
@@ -126,6 +117,16 @@ import UIKit
             
             UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
             UIApplication.sharedApplication().registerForRemoteNotifications()
+            
+            // Verify if user blocked the notifications
+            if (!self.hasPushEnabled()) {
+                let message = "The notification was blocked by user"
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                // call error callback
+                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                return
+            }
+            
         })
     }
     
