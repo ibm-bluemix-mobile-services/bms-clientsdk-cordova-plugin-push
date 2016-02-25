@@ -150,7 +150,7 @@ Add the code below to your application delegate:
 }
 
 // Handle receiving a remote notification on launch
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
 
 	[[CDVMFPPush sharedInstance] didReceiveRemoteNotificationOnLaunch:launchOptions];
 }
