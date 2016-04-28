@@ -66,6 +66,7 @@ cordova platform add ios@3.9.0
 
 cordova platform add android
 ```
+**IMPORTANT: Make sure you use this iOS version for the cordova platform. It is required for the cordova app to build.**
 
 ### Adding the Cordova plugin
 
