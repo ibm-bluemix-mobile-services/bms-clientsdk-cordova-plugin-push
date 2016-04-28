@@ -62,7 +62,7 @@ Below videos demonstrate how to install and use the Cordova Plugin for the IBM B
 Run the following commands according to which platform you want to add to your Cordova application
 
 ```Bash
-cordova platform add ios
+cordova platform add ios@3.9.0 
 
 cordova platform add android
 ```
