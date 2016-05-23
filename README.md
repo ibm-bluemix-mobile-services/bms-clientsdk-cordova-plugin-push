@@ -84,6 +84,8 @@ From your app root folder, verify that the Cordova Core and Push plugin were ins
 cordova plugin list
 ```
 
+>Note: Existing 3rd party push notification plugins (e.g., phonegap) may interfere with ibm-mfp-push. Be sure to remove these plugins to ensure proper funcitonality.
+
 ## Configuration
 
 ### Configuring Your iOS Development Environment
