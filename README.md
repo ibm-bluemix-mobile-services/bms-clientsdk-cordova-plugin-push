@@ -223,7 +223,25 @@ CDVMFPPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 
 ### Using MFPPush
 
+#### Initialize for Push Notifications
+
+ To initialize the MFPPush uisng,
+
+```
+var pushAPPID
+MFPPush.initialize("pushAPPID")
+
+```
+The **pushAPPID** is the app Guid of push service.
+
+To initialize **User Id** based notification , you have to pass the **clientScret** of the Push Notification service to the initialize method.
+
+```
+MFPPush.initialize("pushAPPID", "clientSecret")
+```
+
 #### Register for Push Notifications
+
 
 ```Javascript
 var settings = {
@@ -240,13 +258,38 @@ var failure = function(response) { console.log("Error: " + response); };
 MFPPush.registerDevice(settings, success, failure);
 ```
 
+To register for **User Id** based notifications, pass the **user Id** in the **registerDevice** API call.
+
+```Javascript
+var settings = {
+    ios: {
+        alert: true,
+        badge: true,
+        sound: true
+    }
+}
+var userId = "your user Id"
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
+
+MFPPush.registerDevice(settings, success, failure,userId);
+```
+
+>**Note** If the UserId is passing the clientScret value must be provided in the initialization of push
+
 The settings structure contains the settings that you want to enable for push notifications. You must use the defined structure and should only change the boolean value of each notification setting.
 
 > Android does NOT make use of the settings parameter. If you're only building Android app, pass an empty object, e.g.
     
 ```Javascript
 MFPPush.registerDevice({}, success, failure);
+
+                    OR
+
+MFPPush.registerDevice({}, success, failure,userId);
 ```
+
+For 
 You can access the contents of the success response parameter in Javascript using `JSON.parse`:
 
 ```Javascript

@@ -15,8 +15,21 @@ var exec = require('cordova/exec');
 var failure = function(res) {
 	alert(res);
 }
+var success = function(res) {
+}
 
 var MFPPush = {
+
+
+	/**
+	 * Initialize the Push
+	 * 
+	 * @param pushAppGUID - The push service App Id value
+	 * @param pushClientSecret - The push service client secret value -- optional
+	 */
+	initialize: function(pushAppGUID, pushClientSecret) {
+		cordova.exec(success, failure, "MFPPushPlugin", "initialize", [pushAppGUID, pushClientSecret]);
+	},
 
 	/**
 	 * Gets the Tags that are subscribed by the device 
@@ -68,11 +81,12 @@ var MFPPush = {
 	 * @param settings:
 	 *        iOS: { alert: boolean, badge: boolean, sound: boolean }
 	 *        Android: { null }
+	 * @param userId: the User ID value. -- optional
 	 * @param success callback
 	 * @param failure callback
 	 */
-	registerDevice: function(settings, success, failure) {
-		cordova.exec(success, failure, "MFPPushPlugin", "registerDevice", [settings]);
+	registerDevice: function(settings, success, failure, userId) {
+		cordova.exec(success, failure, "MFPPushPlugin", "registerDevice", [settings, userId]);
 	},
 
 	/**

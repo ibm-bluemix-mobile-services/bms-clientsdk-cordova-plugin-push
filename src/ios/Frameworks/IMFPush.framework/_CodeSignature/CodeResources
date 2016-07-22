@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/IMFPushClient.h</key>
 		<data>
-		P7P386QWWAMtPV0vbWtX6yft1hI=
+		8ZtpTxuLyg+FFxmtkU7ANe8+pH4=
 		</data>
 		<key>Headers/IMFResponse+IMFPushCategory.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		LKUVmNr0AeBBboBhfYkWRWaXno0=
+		wOUI0Hh9a6pnMNdX8D2NQnNHi98=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -28,21 +28,49 @@
 	<key>files2</key>
 	<dict>
 		<key>Headers/IMFPush.h</key>
-		<data>
-		jwnqh7YuvSaeROJRWDw/26j0jKg=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			jwnqh7YuvSaeROJRWDw/26j0jKg=
+			</data>
+			<key>hash2</key>
+			<data>
+			vTORxihQuM6OXQEOOmrmSK8X8bawvy6cp83lbQpjTHo=
+			</data>
+		</dict>
 		<key>Headers/IMFPushClient.h</key>
-		<data>
-		P7P386QWWAMtPV0vbWtX6yft1hI=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			8ZtpTxuLyg+FFxmtkU7ANe8+pH4=
+			</data>
+			<key>hash2</key>
+			<data>
+			7PvtVUt5P7dGkHQ9hMop+ZPCzyp/qiAZkg8ss9wzbQc=
+			</data>
+		</dict>
 		<key>Headers/IMFResponse+IMFPushCategory.h</key>
-		<data>
-		hz4t6seNCrJExBIxVsQDWJc4dNA=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			hz4t6seNCrJExBIxVsQDWJc4dNA=
+			</data>
+			<key>hash2</key>
+			<data>
+			zIbIQS+RgLyWTJrqTF9ftOfppfSa9wsiTXOsos6Jfp8=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
-		<data>
-		pH91K4SUvztdAjVnoduAkvLNZwo=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			pH91K4SUvztdAjVnoduAkvLNZwo=
+			</data>
+			<key>hash2</key>
+			<data>
+			idEXEONMn7OnAnvduBiGnUoOO+K2a4kngEdGMFHyeZU=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
