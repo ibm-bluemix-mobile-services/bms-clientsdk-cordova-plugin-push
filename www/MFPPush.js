@@ -24,11 +24,11 @@ var MFPPush = {
 	/**
 	 * Initialize the Push
 	 * 
-	 * @param pushAppGUID - The push service App Id value
+	 * @param appGUID - The push service App Id value
 	 * @param pushClientSecret - The push service client secret value -- optional
 	 */
-	initialize: function(pushAppGUID, pushClientSecret) {
-		cordova.exec(success, failure, "MFPPushPlugin", "initialize", [pushAppGUID, pushClientSecret]);
+	initialize: function(appGUID, pushClientSecret) {
+		cordova.exec(success, failure, "MFPPushPlugin", "initialize", [appGUID, pushClientSecret]);
 	},
 
 	/**

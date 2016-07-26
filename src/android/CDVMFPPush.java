@@ -57,13 +57,13 @@ public class CDVMFPPush extends CordovaPlugin {
             
             if
             if (validateString(args.getString(0))){
-                String pushAppGUID = args.getString(0);
+                String appGUID = args.getString(0);
                 if (validateString(args.getString(1))){
                     String pushClientSecret = args.getString(1);
-                    this.initializeWithClientSecret(pushAppGUID, pushClientSecret);
+                    this.initializeWithClientSecret(appGUID, pushClientSecret);
                     return true;
                 }
-                this.initialize(pushAppGUID);
+                this.initialize(appGUID);
                 return true;
             } return false
         } else if ("registerDevice".equals(action)) {
@@ -109,13 +109,13 @@ public class CDVMFPPush extends CordovaPlugin {
      * Initialize push
      */
     
-    private void initialize(final String pushAppGUID){
+    private void initialize(final String appGUID){
         pushLogger.debug("In Initialize Push");
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                if (validateString(pushAppGUID)){
+                if (validateString(appGUID)){
                     isInitialized = true;
-                    MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext(), pushAppGUID);
+                    MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext(), appGUID);
                     
                 }
                 else {
@@ -131,13 +131,13 @@ public class CDVMFPPush extends CordovaPlugin {
      * Initialize push with client secret
      */
     
-    private void initializeWithClientSecret(final String pushAppGUID , final String pushClientSecret){
+    private void initializeWithClientSecret(final String appGUID , final String pushClientSecret){
         pushLogger.debug("In Initialize Push");
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                if (validateString(pushClientSecret) && validateString(pushAppGUID)){
+                if (validateString(pushClientSecret) && validateString(appGUID)){
                     isInitialized = true;
-                    MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext(), pushAppGUID, clientSecret);
+                    MFPPush.getInstance().initialize(this.cordova.getActivity().getApplicationContext(), appGUID, clientSecret);
                 } else {
                     pushLogger.debug("MFPPush:initialize() - An error occured while initializing MFPPush service. Add a valid ClientSecret or pushAppGUID Value");
                 }

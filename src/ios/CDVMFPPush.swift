@@ -39,14 +39,14 @@ import UIKit
         
         if (command.arguments.count == 2) {
             let clientSecret = command.arguments[1] as? String
-            let pushAppGUID = command.arguments[0] as? String
+            let appGUID = command.arguments[0] as? String
             CDVMFPPush.sharedInstance.clientSecret = clientSecret!;
-            self.push.initializeWithPushAppGUID(pushAppGUID, clientSecret:clientSecret);
+            self.push.initializeWithAppGUID(appGUID, clientSecret:clientSecret);
             CDVMFPPush.sharedInstance.isInitialized = true;
             return
         } else if (command.arguments.count == 1) {
             let pushAppGUID = command.arguments[0] as? String
-            self.push.initializeWithPushAppGUID(pushAppGUID)
+            self.push.initializeWithAppGUID(pushAppGUID)
             CDVMFPPush.sharedInstance.isInitialized = true;
             return
         } else {
