@@ -63,17 +63,17 @@ enum{
  * <p>
  * This method should be called before you send the first send register push.
  * @param clientSecret Specifies the clientSecret value of push service.
- * @param pushAppGUID Specifies the pushAppGUID value of push service.
+ * @param appGUID Specifies the pushAppGUID value of push service.
  */
--(void) initializeWithPushAppGUID: (NSString*)pushAppGUID  clientSecret:(NSString*)clientSecret;
+-(void) initializeWithAppGUID: (NSString*)appGUID  clientSecret:(NSString*)clientSecret;
 
 /**
  *  Initialize the Bluemix Push service.
  * <p>
  * This method should be called before you send the first send register push.
- * @param pushAppGUID Specifies the pushAppGUID value of push service.
+ * @param appGUID Specifies the pushAppGUID value of push service.
  */
--(void) initializeWithPushAppGUID: (NSString*) pushAppGUID;
+-(void) initializeWithAppGUID: (NSString*) appGUID;
 
 
 /*!
