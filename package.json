@@ -1,6 +1,6 @@
 {
   "name": "ibm-mfp-push",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Cordova Plugin for the IBM Bluemix Mobile Services Push SDK",
   "cordova": {
     "id": "ibm-mfp-push",
@@ -24,18 +24,18 @@
     "url": "https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push/issues"
   },
   "homepage": "https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push#readme",
-  "contributors" : [
+  "contributors": [
     {
-      "name" : "Larry Nickerson",
-      "email" : "lnickers@us.ibm.com"
+      "name": "Larry Nickerson",
+      "email": "lnickers@us.ibm.com"
     },
     {
-      "name" : "Sergio Escoto",
-      "email" : "escotos@us.ibm.com"
+      "name": "Sergio Escoto",
+      "email": "escotos@us.ibm.com"
     },
     {
-      "name" : " Matthew Parangot",
-      "email" : "mparang@us.ibm.com"
+      "name": " Matthew Parangot",
+      "email": "mparang@us.ibm.com"
     }
   ]
 }
