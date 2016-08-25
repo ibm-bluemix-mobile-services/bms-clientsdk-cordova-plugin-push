@@ -46,6 +46,36 @@ enum{
  */
 +(IMFPushClient*) sharedInstance;
 
+
+
+/**
+ * Specifies the bluemix push clientSecret value.
+ */
+@property (readonly) NSString* bluemixPushClientSecret;
+
+/**
+ * Specifies the bluemix appliaction GUID.
+ */
+@property (readonly) NSString* applicationId;
+
+/**
+ * Initialize the Bluemix Push service.
+ * <p>
+ * This method should be called before you send the first send register push.
+ * @param clientSecret Specifies the clientSecret value of push service.
+ * @param appGUID Specifies the pushAppGUID value of push service.
+ */
+-(void) initializeWithAppGUID: (NSString*)appGUID  clientSecret:(NSString*)clientSecret;
+
+/**
+ *  Initialize the Bluemix Push service.
+ * <p>
+ * This method should be called before you send the first send register push.
+ * @param appGUID Specifies the pushAppGUID value of push service.
+ */
+-(void) initializeWithAppGUID: (NSString*) appGUID;
+
+
 /*!
  * Gets the Tags that are subscribed by the device
  *
@@ -61,12 +91,30 @@ enum{
 -(void) retrieveAvailableTagsWithCompletionHandler:(void(^) (IMFResponse *response, NSError* error)) completionHandler;
 
 /*!
- * Registers the device on to the IMFPush Notification Server
+ * Registers the device on to the IMFPush Notification Server with UserId
+ *
+ * @param deviceToken - the device token received from APNS.
+ * @param WithUserId - this is the userId value.
+ * @param completionHandler - returns a IMFResponse or NSError
+ */
+-(void) registerWithDeviceToken: (NSData*) deviceToken WithUserId:(NSString*)userId completionHandler: (void(^) (IMFResponse *response, NSError* error)) completionHandler;
+
+/*!
+ * Registers the device on to the IMFPush Notification Server without UserId.
  *
  * @param deviceToken - the device token received from APNS.
  * @param completionHandler - returns a IMFResponse or NSError
  */
--(void) registerDeviceToken: (NSData*) deviceToken completionHandler: (void(^) (IMFResponse *response, NSError* error)) completionHandler;
+-(void) registerWithDeviceToken: (NSData*) deviceToken completionHandler: (void(^) (IMFResponse *response, NSError* error)) completionHandler;
+
+
+/*!
+ * Registers the device on to the IMFPush Notification Server without UserId.
+ *
+ * @param deviceToken - the device token received from APNS.
+ * @param completionHandler - returns a IMFResponse or NSError
+ */
+-(void) registerDeviceToken: (NSData*) deviceToken completionHandler: (void(^) (IMFResponse *response, NSError* error)) completionHandler __attribute__ ((deprecated));
 
 /*!
  * Subscribes to a particular backend mobile application Tag(s)
