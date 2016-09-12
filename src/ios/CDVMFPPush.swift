@@ -334,6 +334,7 @@ import UIKit
         
         notif["message"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("body");
         notif["payload"] = notification?.valueForKey("payload")
+        notif["url"] = notification?.valueForKey("url")
         notif["sound"] = notification?.valueForKey("aps")?.valueForKey("sound")
         notif["badge"] = notification?.valueForKey("aps")?.valueForKey("badge")
         notif["action-loc-key"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("action-loc-key")
