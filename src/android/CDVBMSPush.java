@@ -115,7 +115,7 @@ public class CDVBMSPush extends CordovaPlugin {
                     public void onSuccess(String s) {
 
                         String message = s;
-                        try {
+                        /*try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
                             JSONObject messageJson = new JSONObject();
                             messageJson.put("token", responseJson.optString("token"));
@@ -124,7 +124,7 @@ public class CDVBMSPush extends CordovaPlugin {
                             message = messageJson.toString();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
-                        }
+                        }*/
 
                         callbackContext.success(message);
                     }
@@ -150,7 +150,7 @@ public class CDVBMSPush extends CordovaPlugin {
                     public void onSuccess(String s) {
                         
                         String message = s;
-                        try {
+                        /*try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
                             JSONObject messageJson = new JSONObject();
                             messageJson.put("token", responseJson.optString("token"));
@@ -159,7 +159,7 @@ public class CDVBMSPush extends CordovaPlugin {
                             message = messageJson.toString();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
-                        }
+                        }*/
 
                         message = "restdyfughijo";
                         callbackContext.success(message);

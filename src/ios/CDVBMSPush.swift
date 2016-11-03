@@ -25,7 +25,7 @@ import UserNotificationsUI
 
     let push = BMSPushClient.sharedInstance;
     static let sharedInstance = CDVBMSPush()
-    var pushUserId:String = "";
+    static var pushUserId = String();
     var registerCallbackId: String?
     var registerCommandDelegate: CDVCommandDelegate?
 
@@ -80,7 +80,7 @@ import UserNotificationsUI
         CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
         
-        pushUserId = command.arguments[0] as? String ?? ""
+        CDVBMSPush.pushUserId = command.arguments[0] as! String
         
         self.commandDelegate!.run(inBackground: {
             
@@ -243,7 +243,7 @@ import UserNotificationsUI
         
         CDVBMSPush.sharedInstance.registerCommandDelegate!.run(inBackground: {
             
-            if self.pushUserId.isEmpty{
+            if CDVBMSPush.pushUserId.isEmpty{
                 self.push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
                     
                     if (!error.isEmpty) {
@@ -261,7 +261,7 @@ import UserNotificationsUI
                     }
                 }
             } else{
-                self.push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: self.pushUserId) { (response, statusCode, error) -> Void in
+                self.push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if (!error.isEmpty) {
                         let message = error.description
@@ -382,7 +382,7 @@ import UserNotificationsUI
     
     func registerDevice(command: CDVInvokedUrlCommand){
         
-        pushUserId = command.arguments[0] as? String ?? ""
+        CDVBMSPush.pushUserId = command.arguments[0] as? String ?? ""
         
         self.commandDelegate.runInBackground({
             
@@ -531,7 +531,7 @@ import UserNotificationsUI
         CDVBMSPush.sharedInstance.registerCommandDelegate!.runInBackground({
     
             
-            if self.pushUserId.isEmpty{
+            if CDVBMSPush.pushUserId.isEmpty{
                 self.push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
@@ -552,7 +552,7 @@ import UserNotificationsUI
                     
                 }
             } else{
-                self.push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
+               self.push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
