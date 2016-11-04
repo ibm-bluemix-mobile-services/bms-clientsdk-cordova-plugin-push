@@ -1,9 +1,9 @@
 {
   "name": "ibm-mfp-push",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "Cordova Plugin for the IBM Bluemix Mobile Services Push SDK",
   "cordova": {
-    "id": "ibm-mfp-push",
+    "id": "bms-push",
     "platforms": [
       "android",
       "ios"
@@ -25,6 +25,10 @@
   },
   "homepage": "https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push#readme",
   "contributors": [
+    {
+      "name": "Anantha Krishnan K G",
+      "email": "agirijak@in.ibm.com"
+    },
     {
       "name": "Larry Nickerson",
       "email": "lnickers@us.ibm.com"
