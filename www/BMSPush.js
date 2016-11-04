@@ -29,12 +29,13 @@ var BMSPush = function() {
 	/**
 	 * Registers the device on to the IMFPush Notification Server
 	 *
-	 * @param userId User Id value
+	 * @param settings 
+	 *        userId: user id value
 	 * @param success callback
 	 * @param failure callback
 	 */
-	this.registerDevice = function(success, failure,userId) {
-		cordova.exec(success, failure, BMSPushClientString, "registerDevice", [userId]);
+	this.registerDevice = function(settings,success, failure) {
+		cordova.exec(success, failure, BMSPushClientString, "registerDevice", [settings]);
 	};
 
 	/**

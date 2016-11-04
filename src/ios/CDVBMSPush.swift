@@ -80,7 +80,17 @@ import UserNotificationsUI
         CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
         
-        CDVBMSPush.pushUserId = command.arguments[0] as! String
+        guard let settings = command.arguments[0] as? NSDictionary else {
+            
+            let message = "Registering for Push Notifications failed. Options parameter is Invalid."
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
+            // call success callback
+            self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+            return
+        }
+        if (settings.count != 0) {
+            CDVBMSPush.pushUserId = settings["userId"] as! String ?? ""
+        }
         
         self.commandDelegate!.run(inBackground: {
             
@@ -382,7 +392,20 @@ import UserNotificationsUI
     
     func registerDevice(command: CDVInvokedUrlCommand){
         
-        CDVBMSPush.pushUserId = command.arguments[0] as? String ?? ""
+        CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
+        CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+        
+        guard let settings = command.arguments[0] as? NSDictionary else {
+            
+            let message = "Registering for Push Notifications failed. Options parameter is Invalid."
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+            // call error callback
+            self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+            return
+        }
+        if (settings.count != 0) {
+            CDVBMSPush.pushUserId = settings["userId"] as! String ?? ""
+        }
         
         self.commandDelegate.runInBackground({
             

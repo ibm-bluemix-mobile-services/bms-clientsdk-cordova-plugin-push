@@ -174,7 +174,7 @@ The following BMSPush Javascript functions are available:
 Javascript Function | Description
 --- | ---
 initialize(pushAppGUID, clientSecret) | Initialize the Push SDK.
-registerDevice(success, failure, userId) | Registers the device with the Push Notifications Service.
+registerDevice(options, success, failure) | Registers the device with the Push Notifications Service.
 unregisterDevice(success, failure) | Unregisters the device from the Push Notifications Service
 retrieveSubscriptions(success, failure) | Retrieves the tags device is currently subscribed to
 retrieveAvailableTags(success, failure) | Retrieves all the tags available in a push notification service instance.
@@ -207,11 +207,14 @@ BMSPush.initialize(appGUID,clientSecret);
 var success = function(response) { console.log("Success: " + response); };
 var failure = function(response) { console.log("Error: " + response); };
 
+
 // Register device for push notification without UserId
-BMSPush.registerDevice(success, failure);
+var options = {};
+BMSPush.registerDevice(options, success, failure);
 
 // Register device for push notification with UserId
-BMSPush.registerDevice(success, failure, "your UserId value");
+var options = {"userId": "Your User Id value"};
+BMSPush.registerDevice(options,success, failure);
 ```
 
 You can access the contents of the success response parameter in Javascript using `JSON.parse`:

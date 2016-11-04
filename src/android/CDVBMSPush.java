@@ -47,28 +47,30 @@ public class CDVBMSPush extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
-        if ("initialize".equals(action)) {
+        if("initialize".equals(action)) {
              String appGUID = args.getString(0);
              String clientSecret = args.getString(1);
             this.initializePush(appGUID,clientSecret);
             return true;
-        }else if ("registerDevice".equals(action)) {
-            String userId = args.getString(0);
-            if(userId.isEmpty()){
-                 this.registerDevice(callbackContext);
+        }else if("registerDevice".equals(action)) {
+            String settings = args.getString(0);
+            if(settings.isEmpty()){
+                this.registerDevice(callbackContext);
             }else{
-                 this.registerDeviceWithUserId(userId,callbackContext);
+                JSONObject settingsJson = new JSONObject(settings.substring(settings.indexOf('{')));
+                String userId = settingsJson.optString("userId");
+                this.registerDeviceWithUserId(userId,callbackContext);
             }
             return true;
-        } else if ("unregisterDevice".equals(action)) {
+        } else if("unregisterDevice".equals(action)) {
             this.unregisterDevice(callbackContext);
 
             return true;
-        } else if ("retrieveSubscriptions".equals(action)) {
+        } else if("retrieveSubscriptions".equals(action)) {
             this.retrieveSubscriptions(callbackContext);
 
             return true;
-        } else if ("retrieveAvailableTags".equals(action)) {
+        } else if("retrieveAvailableTags".equals(action)) {
             this.retrieveAvailableTags(callbackContext);
 
             return true;
@@ -77,18 +79,17 @@ public class CDVBMSPush extends CordovaPlugin {
             this.subscribe(tag, callbackContext);
 
             return true;
-        } else if ("unsubscribe".equals(action)) {
+        } else if("unsubscribe".equals(action)) {
             String tag = args.getString(0);
             this.unsubscribe(tag, callbackContext);
 
             return true;
-        } else if ("registerNotificationsCallback".equals(action)) {
+        } else if("registerNotificationsCallback".equals(action)) {
             this.registerNotificationsCallback(callbackContext);
-
             return true;
-        } else{
-            return false;
         }
+        return false;
+
     }
     /**
      * Initialize the SDK with appGUID and ClientSecret
@@ -115,7 +116,7 @@ public class CDVBMSPush extends CordovaPlugin {
                     public void onSuccess(String s) {
 
                         String message = s;
-                        /*try {
+                        try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
                             JSONObject messageJson = new JSONObject();
                             messageJson.put("token", responseJson.optString("token"));
@@ -124,7 +125,7 @@ public class CDVBMSPush extends CordovaPlugin {
                             message = messageJson.toString();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
-                        }*/
+                        }
 
                         callbackContext.success(message);
                     }
@@ -150,7 +151,7 @@ public class CDVBMSPush extends CordovaPlugin {
                     public void onSuccess(String s) {
                         
                         String message = s;
-                        /*try {
+                        try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
                             JSONObject messageJson = new JSONObject();
                             messageJson.put("token", responseJson.optString("token"));
@@ -159,9 +160,7 @@ public class CDVBMSPush extends CordovaPlugin {
                             message = messageJson.toString();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
-                        }*/
-
-                        message = "restdyfughijo";
+                        }
                         callbackContext.success(message);
                     }
                     @Override
