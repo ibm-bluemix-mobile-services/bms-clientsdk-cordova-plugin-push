@@ -1,5 +1,5 @@
 exports.defineAutoTests = function() {
-	describe('MFPPush test suite', function () {
+	describe('BMSPush test suite', function () {
 
 		var fail = function (done, context, message) {
             if (context) {
@@ -15,7 +15,7 @@ exports.defineAutoTests = function() {
             setTimeout(function () {
                 done();
             });
-        };
+    	};
         var succeed = function (done, context) {
             if (context) {
                 if (context.done) return;
@@ -29,75 +29,70 @@ exports.defineAutoTests = function() {
             });
         };
 
-        describe('MFPPush API', function() {
+		describe('BMSPush API', function() {
 
-         it('MFPPush should exist', function(){
-            expect(MFPPush).toBeDefined();
-        });
+			it('BMSPush should exist', function(){
+				expect(BMSPush).toBeDefined();
+			});
 
-         it('MFPPush.initialize() should exist and is a function', function(){
-            expect(typeof MFPPush.initialize).toBeDefined();
-            expect(typeof MFPPush.initialize == 'function').toBe(true);
-        });
-         it('MFPPush.retrieveSubscriptions() should exist and is a function', function(){
-            expect(typeof MFPPush.retrieveSubscriptions).toBeDefined();
-            expect(typeof MFPPush.retrieveSubscriptions == 'function').toBe(true);
-        });
+            it('BMSPush.initialize() should exist and is a function', function(){
+                expect(typeof BMSPush.initialize).toBeDefined();
+                expect(typeof BMSPush.initialize == 'function').toBe(true);
+            });
 
-         it('MFPPush.retrieveAvailableTags() should exist and is a function', function(){
-            expect(typeof MFPPush.retrieveAvailableTags).toBeDefined();
-            expect(typeof MFPPush.retrieveAvailableTags == 'function').toBe(true);
-        });
+			it('BMSPush.retrieveSubscriptions() should exist and is a function', function(){
+				expect(typeof BMSPush.retrieveSubscriptions).toBeDefined();
+				expect(typeof BMSPush.retrieveSubscriptions == 'function').toBe(true);
+			});
 
-         it('MFPPush.subscribe() should exist and is a function', function(){
-            expect(typeof MFPPush.subscribe).toBeDefined();
-            expect(typeof MFPPush.subscribe == 'function').toBe(true);
-        });
+            it('BMSPush.retrieveAvailableTags() should exist and is a function', function(){
+                expect(typeof BMSPush.retrieveAvailableTags).toBeDefined();
+                expect(typeof BMSPush.retrieveAvailableTags == 'function').toBe(true);
+            });
 
-         it('MFPPush.unsubscribe() should exist and is a function', function(){
-            expect(typeof MFPPush.unsubscribe).toBeDefined();
-            expect(typeof MFPPush.unsubscribe == 'function').toBe(true);
-        });
+            it('BMSPush.subscribe() should exist and is a function', function(){
+                expect(typeof BMSPush.subscribe).toBeDefined();
+                expect(typeof BMSPush.subscribe == 'function').toBe(true);
+            });
 
-         it('MFPPush.registerDevice() should exist and is a function', function(){
-            expect(typeof MFPPush.registerDevice).toBeDefined();
-            expect(typeof MFPPush.registerDevice == 'function').toBe(true);
-        });
+            it('BMSPush.unsubscribe() should exist and is a function', function(){
+                expect(typeof BMSPush.unsubscribe).toBeDefined();
+                expect(typeof BMSPush.unsubscribe == 'function').toBe(true);
+            });
 
-         it('MFPPush.unregisterDevice() should exist and is a function', function(){
-            expect(typeof MFPPush.unregisterDevice).toBeDefined();
-            expect(typeof MFPPush.unregisterDevice == 'function').toBe(true);
-        });
+            it('BMSPush.registerDevice() should exist and is a function', function(){
+                expect(typeof BMSPush.registerDevice).toBeDefined();
+                expect(typeof BMSPush.registerDevice == 'function').toBe(true);
+            });
 
-         it('MFPPush.registerNotificationsCallback() should exist and is a function', function(){
-            expect(typeof MFPPush.registerNotificationsCallback).toBeDefined();
-            expect(typeof MFPPush.registerNotificationsCallback == 'function').toBe(true);
-        });
+            it('BMSPush.unregisterDevice() should exist and is a function', function(){
+                expect(typeof BMSPush.unregisterDevice).toBeDefined();
+                expect(typeof BMSPush.unregisterDevice == 'function').toBe(true);
+            });
 
-     });
+            it('BMSPush.registerNotificationsCallback() should exist and is a function', function(){
+                expect(typeof BMSPush.registerNotificationsCallback).toBeDefined();
+                expect(typeof BMSPush.registerNotificationsCallback == 'function').toBe(true);
+            });
 
-        describe('MFPPush instance', function() {
+		});
+
+        describe('BMSPush instance', function() {
             var execSpy;
             beforeEach(function() {
                 execSpy = spyOn(cordova, "exec");
             });
 
-            it('should call initializeBluemixPush and call the success callback', function(done) {
-                MFPPush.initialize();
+            it('should call initialize and call the success callback', function(done) {
+                BMSPush.initialize();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
                 }, 100);
             });
-            it('should call initialize push With ClientSecret and call the success callback', function(done) {
-                MFPPush.initialize();
-                setTimeout(function() {
-                    expect(execSpy).toHaveBeenCalled();
-                    done();
-                }, 100);
-            });
+
             it('should call registerDevice and call the success callback', function(done) {
-                MFPPush.registerDevice();
+                BMSPush.registerDevice();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
@@ -105,22 +100,15 @@ exports.defineAutoTests = function() {
             });
 
             it('should call unregisterDevice and call the success callback', function(done) {
-                MFPPush.unregisterDevice();
+                BMSPush.unregisterDevice();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
                 }, 100);
             });
 
-            it('should call registerDevice With UserId and call the success callback', function(done) {
-                MFPPush.registerDevice();
-                setTimeout(function() {
-                    expect(execSpy).toHaveBeenCalled();
-                    done();
-                }, 100);
-            });
             it('should call subscribe and call the success callback', function(done) {
-                MFPPush.subscribe();
+                BMSPush.subscribe();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
@@ -128,7 +116,7 @@ exports.defineAutoTests = function() {
             });
 
             it('should call unsubscribe and call the success callback', function(done) {
-                MFPPush.unsubscribe();
+                BMSPush.unsubscribe();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
@@ -136,7 +124,7 @@ exports.defineAutoTests = function() {
             });
 
             it('should call retrieveAvailableTags and call the success callback', function(done) {
-                MFPPush.retrieveAvailableTags();
+                BMSPush.retrieveAvailableTags();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
@@ -144,7 +132,7 @@ exports.defineAutoTests = function() {
             });
 
             it('should call retrieveSubscriptions and call the success callback', function(done) {
-                MFPPush.retrieveSubscriptions();
+                BMSPush.retrieveSubscriptions();
                 setTimeout(function() {
                     expect(execSpy).toHaveBeenCalled();
                     done();
@@ -153,5 +141,5 @@ exports.defineAutoTests = function() {
 
         });
 
-    });
+	});
 };

@@ -1,11 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-    <plugin id="ibm-mfp-push" version="1.0.13" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-        <name>MFPPush</name>
+    <plugin id="bms-push" version="2.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+        <name>BMSPush</name>
+        
+        <dependency id="bms-core"/>
+        <dependency id="cordova-plugin-cocoapod-support"/>
+        <dependency id="cordova-plugin-add-swift-support"/>
 
-        <dependency id="ibm-mfp-core" url="https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core" />
 
-        <js-module name="MFPPush" src="www/MFPPush.js">
-            <clobbers target="MFPPush" />
+        <js-module name="BMSPush" src="www/BMSPush.js">
+            <clobbers target="BMSPush" />
         </js-module>
 
         <platform name="android">
@@ -53,28 +56,29 @@
             </config-file>
 
             <config-file parent="/*" target="res/xml/config.xml">
-                <feature name="MFPPushPlugin">
-                    <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVMFPPush" />
+                <feature name="BMSPushClient">
+                    <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVBMSPush" />
                 </feature>
             </config-file>
 
             <config-file parent="/*" target="AndroidManifest.xml" />
 
-            <source-file src="src/android/CDVMFPPush.java"   target-dir="src/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
+            <source-file src="src/android/CDVBMSPush.java"   target-dir="src/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
         </platform>
 
         <platform name="ios">
+            <pods-config use-frameworks="true" ios-min-version="8.0"/>
+            <pod id="BMSCore" version=">=2.0.0"/>
+            <pod id="BMSPush" version=">=2.0.0"/>
             <config-file parent="/*" target="config.xml">
 
-                <feature name="MFPPushPlugin">
-                    <param name="ios-package" value="CDVMFPPush" />
+                <feature name="BMSPushClient">
+                    <param name="ios-package" value="CDVBMSPush" />
                 </feature>
 
             </config-file>
-            <source-file src="src/ios/CDVMFPPush.swift" />
-
-            <framework src="src/ios/Frameworks/IMFPush.framework" custom="true" />
-
+            <source-file src="src/ios/CDVBMSPush.swift" />
+            <header-file src="src/ios/Bridging-Header.h" />
         </platform>
 
     </plugin>

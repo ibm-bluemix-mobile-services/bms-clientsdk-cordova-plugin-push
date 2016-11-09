@@ -10,7 +10,10 @@ if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 23) {
 
 // Include Android Bluemix SDK dependency
 dependencies {
-    compile('com.ibm.mobilefirstplatform.clientsdk.android:push:2.+') {
-        transitive=true
-    }
+
+    compile group: 'com.ibm.mobilefirstplatform.clientsdk.android',
+            name: 'push',
+            version: '2.+',
+            ext: 'aar',
+            transitive: true
 }
