@@ -1,5 +1,9 @@
 # IBM Bluemix Mobile Services - Cordova Plugin Push SDK
 
+[![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push
+
+  [![npm package](https://nodei.co/npm/bms-push.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bms-push/)
+
 Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
 
 ## Installation
