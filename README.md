@@ -196,6 +196,7 @@ CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 
 #### Register for Push Notifications
 
+
 ```Javascript
 
 // initialize BMSPush SDK
