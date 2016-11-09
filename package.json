@@ -1,6 +1,6 @@
 {
-  "name": "ibm-mfp-push",
-  "version": "2.0.0",
+  "name": "bms-push",
+  "version": "2.0.1",
   "description": "Cordova Plugin for the IBM Bluemix Mobile Services Push SDK",
   "cordova": {
     "id": "bms-push",
