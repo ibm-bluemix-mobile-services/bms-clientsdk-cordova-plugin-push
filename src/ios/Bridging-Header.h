@@ -3,7 +3,4 @@
 //
 
 #import <Cordova/CDV.h>
-//uncomment the following lines to enable push
-//#import <IMFPush/IMFPush.h>
-//#import <IMFPush/IMFPushClient.h>
-//#import <IMFPush/IMFResponse+IMFPushCategory.h>
+
