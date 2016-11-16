@@ -89,7 +89,7 @@ import UserNotificationsUI
             return
         }
         if (settings.count != 0) {
-            CDVBMSPush.pushUserId = settings["userId"] as? String
+            CDVBMSPush.pushUserId = settings["userId"] as! String
         }
         
         self.commandDelegate!.run(inBackground: {
@@ -404,7 +404,7 @@ import UserNotificationsUI
             return
         }
         if (settings.count != 0) {
-            CDVBMSPush.pushUserId = settings["userId"] as? String
+            CDVBMSPush.pushUserId = settings["userId"] as! String
         }
         
         self.commandDelegate.runInBackground({
