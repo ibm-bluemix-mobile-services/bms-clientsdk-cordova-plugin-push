@@ -68,8 +68,8 @@
 
         <platform name="ios">
             <pods-config use-frameworks="true" ios-min-version="8.0"/>
-            <pod id="BMSCore" version=">=2.0.0"/>
-            <pod id="BMSPush" version=">=2.0.0"/>
+            <pod id="BMSCore" version="~>2.0"/>
+            <pod id="BMSPush" version="~>2.0"/>
             <config-file parent="/*" target="config.xml">
 
                 <feature name="BMSPushClient">
