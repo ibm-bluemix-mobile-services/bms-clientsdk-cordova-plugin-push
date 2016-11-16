@@ -135,8 +135,9 @@ Add the code below to your application delegate:
 // Handle receiving a remote notification on launch
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
 
-	[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
-}
+  if (launchOptions != nil) {
+         [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
+     }}
 ```
 
 #### Swift:
@@ -165,8 +166,11 @@ func application(application: UIApplication,
 
 // Handle receiving a remote notification on launch
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+  let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
 
-	CDVBMSPush.sharedInstance().didReceiveRemoteNotificationOnLaunchWithLaunchOptions(launchOptions)
+  if remoteNotif != nil {
+    CDVBMSPush.sharedInstance().didReceiveRemoteNotificationOnLaunchWithLaunchOptions(launchOptions)
+  }
 }
 ```
 
@@ -205,6 +209,9 @@ CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 
 
 ```Javascript
+
+// initialize BMSCore SDK
+BMSClient.initialize("Your Push service region");
 
 // initialize BMSPush SDK
 var appGUID = "Your Push service appGUID";
