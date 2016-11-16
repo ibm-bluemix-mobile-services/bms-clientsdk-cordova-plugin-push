@@ -210,6 +210,9 @@ CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 
 ```Javascript
 
+// initialize BMSCore SDK
+BMSClient.initialize("Your Push service region");
+
 // initialize BMSPush SDK
 var appGUID = "Your Push service appGUID";
 var clientSecret = "Your Push service clientSecret";
