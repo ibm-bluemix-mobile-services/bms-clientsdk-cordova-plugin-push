@@ -53,12 +53,11 @@ public class CDVBMSPush extends CordovaPlugin {
             this.initializePush(appGUID,clientSecret);
             return true;
         }else if("registerDevice".equals(action)) {
-            String settings = args.getString(0);
-            if(settings.isEmpty()){
+            JSONObject settings = args.getJSONObject(0);
+            if(!settings.has("userId")){
                 this.registerDevice(callbackContext);
             }else{
-                JSONObject settingsJson = new JSONObject(settings.substring(settings.indexOf('{')));
-                String userId = settingsJson.optString("userId");
+                String userId = settings.getString("userId");
                 this.registerDeviceWithUserId(userId,callbackContext);
             }
             return true;
