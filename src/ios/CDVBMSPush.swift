@@ -112,7 +112,7 @@ import UserNotificationsUI
     func unregisterDevice(_ command: CDVInvokedUrlCommand) {
         self.commandDelegate!.run(inBackground: {
             
-            self.push.unregisterDevice(completionHandler: { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.unregisterDevice(completionHandler: { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -140,7 +140,7 @@ import UserNotificationsUI
     func retrieveSubscriptions(_ command: CDVInvokedUrlCommand) {
         self.commandDelegate!.run(inBackground: {
             
-            self.push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -164,7 +164,7 @@ import UserNotificationsUI
     
     func retrieveAvailableTags(_ command: CDVInvokedUrlCommand) {
         self.commandDelegate!.run(inBackground: {
-            self.push.retrieveAvailableTagsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.retrieveAvailableTagsWithCompletionHandler(completionHandler: { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -195,7 +195,7 @@ import UserNotificationsUI
                 return
             }
             let tagsArray = [tag]
-            self.push.subscribeToTags(tagsArray: tagsArray as NSArray, completionHandler: { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.subscribeToTags(tagsArray: tagsArray as NSArray, completionHandler: { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -225,7 +225,7 @@ import UserNotificationsUI
                 return
             }
             let tagsArray = [tag]
-            self.push.unsubscribeFromTags(tagsArray: tagsArray as NSArray, completionHandler: { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.unsubscribeFromTags(tagsArray: tagsArray as NSArray, completionHandler: { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -254,7 +254,7 @@ import UserNotificationsUI
         CDVBMSPush.sharedInstance.registerCommandDelegate!.run(inBackground: {
             
             if CDVBMSPush.pushUserId.isEmpty{
-                self.push.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
                     
                     if (!error.isEmpty) {
                         let message = error.description
@@ -271,7 +271,7 @@ import UserNotificationsUI
                     }
                 }
             } else{
-                self.push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if (!error.isEmpty) {
                         let message = error.description
@@ -378,7 +378,7 @@ import UserNotificationsUI
             }
             
             //use category to handle objective-c exception
-            self.push.initializeWithAppGUID(appGUID:appGUID, clientSecret:clientSecret)
+            BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID:appGUID, clientSecret:clientSecret)
             
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
             // call success callback
@@ -419,7 +419,7 @@ import UserNotificationsUI
     func unregisterDevice(command: CDVInvokedUrlCommand){
         self.commandDelegate.runInBackground({
     
-            self.push.unregisterDevice({ (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.unregisterDevice({ (response, statusCode, error) -> Void in
     
                 if error.isEmpty {
     
@@ -443,7 +443,7 @@ import UserNotificationsUI
     func retrieveSubscriptions(command: CDVInvokedUrlCommand){
         self.commandDelegate.runInBackground({
             
-            self.push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -466,7 +466,7 @@ import UserNotificationsUI
     func retrieveAvailableTags(command: CDVInvokedUrlCommand) {
         self.commandDelegate.runInBackground({
             
-            self.push.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.retrieveSubscriptionsWithCompletionHandler { (response, statusCode, error) -> Void in
                 
                 if error.isEmpty {
                     
@@ -497,7 +497,7 @@ import UserNotificationsUI
                 return
             }
             let tagsArray = [tag]
-            self.push.subscribeToTags(tagsArray, completionHandler: { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.subscribeToTags(tagsArray, completionHandler: { (response, statusCode, error) -> Void in
                 if error.isEmpty{
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray: [response!.description])
                     // call success callback
@@ -526,7 +526,7 @@ import UserNotificationsUI
                 return
             }
             let tagsArray = [tag]
-            self.push.unsubscribeFromTags(tagsArray, completionHandler: { (response, statusCode, error) -> Void in
+            BMSPushClient.sharedInstance.unsubscribeFromTags(tagsArray, completionHandler: { (response, statusCode, error) -> Void in
                 if error.isEmpty{
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsArray:[response!.description])
                     // call success callback
@@ -555,7 +555,7 @@ import UserNotificationsUI
     
             
             if CDVBMSPush.pushUserId.isEmpty{
-                self.push.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
@@ -575,7 +575,7 @@ import UserNotificationsUI
                     
                 }
             } else{
-               self.push.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+               BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
