@@ -575,7 +575,7 @@ import UserNotificationsUI
                     
                 }
             } else{
-               BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+               BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
