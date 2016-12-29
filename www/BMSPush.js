@@ -1,3 +1,4 @@
+cordova.define("bms-push.BMSPush", function(require, exports, module) {
 /*
     Copyright 2015 IBM Corp.
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,8 +24,9 @@ var BMSPush = function() {
         console.log(BMSPushClientString + ": Failure: " + message);
     };
 
-	this.initialize = function(pushAppGuid, clientSecret){
-		cordova.exec(success, failure, BMSPushClientString, "initialize", [pushAppGuid, clientSecret]);
+    
+	this.initialize = function(pushAppGuid, clientSecret, pushOptions){
+		cordova.exec(success, failure, BMSPushClientString, "initialize", [pushAppGuid, clientSecret,pushOptions]);
 	};
 	/**
 	 * Registers the device on to the IMFPush Notification Server
@@ -105,3 +107,5 @@ var BMSPush = function() {
 };
 
 module.exports = new BMSPush();
+
+});

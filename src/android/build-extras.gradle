@@ -8,12 +8,19 @@ if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 23) {
     ext.cdvCompileSdkVersion = 23;
 }
 
+android {
+	 packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+}
+
 // Include Android Bluemix SDK dependency
 dependencies {
 
     compile group: 'com.ibm.mobilefirstplatform.clientsdk.android',
             name: 'push',
-            version: '2.+',
+            version: '3.+',
             ext: 'aar',
             transitive: true
 }

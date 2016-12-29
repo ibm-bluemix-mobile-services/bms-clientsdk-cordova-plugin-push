@@ -217,7 +217,14 @@ BMSClient.initialize("Your Push service region");
 var appGUID = "Your Push service appGUID";
 var clientSecret = "Your Push service clientSecret";
 
-BMSPush.initialize(appGUID,clientSecret);
+// Initialize for normal push notifications
+var category = {}
+BMSPush.initialize(appGUID,clientSecret,category);
+
+// Initialize for actionalble push notifications
+var category = {"Category_Name":[{"IdentifierName_1":"actionName_1"},{"IdentifierName_2":"actionName_2"}]}
+BMSPush.initialize(appGUID,clientSecret,category);
+
 
 var success = function(response) { console.log("Success: " + response); };
 var failure = function(response) { console.log("Error: " + response); };
