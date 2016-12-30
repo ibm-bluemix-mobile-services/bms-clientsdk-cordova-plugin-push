@@ -6,6 +6,8 @@
   install:
       - gem install cocoapods --pre
       - brew install jq
+      - npm install shelljs -g
+      - npm install glob
   before_script:
       - wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
       - tar xzf android-sdk_r24.4.1-linux.tgz
