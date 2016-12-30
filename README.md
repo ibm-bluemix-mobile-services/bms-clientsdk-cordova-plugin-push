@@ -190,7 +190,7 @@ The following BMSPush Javascript functions are available:
 
 Javascript Function | Description
 --- | ---
-initialize(pushAppGUID, clientSecret) | Initialize the Push SDK.
+initialize(pushAppGUID, clientSecret,category) | Initialize the Push SDK.
 registerDevice(options, success, failure) | Registers the device with the Push Notifications Service.
 unregisterDevice(success, failure) | Unregisters the device from the Push Notifications Service
 retrieveSubscriptions(success, failure) | Retrieves the tags device is currently subscribed to
