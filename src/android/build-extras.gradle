@@ -8,8 +8,8 @@ if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 23) {
     ext.cdvCompileSdkVersion = 23;
 }
 
-android {
-	 packagingOptions {
+android {    
+     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
