@@ -187,7 +187,9 @@ Download your Firebase google-services.json for android, and place them in the r
 Go to `[your-app-name]/platforms/android`,
 
 1.) Open file `build.gradle` (Path : platform > android > build.gradle)
+
 2.) find `buildscript` text in `build.gradle` file.
+
 3.) There you will find one classpath line, after that line, please add this line :
 
 	```
