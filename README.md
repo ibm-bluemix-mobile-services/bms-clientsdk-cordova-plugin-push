@@ -201,15 +201,13 @@ Go to `[your-app-name]/platforms/android`,
 
 5.) Prepare and build your cordova Android project
 
-	```
 	cordova prepare android
 	cordova build android
-	```
+	
 6.) Run your Cordova android project either opening in android studion or using cordova CLI
     
-    ```
-     cordova run android
-    ```
+    cordova run android
+
 
 ## Usage
 
