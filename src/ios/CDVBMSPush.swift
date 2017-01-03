@@ -26,6 +26,14 @@ import UserNotificationsUI
     let push = BMSPushClient.sharedInstance;
     static let sharedInstance = CDVBMSPush()
     static var pushUserId = String();
+    static var shouldRegister:Bool = false
+    static var registerParams = CDVInvokedUrlCommand()
+
+    #if swift(>=3.0)
+    static var bmsPushToken = Data()
+    #else
+    static var bmsPushToken = NSData()
+    #endif
     var registerCallbackId: String?
     var registerCommandDelegate: CDVCommandDelegate?
 
@@ -41,29 +49,92 @@ import UserNotificationsUI
 
     func initialize(_ command: CDVInvokedUrlCommand) {
         self.commandDelegate!.run(inBackground: {
-    
-            guard let appGUID  = command.arguments[0] as? String else {
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: CustomErrorMessages.invalidGuid)
+            print(command.arguments.count)
+            if command.arguments.count > 2 && (command.arguments[2] as! NSDictionary).count > 0{
+                
+                guard let appGUID  = command.arguments[0] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: CustomErrorMessages.invalidGuid)
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                guard let clientSecret  = command.arguments[1] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service clientSecret.")
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                guard let bmsNotifOptions  = command.arguments[2] as? NSDictionary else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid BMSPush Options.")
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                
+                if bmsNotifOptions.count > 0{
+                    
+                    for name in bmsNotifOptions {
+                        print(name.key)
+                       // print(((name.value) as! Dictionary).values)
+                        
+                        let identifiers:NSArray = (name.value) as! NSArray
+                        var actionArray = [BMSPushNotificationAction]()
+                        for identifier in identifiers {
+                            actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background))
+                        }
+                        
+                        let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
+                        
+                        let notifOptions = BMSPushClientOptions(categoryName: [category])
+                        
+                        let push = BMSPushClient.sharedInstance;
+                        
+                        push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret, options: notifOptions);
+                        
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "")
+                        // call success callback
+                        self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    }
+                    
+                }else{
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid BMSPush Options")
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                
+                //use category to handle objective-c exception
+               
+                
+            }else{
+                
+                
+                guard let appGUID  = command.arguments[0] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: CustomErrorMessages.invalidGuid)
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                guard let clientSecret  = command.arguments[1] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service clientSecret.")
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                //use category to handle objective-c exception
+                let push = BMSPushClient.sharedInstance;
+                
+                push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret);
+                
+                
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "")
                 // call success callback
                 self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
-                return
             }
-            guard let clientSecret  = command.arguments[1] as? String else {
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service clientSecret.")
-                // call success callback
-                self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
-                return
-            }
-            
-            //use category to handle objective-c exception
-            let push = BMSPushClient.sharedInstance;
-            
-            push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret);
-            
-            
-            let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "")
-            // call success callback
-            self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
             
         })
         
@@ -79,6 +150,12 @@ import UserNotificationsUI
         
         CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+        CDVBMSPush.shouldRegister = true;
+       CDVBMSPush.registerParams = command
+    }
+    func registerDeviceAfterTokenRecieve(_ command: CDVInvokedUrlCommand) {
+        
+       
         
         guard let settings = command.arguments[0] as? NSDictionary else {
             
@@ -92,20 +169,45 @@ import UserNotificationsUI
             CDVBMSPush.pushUserId = settings["userId"] as! String
         }
         
-        self.commandDelegate!.run(inBackground: {
+        CDVBMSPush.sharedInstance.registerCommandDelegate!.run(inBackground: {
             
-            if #available(iOS 10.0, *) {
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
-                { (granted, error) in
-                    UIApplication.shared.registerForRemoteNotifications()
+            if CDVBMSPush.pushUserId.isEmpty{
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: CDVBMSPush.bmsPushToken) { (response, statusCode, error) -> Void in
+                    
+                    if (!error.isEmpty) {
+                        let message = error.description
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
+                        // call error callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                    else {
+                        
+                        
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: response)
+                        // call success callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                    }
                 }
-            } else {
-                // Fallback on earlier versions
-                let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
-                UIApplication.shared.registerUserNotificationSettings(settings)
-                UIApplication.shared.registerForRemoteNotifications()
+            } else{
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: CDVBMSPush.bmsPushToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+                    
+                    if (!error.isEmpty) {
+                        let message = error.description
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
+                        // call error callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                    else {
+                        
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: response)
+                        // call success callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                }
             }
+            
         })
+        
     }
     
     
@@ -134,7 +236,6 @@ import UserNotificationsUI
             })
             
         })
-        
     }
     
     func retrieveSubscriptions(_ command: CDVInvokedUrlCommand) {
@@ -250,47 +351,8 @@ import UserNotificationsUI
         if (CDVBMSPush.sharedInstance.registerCallbackId == nil) {
             return
         }
-        
-        CDVBMSPush.sharedInstance.registerCommandDelegate!.run(inBackground: {
-            
-            if CDVBMSPush.pushUserId.isEmpty{
-                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: deviceToken) { (response, statusCode, error) -> Void in
-                    
-                    if (!error.isEmpty) {
-                        let message = error.description
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
-                        // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                    else {
-                        
-                        
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: response)
-                        // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                }
-            } else{
-                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
-                    
-                    if (!error.isEmpty) {
-                        let message = error.description
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
-                        // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                    else {
-                        
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: response)
-                        // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                }
-            }
-            
-
-            
-        })
+        CDVBMSPush.bmsPushToken = deviceToken;
+        registerDeviceAfterTokenRecieve(CDVBMSPush.registerParams)
     }
     
     func didFailToRegisterForRemoteNotifications(error: Error) {
@@ -364,25 +426,81 @@ import UserNotificationsUI
     func initialize(command: CDVInvokedUrlCommand) {
         self.commandDelegate.runInBackground({
             
-            guard let appGUID  = command.arguments[0] as? String else {
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
+            if command.arguments.count > 2 && (command.arguments[2] as! NSDictionary).count > 0{
+                
+                guard let appGUID  = command.arguments[0] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                guard let clientSecret  = command.arguments[1] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid Push service clientSecret.")
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                guard let bmsNotifOptions  = command.arguments[2] as? NSDictionary else {
+                    
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid BMSPush Options.")
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                if bmsNotifOptions.count > 0{
+                    
+                    for name in bmsNotifOptions {
+                        print(name.key)
+                        // print(((name.value) as! Dictionary).values)
+                        
+                        let identifiers:NSArray = (name.value) as! NSArray
+                        var actionArray = [BMSPushNotificationAction]()
+                        for identifier in identifiers {
+                            actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background))
+                        }
+                        
+                        let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
+                        
+                        let notifOptions = BMSPushClientOptions(categoryName: [category])
+                    
+                    //use category to handle objective-c exception
+                    BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID, clientSecret:clientSecret,options:notifOptions)
+                    
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    }
+                    
+                }else{
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid BMSPush Options.")
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+            }else{
+                guard let appGUID  = command.arguments[0] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                guard let clientSecret  = command.arguments[1] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid Push service clientSecret.")
+                    // call success callback
+                    self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+                
+                //use category to handle objective-c exception
+                BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID:appGUID, clientSecret:clientSecret)
+                
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                return
             }
-            guard let clientSecret  = command.arguments[1] as? String else {
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid Push service clientSecret.")
-                // call success callback
-                self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                return
-            }
-            
-            //use category to handle objective-c exception
-            BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID:appGUID, clientSecret:clientSecret)
-            
-            let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
-            // call success callback
-            self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
         })
     }
     func registerNotificationsCallback(command: CDVInvokedUrlCommand) {
@@ -390,10 +508,16 @@ import UserNotificationsUI
         CDVBMSPush.sharedInstance.notifCommandDelegate = self.commandDelegate
     }
     
-    func registerDevice(command: CDVInvokedUrlCommand){
+    
+    func registerDevice(command: CDVInvokedUrlCommand) {
         
         CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+        CDVBMSPush.shouldRegister = true;
+        CDVBMSPush.registerParams = command
+    }
+    
+    func registerDeviceAfterTokenRecieve(command: CDVInvokedUrlCommand){
         
         guard let settings = command.arguments[0] as? NSDictionary else {
             
@@ -407,12 +531,48 @@ import UserNotificationsUI
             CDVBMSPush.pushUserId = settings["userId"] as! String
         }
         
-        self.commandDelegate.runInBackground({
+        CDVBMSPush.sharedInstance.registerCommandDelegate!.runInBackground({
             
-            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound, .Badge], categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-            UIApplication.sharedApplication().registerForRemoteNotifications()
-            
+            if CDVBMSPush.pushUserId.isEmpty{
+                BMSPushClient.sharedInstance.registerWithDeviceToken(CDVBMSPush.bmsPushToken) { (response, statusCode, error) -> Void in
+                    
+                    if error.isEmpty {
+                        
+                        let message = response
+                        
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                        // call success callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                    else{
+                        
+                        let message = error
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                        // call error callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                }
+            } else{
+                
+                BMSPushClient.sharedInstance.registerWithDeviceToken(CDVBMSPush.bmsPushToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+                    
+                    if error.isEmpty {
+                        
+                        let message = response
+                        
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
+                        // call success callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                    else{
+                        
+                        let message = error
+                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
+                        // call error callback
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                    }
+                }
+            }
         })
     }
     
@@ -550,51 +710,8 @@ import UserNotificationsUI
         if (CDVBMSPush.sharedInstance.registerCallbackId == nil) {
             return
         }
-        
-        CDVBMSPush.sharedInstance.registerCommandDelegate!.runInBackground({
-    
-            
-            if CDVBMSPush.pushUserId.isEmpty{
-                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken) { (response, statusCode, error) -> Void in
-                    
-                    if error.isEmpty {
-                        
-                        let message = response
-                        
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
-                        // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                    else{
-                        
-                        let message = error
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
-                        // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                    
-                }
-            } else{
-               BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
-                    
-                    if error.isEmpty {
-                        
-                        let message = response
-                        
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
-                        // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                    else{
-                        
-                        let message = error
-                        let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
-                        // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
-                    }
-                }
-            }
-        })
+        CDVBMSPush.bmsPushToken = deviceToken;
+        registerDeviceAfterTokenRecieve(CDVBMSPush.registerParams)
     }
     
     func didFailToRegisterForRemoteNotifications(error: NSError) {

@@ -23,8 +23,9 @@ var BMSPush = function() {
         console.log(BMSPushClientString + ": Failure: " + message);
     };
 
-	this.initialize = function(pushAppGuid, clientSecret){
-		cordova.exec(success, failure, BMSPushClientString, "initialize", [pushAppGuid, clientSecret]);
+    
+	this.initialize = function(pushAppGuid, clientSecret, pushOptions){
+		cordova.exec(success, failure, BMSPushClientString, "initialize", [pushAppGuid, clientSecret,pushOptions]);
 	};
 	/**
 	 * Registers the device on to the IMFPush Notification Server

@@ -1,84 +1,86 @@
 <?xml version='1.0' encoding='utf-8'?>
-    <plugin id="bms-push" version="2.0.7" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-        <name>BMSPush</name>
+<plugin id="bms-push" version="2.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>BMSPush</name>
+    
+    <dependency id="bms-core"/>
+    <dependency id="cordova-plugin-cocoapod-support"/>
+    <dependency id="cordova-plugin-add-swift-support"/>
+    
+    
+    <js-module name="BMSPush" src="www/BMSPush.js">
+        <clobbers target="BMSPush" />
+    </js-module>
+    
+    <platform name="android">
+        <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
+        <framework src="com.android.support:appcompat-v7:23.2.1" />
+        <framework src="com.google.firebase:firebase-messaging:9.0.2" />
         
-        <dependency id="bms-core"/>
-        <dependency id="cordova-plugin-cocoapod-support"/>
-        <dependency id="cordova-plugin-add-swift-support"/>
-
-
-        <js-module name="BMSPush" src="www/BMSPush.js">
-            <clobbers target="BMSPush" />
-        </js-module>
-
-        <platform name="android">
-            <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
-
-            <config-file target="AndroidManifest.xml" parent="/manifest">
-                <permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-                <uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" />
-                <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-                <uses-permission android:name="android.permission.INTERNET"/>
-                <uses-permission android:name="android.permission.WAKE_LOCK" />
-                <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-                <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-                <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-                <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-            </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+            <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+            <!--Notification Intent -->
+            <intent-filter>
+                <action android:name="$PACKAGE_NAME.IBMPushNotification" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </config-file>
+        
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
             
-            <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
-                <!--Notification Intent -->
+            <activity android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationHandler"
+            android:theme="@android:style/Theme.NoDisplay"/>
+            
+            <service
+                android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService"
+                android:exported="true" >
                 <intent-filter>
-                    <action android:name="$PACKAGE_NAME.IBMPushNotification" />
-                    <category android:name="android.intent.category.DEFAULT" />
+                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 </intent-filter>
-            </config-file>
-
-
-            <config-file target="AndroidManifest.xml" parent="/manifest/application">
-                <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
-                <service android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushIntentService" />
-
-                <receiver android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.internal.MFPPushBroadcastReceiver"
-                          android:permission="com.google.android.c2dm.permission.SEND" >
-                    <intent-filter>
-                        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                        <category android:name="$PACKAGE_NAME" />
-                    </intent-filter>
-                    <intent-filter>
-                        <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                        <category android:name="$PACKAGE_NAME" />
-                    </intent-filter>
-                </receiver>
-
-            </config-file>
-
-            <config-file parent="/*" target="res/xml/config.xml">
-                <feature name="BMSPushClient">
-                    <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVBMSPush" />
-                </feature>
-            </config-file>
-
-            <config-file parent="/*" target="AndroidManifest.xml" />
-
-            <source-file src="src/android/CDVBMSPush.java"   target-dir="src/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
-        </platform>
-
-        <platform name="ios">
-            <pods-config use-frameworks="true" ios-min-version="8.0"/>
-            <pod id="BMSCore" version="~>2.0"/>
-            <pod id="BMSPush" version="~>2.0"/>
-            <config-file parent="/*" target="config.xml">
-
-                <feature name="BMSPushClient">
-                    <param name="ios-package" value="CDVBMSPush" />
-                </feature>
-
-            </config-file>
-            <source-file src="src/ios/CDVBMSPush.swift" />
-            <header-file src="src/ios/Bridging-Header.h" />
-        </platform>
-
-    </plugin>
+            </service>
+            <service
+                android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush"
+                android:exported="true" >
+                <intent-filter>
+                    <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                </intent-filter>
+            </service>
+            
+        </config-file>
+        
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="BMSPushClient">
+                <param name="android-package" value="com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push.CDVBMSPush" />
+            </feature>
+        </config-file>
+        
+        <config-file parent="/*" target="AndroidManifest.xml" />
+        
+        <source-file src="src/android/CDVBMSPush.java"   target-dir="src/com/ibm/mobilefirstplatform/clientsdk/cordovaplugins/push" />
+    </platform>
+    
+    <platform name="ios">
+        <pods-config use-frameworks="true" ios-min-version="8.0"/>
+        <pod id="BMSCore" version="~>2.0"/>
+        <pod id="BMSPush" version="~>3.0"/>
+        <config-file parent="/*" target="config.xml">
+            
+            <feature name="BMSPushClient">
+                <param name="ios-package" value="CDVBMSPush" />
+            </feature>
+            
+        </config-file>
+        <source-file src="src/ios/CDVBMSPush.swift" />
+        <header-file src="src/ios/Bridging-Header.h" />
+    </platform>
+    
+</plugin>
