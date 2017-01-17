@@ -25,14 +25,14 @@ import UserNotificationsUI
 
     let push = BMSPushClient.sharedInstance;
     static let sharedInstance = CDVBMSPush()
-    static var pushUserId = String();
-    static var shouldRegister:Bool = false
-    static var registerParams = CDVInvokedUrlCommand()
+     var pushUserId = String();
+     var shouldRegister:Bool = false
+     var registerParams = CDVInvokedUrlCommand()
 
     #if swift(>=3.0)
-    static var bmsPushToken = Data()
+     var bmsPushToken = Data()
     #else
-    static var bmsPushToken = NSData()
+     var bmsPushToken = NSData()
     #endif
     var registerCallbackId: String?
     var registerCommandDelegate: CDVCommandDelegate?
@@ -150,12 +150,16 @@ import UserNotificationsUI
         
         CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
-        CDVBMSPush.shouldRegister = true;
-       CDVBMSPush.registerParams = command
+       CDVBMSPush.sharedInstance.registerParams = command
+        if ( CDVBMSPush.sharedInstance.shouldRegister == true &&  CDVBMSPush.sharedInstance.bmsPushToken.isEmpty == false){
+            
+            registerDeviceAfterTokenRecieve(command)
+        }
     }
     func registerDeviceAfterTokenRecieve(_ command: CDVInvokedUrlCommand) {
         
-       
+        CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
+        CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
         
         guard let settings = command.arguments[0] as? NSDictionary else {
             
@@ -166,13 +170,13 @@ import UserNotificationsUI
             return
         }
         if (settings.count != 0) {
-            CDVBMSPush.pushUserId = settings["userId"] as! String
+            CDVBMSPush.sharedInstance.pushUserId = settings["userId"] as! String
         }
         
         CDVBMSPush.sharedInstance.registerCommandDelegate!.run(inBackground: {
             
-            if CDVBMSPush.pushUserId.isEmpty{
-                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: CDVBMSPush.bmsPushToken) { (response, statusCode, error) -> Void in
+            if CDVBMSPush.sharedInstance.pushUserId.isEmpty{
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: CDVBMSPush.sharedInstance.bmsPushToken) { (response, statusCode, error) -> Void in
                     
                     if (!error.isEmpty) {
                         let message = error.description
@@ -189,7 +193,7 @@ import UserNotificationsUI
                     }
                 }
             } else{
-                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: CDVBMSPush.bmsPushToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+                BMSPushClient.sharedInstance.registerWithDeviceToken(deviceToken: CDVBMSPush.sharedInstance.bmsPushToken, WithUserId: CDVBMSPush.sharedInstance.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if (!error.isEmpty) {
                         let message = error.description
@@ -348,11 +352,12 @@ import UserNotificationsUI
     
     func didRegisterForRemoteNotifications(deviceToken: Data) {
         
+        CDVBMSPush.sharedInstance.shouldRegister = true;
+        CDVBMSPush.sharedInstance.bmsPushToken = deviceToken;
         if (CDVBMSPush.sharedInstance.registerCallbackId == nil) {
             return
         }
-        CDVBMSPush.bmsPushToken = deviceToken;
-        registerDeviceAfterTokenRecieve(CDVBMSPush.registerParams)
+        registerDeviceAfterTokenRecieve(CDVBMSPush.sharedInstance.registerParams)
     }
     
     func didFailToRegisterForRemoteNotifications(error: Error) {
@@ -513,12 +518,17 @@ import UserNotificationsUI
         
         CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
-        CDVBMSPush.shouldRegister = true;
-        CDVBMSPush.registerParams = command
+        CDVBMSPush.sharedInstance.registerParams = command
+        if ( CDVBMSPush.sharedInstance.shouldRegister == true &&  CDVBMSPush.sharedInstance.bmsPushToken.length > 0){
+        
+              registerDeviceAfterTokenRecieve(command)
+        }
     }
     
     func registerDeviceAfterTokenRecieve(command: CDVInvokedUrlCommand){
-        
+        CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
+        CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+    
         guard let settings = command.arguments[0] as? NSDictionary else {
             
             let message = "Registering for Push Notifications failed. Options parameter is Invalid."
@@ -528,13 +538,13 @@ import UserNotificationsUI
             return
         }
         if (settings.count != 0) {
-            CDVBMSPush.pushUserId = settings["userId"] as! String
+            CDVBMSPush.sharedInstance.pushUserId = settings["userId"] as! String
         }
         
         CDVBMSPush.sharedInstance.registerCommandDelegate!.runInBackground({
             
-            if CDVBMSPush.pushUserId.isEmpty{
-                BMSPushClient.sharedInstance.registerWithDeviceToken(CDVBMSPush.bmsPushToken) { (response, statusCode, error) -> Void in
+            if CDVBMSPush.sharedInstance.pushUserId.isEmpty{
+                BMSPushClient.sharedInstance.registerWithDeviceToken(CDVBMSPush.sharedInstance.bmsPushToken) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
@@ -554,7 +564,7 @@ import UserNotificationsUI
                 }
             } else{
                 
-                BMSPushClient.sharedInstance.registerWithDeviceToken(CDVBMSPush.bmsPushToken, WithUserId: CDVBMSPush.pushUserId) { (response, statusCode, error) -> Void in
+                BMSPushClient.sharedInstance.registerWithDeviceToken(CDVBMSPush.sharedInstance.bmsPushToken, WithUserId: CDVBMSPush.sharedInstance.pushUserId) { (response, statusCode, error) -> Void in
                     
                     if error.isEmpty {
                         
@@ -562,7 +572,7 @@ import UserNotificationsUI
                         
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                         // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     }
                     else{
                         
@@ -706,12 +716,13 @@ import UserNotificationsUI
     }
     
     func didRegisterForRemoteNotifications(deviceToken: NSData) {
-        
+    
+        CDVBMSPush.sharedInstance.shouldRegister = true;
+        CDVBMSPush.sharedInstance.bmsPushToken = deviceToken;
         if (CDVBMSPush.sharedInstance.registerCallbackId == nil) {
             return
         }
-        CDVBMSPush.bmsPushToken = deviceToken;
-        registerDeviceAfterTokenRecieve(CDVBMSPush.registerParams)
+        registerDeviceAfterTokenRecieve(CDVBMSPush.sharedInstance.registerParams)
     }
     
     func didFailToRegisterForRemoteNotifications(error: NSError) {
