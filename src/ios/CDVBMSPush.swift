@@ -182,14 +182,14 @@ import UserNotificationsUI
                         let message = error.description
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
                         // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                     else {
                         
                         
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: response)
                         // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                 }
             } else{
@@ -199,13 +199,13 @@ import UserNotificationsUI
                         let message = error.description
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
                         // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                     else {
                         
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: response)
                         // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                 }
             }
@@ -371,7 +371,7 @@ import UserNotificationsUI
             let message = error.localizedDescription
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
             // call error callback
-            CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:self.registerCallbackId)
+            CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
         })
     }
     
@@ -552,14 +552,14 @@ import UserNotificationsUI
                         
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: message)
                         // call success callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                     else{
                         
                         let message = error
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
                         // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                 }
             } else{
@@ -579,7 +579,7 @@ import UserNotificationsUI
                         let message = error
                         let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
                         // call error callback
-                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+                        CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
                     }
                 }
             }
@@ -736,7 +736,7 @@ import UserNotificationsUI
             let message = error.description
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: message)
             // call error callback
-            CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:self.registerCallbackId)
+            CDVBMSPush.sharedInstance.registerCommandDelegate!.sendPluginResult(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
         })
     }
     
