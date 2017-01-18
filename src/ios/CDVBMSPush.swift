@@ -157,9 +157,7 @@ import UserNotificationsUI
         }
     }
     func registerDeviceAfterTokenRecieve(_ command: CDVInvokedUrlCommand) {
-        
-        CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
-        CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+
         
         guard let settings = command.arguments[0] as? NSDictionary else {
             
@@ -526,8 +524,7 @@ import UserNotificationsUI
     }
     
     func registerDeviceAfterTokenRecieve(command: CDVInvokedUrlCommand){
-        CDVBMSPush.sharedInstance.registerCallbackId = command.callbackId
-        CDVBMSPush.sharedInstance.registerCommandDelegate = self.commandDelegate
+        
     
         guard let settings = command.arguments[0] as? NSDictionary else {
             
