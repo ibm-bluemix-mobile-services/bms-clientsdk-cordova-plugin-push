@@ -3,16 +3,6 @@
       include:
           - osx_image: xcode7.3
           - osx_image: xcode8
-  android:
-      components:
-          - tools
-          - platform-tools
-          - tools
-          - build-tools-25.0.1
-          - android-25
-          - extra-google-m2repository
-          - extra-android-m2repository
-    
   install:
       - gem install cocoapods --pre
       - brew install jq
@@ -20,8 +10,13 @@
       - npm install glob
       
   before_script:
-      - rm -rf ~/Library/Developer/Xcode/DerivedData
-      - npm install -g cordova
+        - wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
+	      - tar xzf android-sdk_r24.4.1-linux.tgz
+	      - export ANDROID_HOME=$PWD/android-sdk-linux
+	      - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+	      - echo "yes" | android update sdk --filter platform-tools,extra-google-m2repository,extra-android-m2repository,build-tools-25.0.2,android-25,android-23,android-24,extra-android-support --no-ui --all --force
+	      - rm -rf ~/Library/Developer/Xcode/DerivedData
+	      - npm install -g cordova
   script:
       - cordova create app
       - cd app
