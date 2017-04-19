@@ -190,7 +190,7 @@ public class CDVBMSPush extends CordovaPlugin {
                     @Override
                     public void onSuccess(String s) {
 
-                        String message = s;
+                        String message = "";
                         try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
                             JSONObject messageJson = new JSONObject();
