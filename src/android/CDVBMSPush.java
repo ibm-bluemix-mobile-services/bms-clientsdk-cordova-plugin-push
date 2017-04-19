@@ -13,6 +13,9 @@
 package com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push;
 
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationButton;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationCategory;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationOptions;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPSimplePushNotification;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
@@ -28,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.lang.*;
 
@@ -48,9 +53,66 @@ public class CDVBMSPush extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
         if("initialize".equals(action)) {
-             String appGUID = args.getString(0);
-             String clientSecret = args.getString(1);
-            this.initializePush(appGUID,clientSecret);
+
+            String appGUID = args.getString(0);
+            String clientSecret = args.getString(1);
+            if (args.length() > 2 && args.getJSONObject(2).length() > 0){
+                JSONObject clientOptions = args.getJSONObject(2);
+                JSONObject result = clientOptions.getJSONObject("categories");
+                List<MFPPushNotificationCategory> categoryList =  new ArrayList<MFPPushNotificationCategory>();
+                Iterator<String> keys = result.keys();
+                while(keys.hasNext()){
+                    String key = keys.next();
+
+                    JSONArray resultObject = result.getJSONArray(key);
+                    List<MFPPushNotificationButton> actionButtons =  new ArrayList<MFPPushNotificationButton>();
+
+                    for(int i = 0 ; i < resultObject.length() ; i++){
+
+                        JSONObject resul = resultObject.getJSONObject(i);
+                        String identifierName = "";
+                        String actionName = "";
+                        String iconName = "";
+
+                        if(resul.has("IdentifierName")){
+                            identifierName = resul.getString("IdentifierName");
+                          }
+                        if(resul.has("actionName")){
+                            actionName = resul.getString("actionName");
+                        }
+                        if(resul.has("IconName")){
+                            iconName = resul.getString("IconName");
+                        }
+
+                        MFPPushNotificationButton actiondButton = new MFPPushNotificationButton.Builder(identifierName)
+                                .setIcon(iconName)
+                                .setLabel(actionName)
+                                .build();
+
+                        actionButtons.add(actiondButton);
+
+                    }
+                    MFPPushNotificationCategory category = new MFPPushNotificationCategory.Builder(key).setButtons(actionButtons).build();
+                    categoryList.add(category);
+                }
+
+
+                MFPPushNotificationOptions options = new MFPPushNotificationOptions();
+                options.setInteractiveNotificationCategories(categoryList);
+                if (clientOptions.has("devieID")){
+                    if (!(clientOptions.getString("devieID").equals(""))){
+                        options.setDeviceid(clientOptions.getString("devieID"));
+                    }
+                }
+                this.initializePush(appGUID,clientSecret,options);
+
+
+            }else {
+                this.initializePush(appGUID,clientSecret);
+
+            }
+
+
             return true;
         }else if("registerDevice".equals(action)) {
             JSONObject settings = args.getJSONObject(0);
@@ -94,6 +156,20 @@ public class CDVBMSPush extends CordovaPlugin {
      * Initialize the SDK with appGUID and ClientSecret
      * @param appGUID - push service app GUID
      * @param clientSecret - push service clientSecret
+     * @param options - push service MFPPushNotificationOptions - category and deviceId
+     */
+    private void initializePush(final String appGUID, final String clientSecret, final MFPPushNotificationOptions options ) {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret,options);
+            }
+        });
+    }
+
+    /**
+     * Initialize the SDK with appGUID and ClientSecret
+     * @param appGUID - push service app GUID
+     * @param clientSecret - push service clientSecret
      */
     private void initializePush(final String appGUID, final String clientSecret) {
         cordova.getThreadPool().execute(new Runnable() {
@@ -114,7 +190,7 @@ public class CDVBMSPush extends CordovaPlugin {
                     @Override
                     public void onSuccess(String s) {
 
-                        String message = s;
+                        String message = "";
                         try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
                             JSONObject messageJson = new JSONObject();
@@ -137,7 +213,7 @@ public class CDVBMSPush extends CordovaPlugin {
         });
 
     }
-    
+
     /**
      * Registers the device for Push notifications with the given alias and consumerId
      * @param callbackContext Javascript callback
@@ -148,7 +224,7 @@ public class CDVBMSPush extends CordovaPlugin {
                 MFPPush.getInstance().registerDeviceWithUserId(userId,new MFPPushResponseListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        
+
                         String message = s;
                         try {
                             JSONObject responseJson = new JSONObject(s.substring(s.indexOf('{')));
@@ -169,7 +245,7 @@ public class CDVBMSPush extends CordovaPlugin {
                 });
             }
         });
-        
+
     }
 
     /**
