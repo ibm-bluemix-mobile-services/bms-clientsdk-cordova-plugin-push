@@ -258,12 +258,12 @@ var options ={"categories":{
                         {
                           "IdentifierName":"IdentifierName_1",
                           "actionName":"actionName_1",
-                          "IconName":"IconName_1.png"
+                          "IconName":"IconName_1"
                         },
                         {
                           "IdentifierName":"IdentifierName_2",
                           "actionName":"actionName_2",
-                          "IconName":"IconName_2.png"
+                          "IconName":"IconName_2"
                         }
                       ],
                     "devieID":"mydeviceId"
