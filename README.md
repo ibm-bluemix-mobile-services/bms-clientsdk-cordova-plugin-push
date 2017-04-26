@@ -187,15 +187,15 @@ Go to `[your-app-name]/platforms/android`,
 
 3) There you will find one classpath line, after that line, please add this line ,
 
-```
-classpath 'com.google.gms:google-services:3.0.0'
-```
+  ```
+  classpath 'com.google.gms:google-services:3.0.0'
+  ```
 
 4) Then find "dependencies" .Select that dependencies where you have text `compile` and where that dependecies is getting ended, just after that, add this line :
 
-```
-	apply plugin: 'com.google.gms.google-services'
-```
+  ```
+  apply plugin: 'com.google.gms.google-services'
+  ```
 
 ### Initialize
 
