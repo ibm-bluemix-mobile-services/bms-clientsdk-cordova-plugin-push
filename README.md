@@ -1,4 +1,5 @@
-# IBM Bluemix Mobile Services - Cordova Plugin Push SDK
+Bluemix Push Notifications Cordova Plugin Push SDK
+===================================================
 
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push)
@@ -7,17 +8,49 @@
 
 [![npm package](https://nodei.co/npm/bms-push.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bms-push/)
 
-Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
+The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The plugin enables Cordova apps to receive push notifications sent from the service. Before starting to configure Cordova Plugin follow the [Bluemix Push service setup guide](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate)
+
+## Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+  - [Creating a Cordova application](#creating-a-cordova-application)
+  - [Adding Cordova platforms](#adding-cordova-platforms)
+  - [Adding the Cordova Bluemix Push plugin](#adding-the-cordova-bluemix-push-plugin)
+- [Setup Client Application](#setup-client-application)
+  - [Setup App environments](#setup-app-environments)
+    - [iOS App](#ios_app)
+    - [Android App](#android-app)
+  - [Initialize](#initialize)
+    - [Initializing the Core Plugin](#initializing-the-core-plugin)
+    - [Initializing the Push Plugin](#initializing-the-push-plugin)
+  - [Register to Push Service](#register-to-push-service)
+   - [Register Without UserId](#register-without-userid)
+   - [Register With UserId](#register-with-userid)
+   - [Unregistering the Device from Push Notification](#unregistering-the-device-from-push-notification)
+   - [Unregistering the Device from UserId](#unregistering-the-device-from-userid)
+   - [Receiving a Notification](#receiving-a-notification)
+ - [Push Notification service tags](#bluemix-tags)
+   - [Retrieve Available tags](#retrieve-available-tags)
+   - [Subscribe to Available tags](#subscribe-to-available-tags)
+   - [Retrieve Subscribed tags](#retrieve-subscribed-tags)
+   - [Unsubscribing from tags](#unsubscribing-from-tags)
+ - [Notification Options](#notification-options)
+   - [Enable Interactive push notifications](#enable-interactive-push-notifications)
+   - [Adding custom DeviceId for registration](#ddding-custom-deviceid-for-registration)
+- [Samples and Videos](#samples-and-videos)
+
+
+## Requirements
+
+* Android Studio
+* Xcode
+* Cordova CLI (Get it from [here](https://cordova.apache.org/docs/en/latest/guide/cli/))
+* Node.js/npm (Get it from [here](https://docs.npmjs.com/getting-started/installing-node))
 
 ## Installation
 
-### Installing necessary libraries
-
-You should already have Node.js/npm and the Cordova package installed. If you don't, you can download and install Node from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-
-The Cordova library is also required to use this plugin. You can find instructions to install Cordova and set up your Cordova app at [https://cordova.apache.org/#getstarted](https://cordova.apache.org/#getstarted).
-
-## Installing the Cordova Plugin for Bluemix Mobile Services Push SDK
+  Before adding the Bluemix Push Notifications Cordova plugin, create Cordova project and add platforms.
 
 ### Creating a Cordova application
 
@@ -30,7 +63,7 @@ The Cordova library is also required to use this plugin. You can find instructio
 
 1. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default HelloCordova.
 
-1. Continue editing `config.xml`. Update the `<platform name="ios">` element with a deployment target declaration as shown in the code snippet below.
+2. Continue editing `config.xml`. Update the `<platform name="ios">` element with a deployment target declaration as shown in the code snippet below.
 
 	```XML
 	<platform name="ios">
@@ -39,7 +72,7 @@ The Cordova library is also required to use this plugin. You can find instructio
 	</platform>
 	```
 
-1. Continue editing `config.xml`. Update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.
+3. Continue editing `config.xml`. Update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.
 
 	```XML
 	<platform name="android">
@@ -49,138 +82,103 @@ The Cordova library is also required to use this plugin. You can find instructio
 	</platform>
 	```
 
-	> The minSdkVersion should be above 15.
+>**Note**: The minSdkVersion should be above 15.
 
-	> The targetSdkVersion should always reflect the latest Android SDK available from Google.
+>**Note**: The targetSdkVersion should always reflect the latest Android SDK available from Google.
 
 ### Adding Cordova platforms
 
 Run the following commands according to which platform you want to add to your Cordova application
 
-```Bash
+```
 cordova platform add ios
 
 cordova platform add android
-```
-**IMPORTANT: Make sure you use this iOS version for the cordova platform. It is required for the cordova app to build.**
 
-### Adding the Cordova plugin
+```
+**IMPORTANT: Make sure you use this iOS version for the Cordova platform. It is required for the Cordova app to build.**
+
+### Adding the Cordova Bluemix Push plugin
 
 From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
 
-```Bash
+```
 cordova plugin add bms-push
+
 ```
 
-This also installs the Cordova Core plug-in, which initializes your connection to Bluemix.
+This also installs the `Cordova Core plug-in`, which initializes your connection to Bluemix.
 
-From your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
+From your app root folder, verify that the Cordova `Core plugin` and `Push plugin` were installed successfully, using the following command.
 
-```Bash
+```
 cordova plugin list
+
 ```
 
 >Note: Existing 3rd party push notification plugins (e.g., phonegap) may interfere with bms-push. Be sure to remove these plugins to ensure proper funcitonality.
 
-## Configuration
 
-### Configuring Your iOS Development Environment
+## Setup Client Application
 
-1. Follow the `Configuring Your iOS Development Environment` instructions from [Bluemix Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core#4configuring-your-platform)
+### Setup App environments
 
-#### Updating your client application to use the Push SDK
+#### iOS App
 
-By default, Cordova creates a native iOS project built with iOS, therefore you will need to import an automatically generated Swift header to use the Push SDK. Add the following Objective-C code snippets to your application delegate class.
+1. Add the project name in the following way at the top of your `AppDelegate.m`
 
-At the top of your AppDelegate.m:
+  ```
+  #import "[your-project-name]-Swift. h"
 
-```Objective-C
-#import "[your-project-name]-Swift.h"
-```
+  ```
 
-If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
+  If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
 
-```Objective-C
-// Project name is "Test Project" or "Test-Project"
-#import "Test_Project-Swift.h"
-```
+  ```
+  // Project name is "Test Project" or "Test-Project"
 
-Add the code below to your application delegate:
+  #import "Test_Project-Swift.h"
 
-#### Objective-C:
+  ```
 
-```Objective-C
-// Register device token with Bluemix Push Notification Service
-- (void)application:(UIApplication *)application
-	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+2. Add the code below to your application delegate,
 
-	   [[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-}
+  ```
+  // Register device token with Bluemix Push Notification Service
+  - (void)application:(UIApplication *)application
+  	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
 
-// Handle error when failed to register device token with APNs
-- (void)application:(UIApplication*)application
-	 didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-
-	  [[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
-}
-
-// Handle receiving a remote notification
--(void)application:(UIApplication *)application
-	didReceiveRemoteNotification:(NSDictionary *)userInfo
-	fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-
-	[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
-}
-
-// Handle receiving a remote notification on launch
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
-
-  -----------
-    if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
-        [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
-    }
-  -----------
-}
-```
-
-#### Swift:
-
-```Swift
-// Register device token with Bluemix Push Notification Service
-func application(application: UIApplication,
-	didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-
-	CDVBMSPush.sharedInstance().didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
-}
-
-// Handle error when failed to register device token with APNs
-func application(application: UIApplication,
-	didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
-
-	CDVBMSPush.sharedInstance().didReceiveRemoteNotificationWithNotification(error)
-}
-
-// Handle receiving a remote notification
-func application(application: UIApplication,
-	didReceiveRemoteNotification userInfo: [NSObject : AnyObject], 	fetchCompletionHandler completionHandler: ) {
-
-	CDVBMSPush.sharedInstance().didReceiveRemoteNotificationWithNotification(userInfo)
-}
-
-// Handle receiving a remote notification on launch
-func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
-  ----------
-  let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
-
-  if remoteNotif != nil {
-    CDVBMSPush.sharedInstance().didReceiveRemoteNotificationOnLaunchWithLaunchOptions(launchOptions)
+  	   [[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
   }
-  --------
-}
-```
 
-### Configuring Your Android Development Environment
+  // Handle error when failed to register device token with APNs
+  - (void)application:(UIApplication*)application
+  	 didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+
+  	  [[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
+  }
+
+  // Handle receiving a remote notification
+  -(void)application:(UIApplication *)application
+  	didReceiveRemoteNotification:(NSDictionary *)userInfo
+  	fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+
+  	[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
+  }
+
+  // Handle receiving a remote notification on launch
+  - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
+
+    -----------
+      if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
+          [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
+      }
+    -----------
+  }
+  ```
+3. In the Capabilities enable `push notifications` and `Background modes`. Under `Background modes` enable the `Remote notification` and `background fetch`.
+
+#### Android App
 
 Download your Firebase google-services.json for android, and place them in the root folder of your cordova project: `[your-app-name]/platforms/android`
 
@@ -190,69 +188,206 @@ Go to `[your-app-name]/platforms/android`,
 
 2.) find `buildscript` text in `build.gradle` file.
 
-3.) There you will find one classpath line, after that line, please add this line :
+3.) There you will find one classpath line, after that line, please add this line ,
 
-	classpath 'com.google.gms:google-services:3.0.0'
+	```
+  classpath 'com.google.gms:google-services:3.0.0'
+
+  ```
 
 4.) Then find "dependencies" .Select that dependencies where you have text `compile` and where that dependecies is getting ended, just after that, add this line :
 
-	apply plugin: 'com.google.gms.google-services'
+  ```
+  	apply plugin: 'com.google.gms.google-services'
 
+  ```
 
-5.) Prepare and build your cordova Android project
+### Initialize
 
-	cordova prepare android
-	cordova build android
+#### Initializing the Core plugin
 
-6.) Run your Cordova android project either opening in android studion or using cordova CLI
+Initialize the `bms-core` plugin following way,
 
-    cordova run android
+```
+onDeviceReady: function() {
+    app.receivedEvent('deviceready');
+    BMSClient.initialize("YOUR APP REGION");
+    }
+```
+For the region pass one of the following ,
 
+* REGION_US_SOUTH // ".ng.bluemix.net";
+* REGION_UK //".eu-gb.bluemix.net";
+* REGION_SYDNEY // ".au-syd.bluemix.net";
 
-## Usage
+For example,
 
-The following BMSPush Javascript functions are available:
+```
+BMSClient.initialize(BMSClient.REGION_US_SOUTH);
 
-Javascript Function | Description
---- | ---
-initialize(pushAppGUID, clientSecret,category) | Initialize the Push SDK.
-registerDevice(options, success, failure) | Registers the device with the Push Notifications Service.
-unregisterDevice(success, failure) | Unregisters the device from the Push Notifications Service
-retrieveSubscriptions(success, failure) | Retrieves the tags device is currently subscribed to
-retrieveAvailableTags(success, failure) | Retrieves all the tags available in a push notification service instance.
-subscribe(tag, success, failure) | Subscribes to a particular tag.
-unsubscribe(tag, success, failure) | Unsubscribes from a particular tag.
-registerNotificationsCallback(callback) | Registers a callback for when a notification arrives on the device.
+```
 
-**Android (Native)**
-The following native Android function is available.
+#### Initializing the Push Plugin
 
- Android function | Description
---- | ---
-CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push notifications plugin handles all incoming Push Notification by tunnelling them to JavaScript callback. Use this method to override the plugin's default behavior in case you want to manually handle incoming push notifications in native code.
+Initialize the `BMSPush` in the following way,
 
-
-## Examples
-
-### Using BMSPush
-
-#### Register for Push Notifications
-
-
-```Javascript
-
-// initialize BMSCore SDK
-BMSClient.initialize("Your Push service region");
-
-// initialize BMSPush SDK
-var appGUID = "Your Push service appGUID";
-var clientSecret = "Your Push service clientSecret";
-
-// Initialize for normal push notifications
-var options = {}
+```
+var options =  {};
 BMSPush.initialize(appGUID,clientSecret,options);
 
-// Initialize for iOS actionable push notifications and custom deviceID
+```
+##### appGUID
+
+- The Push service instance Id value.
+
+##### clientSecret
+
+- The Push service instance client secret value.
+
+##### options
+
+- Push notification options (Interactive notifiaction and custom deviceId)
+
+
+### Register to Push Service
+
+#### Register Without UserId
+
+To register without userId use the following pattern
+
+```
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
+
+var options = {};
+BMSPush.registerDevice(options, success, failure);
+
+```
+
+#### Register With UserId
+
+The `userId` can be specified while registering the device with Push Notifications service. The register method will accept one more parameter - `userId`
+
+```
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
+
+var options = {"userId": "Your User Id value"};
+BMSPush.registerDevice(options, success, failure);
+
+```
+
+##### userId
+
+- The user identifier value you want to register the device in the push service instance.
+
+>**Note**: If userId is provided the client secret value must be provided.
+
+
+#### Unregistering the Device from Push Notification
+
+Use the following code snippets to unregister the device from push notification service instance
+
+```
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
+BMSPush.unregisterDevice(options, success, failure);
+
+```
+
+#### Unregistering the Device from UserId
+
+To unregister from the `UserId` based registration you have to call the registration method [without userId](#register-without-userid).
+
+
+#### Receiving a Notification
+
+Add the following code snippet to receive push notification call back.
+
+```
+var handleNotificationCallback = function(notification) {
+	// notification is a JSON object
+	alert(notification.message);
+}
+
+BMSPush.registerNotificationsCallback(handleNotificationCallback);
+
+```
+
+### Push Notification service tags
+
+#### Retrieve Available tags
+
+The `retrieveAvailableTags()` API returns the list of tags to which the device
+can subscribe. After the device is subscribes to a particular tag, the device can receive notifications
+that are sent for that tag.
+
+Use the following code snippets into your Swift mobile application to get a list of tags to which the
+device can subscribe.
+
+```
+var failure = function(response) { console.log("Error: " + response); };
+
+BMSPush.retrieveAvailableTags(function(tags) {
+	alert(tags);
+}, failure);
+
+```
+
+#### Subscribe to tags
+
+The `subscribe()` API will subscribe the iOS device for the list of given tags. After the device is subscribed to a particular tag, the device can receive any push notifications
+that are sent for that tag.
+
+Use the following code snippets into your Swift mobile application to subscribe a list of tags.
+
+```
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
+
+var tag = "YourTag";
+BMSPush.subscribe(tag, success, failure);
+
+```
+
+#### Retrieve Subscribed tags
+
+The `retrieveSubscriptions()` API will return the list of tags to which the device is subscribed.
+
+Use the following code snippets into your Swift mobile application to get the  subscription list.
+
+```
+var failure = function(response) { console.log("Error: " + response); };
+
+BMSPush.retrieveSubscriptions(function(tags) {
+	alert(tags);
+}, failure);
+
+```
+
+#### Unsubscribing from tags
+
+The `unsubscribe()` API will remove the device subscription from the list tags.
+
+Use the following code snippets to unsubsribe from tags
+
+```
+var success = function(response) { console.log("Success: " + response); };
+var failure = function(response) { console.log("Error: " + response); };
+
+var tag = "YourTag";
+BMSPush.unsubscribe(tag, success, failure);
+
+```
+
+
+### Notification Options
+
+#### Enable Interactive push notifications
+
+To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
+
+```
 var options ={"categories":{
                       "Category_Name1":[
                         {
@@ -265,119 +400,31 @@ var options ={"categories":{
                           "actionName":"actionName_2",
                           "IconName":"IconName_2"
                         }
-                      ],
-                    "devieID":"mydeviceId"
+                      ]
                   };
 
 BMSPush.initialize(appGUID, clientSecret, options);
-
-
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
-
-
-// Register device for push notification without UserId
-var options = {};
-BMSPush.registerDevice(options, success, failure);
-
-// Register device for push notification with UserId
-var options = {"userId": "Your User Id value"};
-BMSPush.registerDevice(options, success, failure);
 ```
 
-You can access the contents of the success response parameter in Javascript using `JSON.parse`:
+#### Adding custom DeviceId for registration
 
-```Javascript
-var token = JSON.parse(response).token
+To send `DeviceId` use the `options` parameter in `initialize method` of `BMSPush` class.
+
+```
+var options ={
+  "devieID":"mydeviceId"
+};
+
+BMSPush.initialize(appGUID, clientSecret, options);
 ```
 
-Available keys |
---- |
-token |
-userId |
-deviceId |
+## Samples and Videos
 
-To unregister for push notifications, simply call the following:
+* Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
-```Javascript
-BMSPush.unregisterDevice(success, failure);
-```
+* Video Tutorials Available here - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
 
-#### Retrieving Tags
-
-In the following examples, the function parameter is a success callback that receives an array of tags. The second parameter is a callback function called on error.
-
-To retrieve an array of tags to which the user is currently subscribed, use the following Javascript function:
-
-```Javascript
-BMSPush.retrieveSubscriptions(function(tags) {
-	alert(tags);
-}, failure);
-```
-
-To retrieve an array of tags that are available to subscribe, use the following Javascript function:
-
-```Javascript
-BMSPush.retrieveAvailableTags(function(tags) {
-	alert(tags);
-}, failure);
-```
-
-#### Subscribe and Unsubscribe to/from Tags
-
-```Javascript
-var tag = "YourTag";
-BMSPush.subscribe(tag, success, failure);
-BMSPush.unsubscribe(tag, success, failure);
-```
-
-### Receiving a Notification
-
-```Javascript
-var handleNotificationCallback = function(notification) {
-	// notification is a JSON object
-	alert(notification.message);
-}
-
-BMSPush.registerNotificationsCallback(handleNotificationCallback);
-```
-
-The following table describes the properties of the notification object:
-
-Property | Description
---- | ---
-message | Push notification message text
-payload | JSON object containing additional notification payload.
-sound | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container (iOS only).
-badge | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0 (iOS only).
-action-loc-key | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View” (iOS only).
-
-Example Notification structure:
-
-```Javascript
-// iOS
-notification = {
-	message: "Something has happened",
-	payload: {
-		customProperty:12345
-	},
-	sound: "mysound.mp3",
-	badge: 7,
-	action-loc-key: "Click me"
-}
-
-// Android
-notification = {
-	message: "Something has happened",
-	payload: {
-		customProperty:12345
-	},
-	id: <id>,
-	url: <url>
-}
-```
-
-## Release Notes
+=======================
 
 Copyright 2016-17 IBM Corp.
 
