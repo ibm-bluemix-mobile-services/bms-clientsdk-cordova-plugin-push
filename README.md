@@ -19,7 +19,7 @@ The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/
   - [Adding the Cordova Bluemix Push plugin](#adding-the-cordova-bluemix-push-plugin)
 - [Setup Client Application](#setup-client-application)
   - [Setup App environments](#setup-app-environments)
-    - [iOS App](#ios_app)
+    - [iOS App](#ios-app)
     - [Android App](#android-app)
   - [Initialize](#initialize)
     - [Initializing the Core Plugin](#initializing-the-core-plugin)
@@ -129,16 +129,13 @@ cordova plugin list
 
   ```
   #import "[your-project-name]-Swift. h"
-
   ```
-
-  If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
+  If your project name has spaces or hyphens, replace them with underscores in the import statement. Example,
 
   ```
   // Project name is "Test Project" or "Test-Project"
 
   #import "Test_Project-Swift.h"
-
   ```
 
 2. Add the code below to your application delegate,
@@ -184,23 +181,21 @@ Download your Firebase google-services.json for android, and place them in the r
 
 Go to `[your-app-name]/platforms/android`,
 
-1.) Open file `build.gradle` (Path : platform > android > build.gradle)
+1) Open file `build.gradle` (Path : platform > android > build.gradle)
 
-2.) find `buildscript` text in `build.gradle` file.
+2) find `buildscript` text in `build.gradle` file.
 
-3.) There you will find one classpath line, after that line, please add this line ,
+3) There you will find one classpath line, after that line, please add this line ,
 
-	```
-  classpath 'com.google.gms:google-services:3.0.0'
+```
+classpath 'com.google.gms:google-services:3.0.0'
+```
 
-  ```
+4) Then find "dependencies" .Select that dependencies where you have text `compile` and where that dependecies is getting ended, just after that, add this line :
 
-4.) Then find "dependencies" .Select that dependencies where you have text `compile` and where that dependecies is getting ended, just after that, add this line :
-
-  ```
-  	apply plugin: 'com.google.gms.google-services'
-
-  ```
+```
+	apply plugin: 'com.google.gms.google-services'
+```
 
 ### Initialize
 
