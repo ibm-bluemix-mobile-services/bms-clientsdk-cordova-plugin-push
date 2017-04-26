@@ -211,16 +211,15 @@ onDeviceReady: function() {
 ```
 For the region pass one of the following ,
 
-* REGION_US_SOUTH // ".ng.bluemix.net";
-* REGION_UK //".eu-gb.bluemix.net";
-* REGION_SYDNEY // ".au-syd.bluemix.net";
+* `REGION_US_SOUTH` // ".ng.bluemix.net";
+* `REGION_UK` //".eu-gb.bluemix.net";
+* `REGION_SYDNEY` // ".au-syd.bluemix.net";
 
 For example,
 
-```
-BMSClient.initialize(BMSClient.REGION_US_SOUTH);
-
-```
+  ```
+  BMSClient.initialize(BMSClient.REGION_US_SOUTH);
+  ```
 
 #### Initializing the Push Plugin
 
@@ -250,27 +249,25 @@ BMSPush.initialize(appGUID,clientSecret,options);
 
 To register without userId use the following pattern
 
-```
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
+  ```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
 
-var options = {};
-BMSPush.registerDevice(options, success, failure);
-
-```
+  var options = {};
+  BMSPush.registerDevice(options, success, failure);
+  ```
 
 #### Register With UserId
 
 The `userId` can be specified while registering the device with Push Notifications service. The register method will accept one more parameter - `userId`
 
-```
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
+  ```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
 
-var options = {"userId": "Your User Id value"};
-BMSPush.registerDevice(options, success, failure);
-
-```
+  var options = {"userId": "Your User Id value"};
+  BMSPush.registerDevice(options, success, failure);
+  ```
 
 ##### userId
 
@@ -283,12 +280,11 @@ BMSPush.registerDevice(options, success, failure);
 
 Use the following code snippets to unregister the device from push notification service instance
 
-```
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
-BMSPush.unregisterDevice(options, success, failure);
-
-```
+  ```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
+  BMSPush.unregisterDevice(options, success, failure);
+  ```
 
 #### Unregistering the Device from UserId
 
@@ -299,15 +295,14 @@ To unregister from the `UserId` based registration you have to call the registra
 
 Add the following code snippet to receive push notification call back.
 
-```
-var handleNotificationCallback = function(notification) {
-	// notification is a JSON object
-	alert(notification.message);
-}
+  ```
+  var handleNotificationCallback = function(notification) {
+  	// notification is a JSON object
+  	alert(notification.message);
+  }
 
-BMSPush.registerNotificationsCallback(handleNotificationCallback);
-
-```
+  BMSPush.registerNotificationsCallback(handleNotificationCallback);
+  ```
 
 ### Push Notification service tags
 
@@ -320,14 +315,13 @@ that are sent for that tag.
 Use the following code snippets into your Swift mobile application to get a list of tags to which the
 device can subscribe.
 
-```
-var failure = function(response) { console.log("Error: " + response); };
+  ```
+  var failure = function(response) { console.log("Error: " + response); };
 
-BMSPush.retrieveAvailableTags(function(tags) {
-	alert(tags);
-}, failure);
-
-```
+  BMSPush.retrieveAvailableTags(function(tags) {
+  	alert(tags);
+  }, failure);
+  ```
 
 #### Subscribe to tags
 
@@ -336,14 +330,13 @@ that are sent for that tag.
 
 Use the following code snippets into your Swift mobile application to subscribe a list of tags.
 
-```
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
+  ```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
 
-var tag = "YourTag";
-BMSPush.subscribe(tag, success, failure);
-
-```
+  var tag = "YourTag";
+  BMSPush.subscribe(tag, success, failure);
+  ```
 
 #### Retrieve Subscribed tags
 
@@ -351,14 +344,13 @@ The `retrieveSubscriptions()` API will return the list of tags to which the devi
 
 Use the following code snippets into your Swift mobile application to get the  subscription list.
 
-```
-var failure = function(response) { console.log("Error: " + response); };
+  ```
+  var failure = function(response) { console.log("Error: " + response); };
 
-BMSPush.retrieveSubscriptions(function(tags) {
-	alert(tags);
-}, failure);
-
-```
+  BMSPush.retrieveSubscriptions(function(tags) {
+  	alert(tags);
+  }, failure);
+  ```
 
 #### Unsubscribing from tags
 
@@ -366,14 +358,13 @@ The `unsubscribe()` API will remove the device subscription from the list tags.
 
 Use the following code snippets to unsubsribe from tags
 
-```
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
+  ```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
 
-var tag = "YourTag";
-BMSPush.unsubscribe(tag, success, failure);
-
-```
+  var tag = "YourTag";
+  BMSPush.unsubscribe(tag, success, failure);
+  ```
 
 
 ### Notification Options
@@ -382,36 +373,36 @@ BMSPush.unsubscribe(tag, success, failure);
 
 To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object.  The following is a sample code to enable interactive notifications.
 
-```
-var options ={"categories":{
-                      "Category_Name1":[
-                        {
-                          "IdentifierName":"IdentifierName_1",
-                          "actionName":"actionName_1",
-                          "IconName":"IconName_1"
-                        },
-                        {
-                          "IdentifierName":"IdentifierName_2",
-                          "actionName":"actionName_2",
-                          "IconName":"IconName_2"
-                        }
-                      ]
-                  };
+  ```
+  var options ={"categories":{
+                        "Category_Name1":[
+                          {
+                            "IdentifierName":"IdentifierName_1",
+                            "actionName":"actionName_1",
+                            "IconName":"IconName_1"
+                          },
+                          {
+                            "IdentifierName":"IdentifierName_2",
+                            "actionName":"actionName_2",
+                            "IconName":"IconName_2"
+                          }
+                        ]
+                    };
 
-BMSPush.initialize(appGUID, clientSecret, options);
-```
+  BMSPush.initialize(appGUID, clientSecret, options);
+  ```
 
 #### Adding custom DeviceId for registration
 
 To send `DeviceId` use the `options` parameter in `initialize method` of `BMSPush` class.
 
-```
-var options ={
-  "devieID":"mydeviceId"
-};
+  ```
+  var options ={
+    "devieID":"mydeviceId"
+  };
 
-BMSPush.initialize(appGUID, clientSecret, options);
-```
+  BMSPush.initialize(appGUID, clientSecret, options);
+  ```
 
 ## Samples and Videos
 
