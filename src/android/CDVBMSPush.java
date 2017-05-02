@@ -44,6 +44,12 @@ public class CDVBMSPush extends CordovaPlugin {
 
     private static boolean ignoreIncomingNotifications = false;
 
+    private static String DEVICEID = "deviceId";
+    private static String CATEGORIES = "categories";
+    private static String USERID = "userId";
+    private static String IDENTIFIER_NAME = "IdentifierName";
+    private static String ACTION_NAME = "actionName";
+    private static String ICON_NAME = "IconName";
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
@@ -56,70 +62,24 @@ public class CDVBMSPush extends CordovaPlugin {
 
             String appGUID = args.getString(0);
             String clientSecret = args.getString(1);
+
             if (args.length() > 2 && args.getJSONObject(2).length() > 0){
-                JSONObject clientOptions = args.getJSONObject(2);
-                JSONObject result = clientOptions.getJSONObject("categories");
-                List<MFPPushNotificationCategory> categoryList =  new ArrayList<MFPPushNotificationCategory>();
-                Iterator<String> keys = result.keys();
-                while(keys.hasNext()){
-                    String key = keys.next();
 
-                    JSONArray resultObject = result.getJSONArray(key);
-                    List<MFPPushNotificationButton> actionButtons =  new ArrayList<MFPPushNotificationButton>();
-
-                    for(int i = 0 ; i < resultObject.length() ; i++){
-
-                        JSONObject resul = resultObject.getJSONObject(i);
-                        String identifierName = "";
-                        String actionName = "";
-                        String iconName = "";
-
-                        if(resul.has("IdentifierName")){
-                            identifierName = resul.getString("IdentifierName");
-                          }
-                        if(resul.has("actionName")){
-                            actionName = resul.getString("actionName");
-                        }
-                        if(resul.has("IconName")){
-                            iconName = resul.getString("IconName");
-                        }
-
-                        MFPPushNotificationButton actiondButton = new MFPPushNotificationButton.Builder(identifierName)
-                                .setIcon(iconName)
-                                .setLabel(actionName)
-                                .build();
-
-                        actionButtons.add(actiondButton);
-
-                    }
-                    MFPPushNotificationCategory category = new MFPPushNotificationCategory.Builder(key).setButtons(actionButtons).build();
-                    categoryList.add(category);
-                }
-
-
-                MFPPushNotificationOptions options = new MFPPushNotificationOptions();
-                options.setInteractiveNotificationCategories(categoryList);
-                if (clientOptions.has("deviceId")){
-                    if (!(clientOptions.getString("deviceId").equals(""))){
-                        options.setDeviceid(clientOptions.getString("deviceId"));
-                    }
-                }
+                MFPPushNotificationOptions options = getOptions(args);
                 this.initializePush(appGUID,clientSecret,options);
-
 
             }else {
                 this.initializePush(appGUID,clientSecret);
-
             }
 
 
             return true;
         }else if("registerDevice".equals(action)) {
             JSONObject settings = args.getJSONObject(0);
-            if(!settings.has("userId")){
+            if(!settings.has(USERID)){
                 this.registerDevice(callbackContext);
             }else{
-                String userId = settings.getString("userId");
+                String userId = settings.getString(USERID);
                 this.registerDeviceWithUserId(userId,callbackContext);
             }
             return true;
@@ -440,5 +400,59 @@ public class CDVBMSPush extends CordovaPlugin {
         if (!ignoreIncomingNotifications && MFPPush.getInstance() != null) {
             MFPPush.getInstance().hold();
         }
+    }
+
+    private MFPPushNotificationOptions getOptions(JSONArray args) throws JSONException {
+
+        MFPPushNotificationOptions options = new MFPPushNotificationOptions();
+        JSONObject clientOptions = args.getJSONObject(2);
+        if (clientOptions.has(CATEGORIES) && (clientOptions.optJSONObject(CATEGORIES) != null)){
+            JSONObject result = clientOptions.getJSONObject(CATEGORIES);
+            List<MFPPushNotificationCategory> categoryList =  new ArrayList<MFPPushNotificationCategory>();
+            Iterator<String> keys = result.keys();
+            while(keys.hasNext()){
+                String key = keys.next();
+
+                JSONArray resultObject = result.getJSONArray(key);
+                List<MFPPushNotificationButton> actionButtons =  new ArrayList<MFPPushNotificationButton>();
+
+                for(int i = 0 ; i < resultObject.length() ; i++){
+
+                    JSONObject resultJson = resultObject.getJSONObject(i);
+                    String identifierName = "";
+                    String actionName = "";
+                    String iconName = "";
+
+                    if(resultJson.has(IDENTIFIER_NAME)){
+                        identifierName = resultJson.getString(IDENTIFIER_NAME);
+                    }
+                    if(resultJson.has(ACTION_NAME)){
+                        actionName = resultJson.getString(ACTION_NAME);
+                    }
+                    if(resultJson.has(ICON_NAME)){
+                        iconName = resultJson.getString(ICON_NAME);
+                    }
+
+                    MFPPushNotificationButton actiondButton = new MFPPushNotificationButton.Builder(identifierName)
+                            .setIcon(iconName)
+                            .setLabel(actionName)
+                            .build();
+
+                    actionButtons.add(actiondButton);
+
+                }
+                MFPPushNotificationCategory category = new MFPPushNotificationCategory.Builder(key).setButtons(actionButtons).build();
+                categoryList.add(category);
+            }
+            options.setInteractiveNotificationCategories(categoryList);
+        }
+
+        if (clientOptions.has(DEVICEID) && (clientOptions.optString(DEVICEID) != null)){
+            if (!(clientOptions.getString(DEVICEID).equals(""))){
+                options.setDeviceid(clientOptions.getString(DEVICEID));
+            }
+        }
+
+        return options;
     }
 }
