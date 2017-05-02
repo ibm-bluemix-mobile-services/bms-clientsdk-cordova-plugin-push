@@ -285,6 +285,10 @@ var options = {"userId": "Your User Id value"};
 BMSPush.registerDevice(options, success, failure);
 ```
 
+**IMPORTANT: Deprecated this way of adding Category in the Initialize method :- var category = {"Category_Name":[{"IdentifierName_1":"actionName_1"},{"IdentifierName_2":"actionName_2"}]}
+.**
+
+
 You can access the contents of the success response parameter in Javascript using `JSON.parse`:
 
 ```Javascript
