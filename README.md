@@ -252,7 +252,7 @@ var clientSecret = "Your Push service clientSecret";
 var options = {}
 BMSPush.initialize(appGUID,clientSecret,options);
 
-// Initialize for iOS actionable push notifications and custom deviceID
+// Initialize for iOS actionable push notifications and custom deviceId
 var options ={"categories":{
                       "Category_Name1":[
                         {
@@ -265,8 +265,8 @@ var options ={"categories":{
                           "actionName":"actionName_2",
                           "IconName":"IconName_2"
                         }
-                      ],
-                    "devieID":"mydeviceId"
+                      ]},
+                    "deviceId":"mydeviceId"
                   };
 
 BMSPush.initialize(appGUID, clientSecret, options);
