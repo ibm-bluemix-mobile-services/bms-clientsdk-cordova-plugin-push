@@ -105,8 +105,6 @@ import UserNotificationsUI
                         }
                     }else{
                         for name in bmsNotifOptions {
-                            print(name.key)
-                            // print(((name.value) as! Dictionary).values)
 
                             let identifiers:NSArray = (name.value) as! NSArray
                             var actionArray = [BMSPushNotificationAction]()
@@ -528,8 +526,6 @@ import UserNotificationsUI
                         }
                     }else{
                             for name in bmsNotifOptions {
-                                print(name.key)
-                                // print(((name.value) as! Dictionary).values)
 
                                 let identifiers:NSArray = (name.value) as! NSArray
                                 var actionArray = [BMSPushNotificationAction]()
