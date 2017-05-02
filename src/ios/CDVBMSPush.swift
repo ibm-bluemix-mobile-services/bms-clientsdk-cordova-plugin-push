@@ -72,7 +72,7 @@ import UserNotificationsUI
                 }
 
                 if bmsNotifOptions.count > 0{
-                    
+
                     var categoryArray = [BMSPushNotificationActionCategory]()
                     let notifOptions = BMSPushClientOptions();
 
@@ -83,19 +83,19 @@ import UserNotificationsUI
                             self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
                             return
                         }
-                        
-                        
+
+
                         if(result.count > 0){
                             for name in result{
-                                
+
                                 let identifiers:NSArray = (name.value) as! NSArray
                                 var actionArray = [BMSPushNotificationAction]()
                                 for identifier in identifiers {
-                                    
+
                                     let resul = identifier as? NSDictionary
                                     let identifierName = resul?.value(forKey: "IdentifierName");
                                     let actionName = resul?.value(forKey: "actionName");
-                                    
+
                                     actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle:actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background))
                                 }
                                 let category = BMSPushNotificationActionCategory(identifierName: name.key , buttonActions: actionArray)
@@ -107,28 +107,28 @@ import UserNotificationsUI
                         for name in bmsNotifOptions {
                             print(name.key)
                             // print(((name.value) as! Dictionary).values)
-                            
+
                             let identifiers:NSArray = (name.value) as! NSArray
                             var actionArray = [BMSPushNotificationAction]()
                             for identifier in identifiers {
                                 actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background))
                             }
-                            
+
                             let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
-                            
+
                             let notifOptions = BMSPushClientOptions(categoryName: [category])
-                            
+
                             let push = BMSPushClient.sharedInstance;
-                            
+
                             push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret, options: notifOptions);
-                            
+
                             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "")
                             // call success callback
                             self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
                         }
                     }
                     if(bmsNotifOptions.count == 2){
-                        guard let deviceId = bmsNotifOptions.value(forKey:"devieID") as? String else {
+                        guard let deviceId = bmsNotifOptions.value(forKey:"deviceId") as? String else {
                             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid BMSPush Options")
                             // call success callback
                             self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
@@ -477,7 +477,7 @@ import UserNotificationsUI
     func initialize(command: CDVInvokedUrlCommand) {
         self.commandDelegate.runInBackground({
             if command.arguments.count > 2 && (command.arguments[2] as! NSDictionary).count > 0{
-                
+
                 guard let appGUID  = command.arguments[0] as? String else {
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
                     // call success callback
@@ -490,87 +490,87 @@ import UserNotificationsUI
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     return
                 }
-                
+
                 guard let bmsNotifOptions  = command.arguments[2] as? NSDictionary else {
-                    
+
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid BMSPush Options.")
                     // call success callback
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     return
                 }
-                
+
                 if bmsNotifOptions.count > 0{
                     var categoryArray = [BMSPushNotificationActionCategory]()
                     let notifOptions = BMSPushClientOptions();
-                    
+
                     if let result = bmsNotifOptions["categories"] as? NSDictionary{
-                        
+
                         if(result.count > 0){
-                            
+
                             for name in result {
-                                
+
                                 let identifiers:NSArray = (name.value) as! NSArray
                                 var actionArray = [BMSPushNotificationAction]()
                                 for identifier in identifiers {
-                                    
+
                                     let resul = identifier as? NSDictionary
                                     let identifierName = resul?.valueForKey("IdentifierName");
                                     let actionName = resul?.valueForKey("actionName");
-                                    
+
                                     actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle: actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background))
                                 }
-                                
+
                                 let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
                                 categoryArray.append(category)
                             }
                             notifOptions.setInteractiveNotificationCategories(categoryName: categoryArray)
-                            
+
                         }
                     }else{
                             for name in bmsNotifOptions {
                                 print(name.key)
                                 // print(((name.value) as! Dictionary).values)
-                                
+
                                 let identifiers:NSArray = (name.value) as! NSArray
                                 var actionArray = [BMSPushNotificationAction]()
                                 for identifier in identifiers {
                                     actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background))
                                 }
-                                
+
                                 let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
-                                
+
                                 let notifOptions = BMSPushClientOptions(categoryName: [category])
-                                
+
                                 //use category to handle objective-c exception
                                 BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID, clientSecret:clientSecret,options:notifOptions)
-                                
+
                                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
                                 // call success callback
                                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                             }
-                            
+
                     }
-                    
-                    if bmsNotifOptions.count == 2 ,let deviceId = bmsNotifOptions["devieID"] as? String{
+
+                    if bmsNotifOptions.count == 2 ,let deviceId = bmsNotifOptions["deviceId"] as? String{
                         notifOptions.setDeviceIdValue(deviceId)
                     }
-                    
-                    
+
+
                     //use category to handle objective-c exception
                     BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID, clientSecret:clientSecret,options:notifOptions)
-                    
+
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
                     // call success callback
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
-                    
-                    
+
+
                 }else{
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid BMSPush Options.")
                     // call success callback
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     return
                 }
-                
+
             }else{
                 guard let appGUID  = command.arguments[0] as? String else {
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
@@ -584,10 +584,10 @@ import UserNotificationsUI
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     return
                 }
-                
+
                 //use category to handle objective-c exception
                 BMSPushClient.sharedInstance.initializeWithAppGUID(appGUID:appGUID, clientSecret:clientSecret)
-                
+
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: "SuccesFully initialized")
                 // call success callback
                 self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
