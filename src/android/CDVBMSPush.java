@@ -99,9 +99,9 @@ public class CDVBMSPush extends CordovaPlugin {
 
                 MFPPushNotificationOptions options = new MFPPushNotificationOptions();
                 options.setInteractiveNotificationCategories(categoryList);
-                if (clientOptions.has("devieID")){
-                    if (!(clientOptions.getString("devieID").equals(""))){
-                        options.setDeviceid(clientOptions.getString("devieID"));
+                if (clientOptions.has("deviceId")){
+                    if (!(clientOptions.getString("deviceId").equals(""))){
+                        options.setDeviceid(clientOptions.getString("deviceId"));
                     }
                 }
                 this.initializePush(appGUID,clientSecret,options);
