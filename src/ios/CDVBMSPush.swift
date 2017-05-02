@@ -92,9 +92,9 @@ import UserNotificationsUI
                                 var actionArray = [BMSPushNotificationAction]()
                                 for identifier in identifiers {
 
-                                    let resul = identifier as? NSDictionary
-                                    let identifierName = resul?.value(forKey: "IdentifierName");
-                                    let actionName = resul?.value(forKey: "actionName");
+                                    let resultJson = identifier as? NSDictionary
+                                    let identifierName = resultJson?.value(forKey: "IdentifierName");
+                                    let actionName = resultJson?.value(forKey: "actionName");
 
                                     actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle:actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background))
                                 }
@@ -513,9 +513,9 @@ import UserNotificationsUI
                                 var actionArray = [BMSPushNotificationAction]()
                                 for identifier in identifiers {
 
-                                    let resul = identifier as? NSDictionary
-                                    let identifierName = resul?.valueForKey("IdentifierName");
-                                    let actionName = resul?.valueForKey("actionName");
+                                    let resultJson = identifier as? NSDictionary
+                                    let identifierName = resultJson?.valueForKey("IdentifierName");
+                                    let actionName = resultJson?.valueForKey("actionName");
 
                                     actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle: actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background))
                                 }
