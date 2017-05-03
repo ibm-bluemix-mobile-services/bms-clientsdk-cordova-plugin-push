@@ -193,19 +193,19 @@ Go to `[your-app-name]/platforms/android`,
 3.) There you will find one classpath line, after that line, please add this line :
 
 	classpath 'com.google.gms:google-services:3.0.0'
-	
+
 4.) Then find "dependencies" .Select that dependencies where you have text `compile` and where that dependecies is getting ended, just after that, add this line :
 
 	apply plugin: 'com.google.gms.google-services'
-	
+
 
 5.) Prepare and build your cordova Android project
 
 	cordova prepare android
 	cordova build android
-	
+
 6.) Run your Cordova android project either opening in android studion or using cordova CLI
-    
+
     cordova run android
 
 
@@ -249,12 +249,27 @@ var appGUID = "Your Push service appGUID";
 var clientSecret = "Your Push service clientSecret";
 
 // Initialize for normal push notifications
-var category = {}
-BMSPush.initialize(appGUID,clientSecret,category);
+var options = {}
+BMSPush.initialize(appGUID,clientSecret,options);
 
-// Initialize for iOS actionable push notifications
-var category = {"Category_Name":[{"IdentifierName_1":"actionName_1"},{"IdentifierName_2":"actionName_2"}]}
-BMSPush.initialize(appGUID,clientSecret,category);
+// Initialize for iOS actionable push notifications and custom deviceId
+var options ={"categories":{
+                      "Category_Name1":[
+                        {
+                          "IdentifierName":"IdentifierName_1",
+                          "actionName":"actionName_1",
+                          "IconName":"IconName_1"
+                        },
+                        {
+                          "IdentifierName":"IdentifierName_2",
+                          "actionName":"actionName_2",
+                          "IconName":"IconName_2"
+                        }
+                      ]},
+                    "deviceId":"mydeviceId"
+                  };
+
+BMSPush.initialize(appGUID, clientSecret, options);
 
 
 var success = function(response) { console.log("Success: " + response); };
@@ -267,8 +282,12 @@ BMSPush.registerDevice(options, success, failure);
 
 // Register device for push notification with UserId
 var options = {"userId": "Your User Id value"};
-BMSPush.registerDevice(options,success, failure);
+BMSPush.registerDevice(options, success, failure);
 ```
+
+**IMPORTANT: Deprecated this way of adding Category in the Initialize method :- var category = {"Category_Name":[{"IdentifierName_1":"actionName_1"},{"IdentifierName_2":"actionName_2"}]}
+.**
+
 
 You can access the contents of the success response parameter in Javascript using `JSON.parse`:
 
