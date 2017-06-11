@@ -1,4 +1,4 @@
-Bluemix Push Notifications Cordova Plugin Push SDK
+Bluemix Push Notifications Cordova SDK
 ===================================================
 
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
@@ -245,8 +245,7 @@ To receive push notification call back, add the following code snippet:
 ### Retrieve available tags
 
 The `retrieveAvailableTags()` API returns the list of tags to which the device
-can subscribe. After the device is subscribes to a particular tag, the device can receive notifications
-that are sent for that tag.
+can subscribe. After the device is subscribes to a particular tag, the device can receive notifications that are sent for that tag.
 
 Add the following code snippets to your Swift mobile application to get a list of tags to which the device can subscribe:
 
@@ -296,11 +295,11 @@ Use the following code snippets to unsubsribe from tags:
 ```
 
 
-## Notification Options
+## Notification options
 
 The following notification options are supported.
 
-### Interactive push notifications
+### Interactive notifications
 
 To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object. For example:
 
@@ -335,9 +334,9 @@ To send `DeviceId`, use the `options` parameter in `initialize method` of `BMSPu
 
 ## Samples and Videos
 
-* Please visit for samples - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
+* For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
-* Video Tutorials Available here - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+* For video tutorials, visit - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
 
 =======================
 
