@@ -381,6 +381,68 @@ notification = {
 }
 ```
 
+## Adding Auto signing in iOS
+
+To set signing credentials iOS create file `build.json` in your app root. Follow the below patter,
+
+Xcode 8 and iOS 10:
+
+```
+{
+    "ios": {
+        "debug": {
+            "codeSignIdentity": "iPhone Developer",
+            "developmentTeam": "FG35JLLMXX4A",
+            "packageType": "development",
+            "buildFlag": [
+                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+                "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
+                "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+            ]
+        },
+        "release": {
+            "codeSignIdentity": "iPhone Developer",
+            "developmentTeam": "FG35JLLMXX4A",
+            "packageType": "app-store",
+            "buildFlag": [
+                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+                "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
+                "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+            ]
+        }
+    }
+}
+```
+
+Earlier versions:
+
+```
+{
+    "ios": {
+        "debug": {
+            "codeSignIdentity": "iPhone Development",
+            "provisioningProfile": "926c2bd6-8de9-4c2f-8407-1016d2d12954",
+            "developmentTeam": "FG35JLLMXX4A",
+            "packageType": "development"
+        },
+        "release": {
+            "codeSignIdentity": "iPhone Distribution",
+            "provisioningProfile": "70f699ad-faf1-4adE-8fea-9d84738fb306",
+            "developmentTeam": "FG35JLLMXX4A",
+            "packageType": "app-store"
+        }
+    }
+}
+```
+
+Change teh bundle identifier in `config.xml` file.
+After that to build ios use the `--buildConfig` flag in `cordova build` command
+
+```
+  cordova build ios --buildConfig
+```
+
+ 
 ## Release Notes
 
 Copyright 2016-17 IBM Corp.
