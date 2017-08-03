@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="bms-push" version="3.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="bms-push" version="3.2.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>BMSPush</name>
 
     <dependency id="bms-core"/>
@@ -78,6 +78,18 @@
                 <param name="ios-package" value="CDVBMSPush" />
             </feature>
 
+        </config-file>
+        <config-file target="*-Info.plist" parent="UIBackgroundModes">
+            <array>
+                <string>remote-notification</string>
+            </array>
+        </config-file>
+        
+        <config-file target="*-Debug.plist" parent="aps-environment">
+            <string>development</string>
+        </config-file>
+        <config-file target="*-Release.plist" parent="aps-environment">
+            <string>production</string>
         </config-file>
         <source-file src="src/ios/CDVBMSPush.swift" />
         <header-file src="src/ios/Bridging-Header.h" />
