@@ -103,6 +103,15 @@ var BMSPush = function() {
 	this.registerNotificationsCallback = function(callback) {
 		cordova.exec(callback, failure, BMSPushClientString , "registerNotificationsCallback", []);
 	};
+
+	/**
+	 * [setNotificationStatusListener description]
+	 * 
+	 * @param callback [description]
+	 */
+	this.setNotificationStatusListener = function(callback) {
+    	cordova.exec(callback, failure, BMSPushClientString , "setNotificationStatusListener", []);
+    };
 };
 
 module.exports = new BMSPush();

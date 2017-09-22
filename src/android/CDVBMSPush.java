@@ -16,6 +16,8 @@ import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationButton;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationCategory;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationOptions;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationStatus;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationStatusListener;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPSimplePushNotification;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
@@ -39,6 +41,7 @@ import java.lang.*;
 public class CDVBMSPush extends CordovaPlugin {
 
     private static CallbackContext notificationCallback;
+    private static CallbackContext statusChangeCallback;
 
     private static MFPPushNotificationListener notificationListener;
 
@@ -107,6 +110,9 @@ public class CDVBMSPush extends CordovaPlugin {
             return true;
         } else if("registerNotificationsCallback".equals(action)) {
             this.registerNotificationsCallback(callbackContext);
+            return true;
+        }else if("setNotificationStatusListener".equals(action)) {
+            this.setNotificationStatusListener(callbackContext);
             return true;
         }
         return false;
@@ -365,6 +371,36 @@ public class CDVBMSPush extends CordovaPlugin {
         } else {
             callbackContext.error("Error: Called registerNotificationsCallback() after IgnoreIncomingNotifications was set");
         }
+    }
+
+    private void setNotificationStatusListener(final CallbackContext callbackContext) {
+        
+        statusChangeCallback = callbackContext;
+        
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                
+                MFPPush.getInstance().setNotificationStatusListener(new MFPPushNotificationStatusListener() {
+                    @Override
+                    public void onStatusChange(String messageId, MFPPushNotificationStatus status) {
+                        // Handle status change
+                        try {
+                            JSONObject notification = new JSONObject();
+                            notification.put("messageId", messageId);
+                            notification.put("status", status.toString());
+                            PluginResult result = new PluginResult(PluginResult.Status.OK, notification);
+                            result.setKeepCallback(true);
+                            statusChangeCallback.sendPluginResult(result);
+                        }catch(JSONException e) {
+                            PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.toString());
+                            result.setKeepCallback(true);
+                            statusChangeCallback.sendPluginResult(result);
+                        }
+                    }
+                });
+            }
+        });
+        
     }
 
     /**

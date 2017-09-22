@@ -346,6 +346,15 @@ var handleNotificationCallback = function(notification) {
 BMSPush.registerNotificationsCallback(handleNotificationCallback);
 ```
 
+### Receiving a Notification Status
+
+```Javascript
+ var showNotification = function(notif) {
+          alert(JSON.stringify(notif));
+        };
+ BMSPush.setNotificationStatusListener(showNotification);
+```
+
 The following table describes the properties of the notification object:
 
 Property | Description
