@@ -141,6 +141,17 @@ Add the code below to your application delegate:
     }
   -----------
 }
+
+//HNADLE THE NOTIFICTAION CLICK
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
+    
+    NSMutableDictionary *userInf = [[NSMutableDictionary alloc] init];
+    [userInf addEntriesFromDictionary:userInfo];
+    [userInf setValue:identifier forKey:@"identifierName"];
+    [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInf];
+    completionHandler();
+    
+}
 ```
 
 #### Swift:
@@ -177,6 +188,13 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
     CDVBMSPush.sharedInstance().didReceiveRemoteNotificationOnLaunchWithLaunchOptions(launchOptions)
   }
   --------
+}
+
+func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+ 
+    var userIf:[AnyHashable : Any] = userInfo
+    userIf["identifierName"] = identifier
+    CDVBMSPush.sharedInstance().didReceiveRemoteNotificationWithNotification(userInfo)
 }
 ```
 
@@ -356,6 +374,17 @@ BMSPush.registerNotificationsCallback(handleNotificationCallback);
 ```
 
 The following table describes the properties of the notification object:
+
+### Handling Notification Actions Click
+ 
+  To identify which action clicked use the following,
+
+```
+var showNotification = function(notif) {
+    var identifierName = notif["identifierName"];
+    alert(identifierName);
+};
+```
 
 Property | Description
 --- | ---

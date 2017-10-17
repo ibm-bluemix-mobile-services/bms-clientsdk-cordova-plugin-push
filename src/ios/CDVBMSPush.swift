@@ -96,7 +96,7 @@ import UserNotificationsUI
                                     let identifierName = resultJson?.value(forKey: "IdentifierName");
                                     let actionName = resultJson?.value(forKey: "actionName");
 
-                                    actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle:actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background))
+                                    actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle:actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.foreground))
                                 }
                                 let category = BMSPushNotificationActionCategory(identifierName: name.key , buttonActions: actionArray)
                                 categoryArray.append(category)
@@ -109,7 +109,7 @@ import UserNotificationsUI
                             let identifiers:NSArray = (name.value) as! NSArray
                             var actionArray = [BMSPushNotificationAction]()
                             for identifier in identifiers {
-                                actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.background))
+                                actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.foreground))
                             }
 
                             let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
@@ -431,6 +431,10 @@ import UserNotificationsUI
 
         notif["action-loc-key"] = ((notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "action-loc-key") as AnyObject?
 
+        if let actionName = notification?.value(forKey: "identifierName") {
+            notif["identifierName"] = actionName as! String
+        }
+        
         if (CDVBMSPush.sharedInstance.notifCallbackId == nil) {
             return
         }
@@ -515,7 +519,7 @@ import UserNotificationsUI
                                     let identifierName = resultJson?.valueForKey("IdentifierName");
                                     let actionName = resultJson?.valueForKey("actionName");
 
-                                    actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle: actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background))
+                                    actionArray.append(BMSPushNotificationAction(identifierName: identifierName as! String, buttonTitle: actionName as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Foreground))
                                 }
 
                                 let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
@@ -530,7 +534,7 @@ import UserNotificationsUI
                                 let identifiers:NSArray = (name.value) as! NSArray
                                 var actionArray = [BMSPushNotificationAction]()
                                 for identifier in identifiers {
-                                    actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Background))
+                                    actionArray.append(BMSPushNotificationAction(identifierName: (identifier as? NSDictionary)?.allKeys.first as! String, buttonTitle: (identifier as? NSDictionary)?.allValues.first as! String, isAuthenticationRequired: false, defineActivationMode: UIUserNotificationActivationMode.Foreground))
                                 }
 
                                 let category = BMSPushNotificationActionCategory(identifierName: name.key as! String, buttonActions: actionArray)
@@ -837,6 +841,9 @@ import UserNotificationsUI
         notif["badge"] = notification?.valueForKey("aps")?.valueForKey("badge")
         notif["action-loc-key"] = notification?.valueForKey("aps")?.valueForKey("alert")?.valueForKey("action-loc-key")
 
+        if let actionName = notification?.valueForKey("identifierName") {
+            notif["identifierName"] = actionName as! String
+        }
         if (CDVBMSPush.sharedInstance.notifCallbackId == nil) {
             return
         }
