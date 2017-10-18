@@ -352,6 +352,7 @@ public class CDVBMSPush extends CordovaPlugin {
 
                                 notification.put("message", message.getAlert());
                                 notification.put("payload", message.getPayload());
+                                notification.put("identifierName", message.actionName);
 
                                 PluginResult result = new PluginResult(PluginResult.Status.OK, notification);
                                 result.setKeepCallback(true);
