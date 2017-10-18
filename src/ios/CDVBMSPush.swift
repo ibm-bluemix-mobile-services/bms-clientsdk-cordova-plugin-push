@@ -432,7 +432,7 @@ import UserNotificationsUI
         notif["action-loc-key"] = ((notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "action-loc-key") as AnyObject?
 
         if let actionName = notification?.value(forKey: "identifierName") {
-            notif["identifierName"] = actionName as! String
+            notif["identifierName"] = actionName as AnyObject
         }
         
         if (CDVBMSPush.sharedInstance.notifCallbackId == nil) {
