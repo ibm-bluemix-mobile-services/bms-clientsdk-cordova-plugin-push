@@ -111,48 +111,48 @@ Choose either of the following steps, based on your platform:
 		  ```
 	2. Add the code below to your application delegate: 
 
-		```
-					//Register device token with IBM Cloud Push Notification Service
-					- (void)application:(UIApplication *)application
-					didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-						[[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-					}
+		 ```
+			//Register device token with IBM Cloud Push Notification Service
+			- (void)application:(UIApplication *)application
+			didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+				[[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+			}
 
-					//Handle error when failed to register device token with APNs
-					- (void)application:(UIApplication*)application
-					didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-						
-						[[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
-					}
+			//Handle error when failed to register device token with APNs
+			- (void)application:(UIApplication*)application
+			didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+				
+				[[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
+			}
 
-					//Handle receiving a remote notification
-					-(void)application:(UIApplication *)application
-					didReceiveRemoteNotification:(NSDictionary *)userInfo
-					fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-						
-						[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
-					}
+			//Handle receiving a remote notification
+			-(void)application:(UIApplication *)application
+			didReceiveRemoteNotification:(NSDictionary *)userInfo
+			fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+				
+				[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
+			}
 
-					//Handle receiving a remote notification on launch
-					- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
-						-----------
-						if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
-						[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
-						}
-						-----------
-					}
+			//Handle receiving a remote notification on launch
+			- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
+				-----------
+				if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
+				[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
+				}
+				-----------
+			}
 
-					//Handle THE NOTIFICTAION CLICK
-					- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
+			//Handle THE NOTIFICTAION CLICK
+			- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
 
-						NSMutableDictionary *userInf = [[NSMutableDictionary alloc] init];
-						[userInf addEntriesFromDictionary:userInfo];
-						[userInf setValue:identifier forKey:@"identifierName"];
-						[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInf];
-						completionHandler();
+				NSMutableDictionary *userInf = [[NSMutableDictionary alloc] init];
+				[userInf addEntriesFromDictionary:userInfo];
+				[userInf setValue:identifier forKey:@"identifierName"];
+				[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInf];
+				completionHandler();
 
-					}
-	  	```
+			}
+	  ```
 
 	3. In the Capabilities, enable `push notifications` and `Background modes`. Under `Background modes` enable the `Remote notification` and `background fetch`.
 
