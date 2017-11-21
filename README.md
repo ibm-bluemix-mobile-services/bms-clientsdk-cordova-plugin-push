@@ -109,8 +109,9 @@ Choose either of the following steps, based on your platform:
 		  // Project name is "Test Project" or "Test-Project"
 		  #import "Test_Project-Swift.h"
 		  ```
-	2. Add the code below to your application delegate:  
-			```
+	2. Add the code below to your application delegate: 
+
+		```
 			//Register device token with IBM Cloud Push Notification Service
 		 	 - (void)application:(UIApplication *)application
 	  	 		didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
@@ -146,7 +147,8 @@ Choose either of the following steps, based on your platform:
 						completionHandler();
 						
 				}
-	  		```
+	  	```
+			
 	3. In the Capabilities, enable `push notifications` and `Background modes`. Under `Background modes` enable the `Remote notification` and `background fetch`.
 
 - For Android App
