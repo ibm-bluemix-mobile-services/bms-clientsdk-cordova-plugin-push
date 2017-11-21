@@ -152,7 +152,7 @@ Choose either of the following steps, based on your platform:
 				completionHandler();
 
 			}
-	  ```
+			```
 
 	3. In the Capabilities, enable `push notifications` and `Background modes`. Under `Background modes` enable the `Remote notification` and `background fetch`.
 
