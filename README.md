@@ -366,7 +366,7 @@ To send `DeviceId`, use the `options` parameter in `initialize method` of `BMSPu
 
 * For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
-* For video tutorials, visit - [IBM Cloud Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+* For video tutorials, visit - [IBM Cloud Push Notifications](https://www.youtube.com/playlist?list=PLTroxxTPN9dIZYn9IU-IOcQePO-u5r0r4)
 
 =======================
 
