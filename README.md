@@ -1,4 +1,4 @@
-Bluemix Push Notifications Cordova SDK
+IBM Cloud Push Notifications Cordova SDK
 ===================================================
 
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
@@ -8,9 +8,9 @@ Bluemix Push Notifications Cordova SDK
 
 [![npm package](https://nodei.co/npm/bms-push.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bms-push/)
 
-The [Bluemix Push Notifications service](https://console.ng.bluemix.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The Push Notifications Cordova Plugin Push SDK enables Cordova apps to receive notifications sent from the service. 
+The [IBM Cloud Push Notifications service](https://console.ng.net/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The Push Notifications Cordova Plugin Push SDK enables Cordova apps to receive notifications sent from the service. 
 
-Ensure that you go through [Bluemix Push Notifications service documentation](https://console.ng.bluemix.net/docs/services/mobilepush/index.html#gettingstartedtemplate) before you start.
+Ensure that you go through [IBM Cloud Push Notifications service documentation](https://console.ng.net/docs/services/mobilepush/index.html#gettingstartedtemplate) before you start.
 
 ## Contents
 
@@ -28,6 +28,7 @@ Ensure that you go through [Bluemix Push Notifications service documentation](ht
   - [Unsubscribing from tags](#unsubscribing-from-tags)
 - [Notification Options](#notification-options)
   - [Interactive notifications](#interactive-notifications)
+	- [Handling interactive notifications click](#handling-interactive-notifications-click)
   - [Adding custom DeviceId for registration](#adding-custom-deviceid-for-registration)
 - [Samples and Videos](#samples-and-videos)
 
@@ -41,7 +42,7 @@ Ensure that you go through [Bluemix Push Notifications service documentation](ht
 
 ## Installation
 
-You need to create a Cordova project and add platforms before adding the Bluemix Push Notifications Cordova Plugin Push SDK. Complete the following steps:
+You need to create a Cordova project and add platforms before adding the IBM Cloud Push Notifications Cordova Plugin Push SDK. Complete the following steps:
 
 1. Create a Cordova application:
 
@@ -75,12 +76,12 @@ You need to create a Cordova project and add platforms before adding the Bluemix
 	
 	Ensure that you use the iOS version specified through this command for the Cordova platform. It is required to build the Cordova app.
 
-3. Add the Cordova Bluemix Push plugin. From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
+3. Add the Cordova IBM Cloud Push plugin. From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
 	```
 	cordova plugin add bms-push
 	```
 
-	This also installs the `Cordova Core plug-in`, which initializes your connection to Bluemix.
+	This also installs the `Cordova Core plug-in`, which initializes your connection to IBM Cloud.
 
 4. From your app root folder, verify that the Cordova `Core plugin` and `Push plugin` were installed successfully, using the command:
 	```
@@ -108,33 +109,51 @@ Choose either of the following steps, based on your platform:
 		  // Project name is "Test Project" or "Test-Project"
 		  #import "Test_Project-Swift.h"
 		  ```
-	2. Add the code below to your application delegate:  
-			```
-			//Register device token with Bluemix Push Notification Service
-		 	 - (void)application:(UIApplication *)application
-	  	 		didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-		  	   [[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-	 		 	}
+	2. Add the code below to your application delegate: 
+
+		 ```
+			//Register device token with IBM Cloud Push Notification Service
+			- (void)application:(UIApplication *)application
+			didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+				[[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+			}
+
 			//Handle error when failed to register device token with APNs
-		  	- (void)application:(UIApplication*)application
-	  			 didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-		  	  [[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
-	 		 }
-	 		//Handle receiving a remote notification
-			  -(void)application:(UIApplication *)application
-	  		didReceiveRemoteNotification:(NSDictionary *)userInfo
-	  		fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	  		[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
-	  			}
-	 		//Handle receiving a remote notification on launch
-			  - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
-	   		 -----------
-	     	 if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
-	          [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
-	     		 }
-	    		-----------
-	 			 }
-	  		```
+			- (void)application:(UIApplication*)application
+			didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
+				
+				[[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
+			}
+
+			//Handle receiving a remote notification
+			-(void)application:(UIApplication *)application
+			didReceiveRemoteNotification:(NSDictionary *)userInfo
+			fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+				
+				[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
+			}
+
+			//Handle receiving a remote notification on launch
+			- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
+				-----------
+				if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
+				[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
+				}
+				-----------
+			}
+
+			//Handle THE NOTIFICTAION CLICK
+			- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
+
+				NSMutableDictionary *userInf = [[NSMutableDictionary alloc] init];
+				[userInf addEntriesFromDictionary:userInfo];
+				[userInf setValue:identifier forKey:@"identifierName"];
+				[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInf];
+				completionHandler();
+
+			}
+			```
+
 	3. In the Capabilities, enable `push notifications` and `Background modes`. Under `Background modes` enable the `Remote notification` and `background fetch`.
 
 - For Android App
@@ -164,6 +183,7 @@ For the region, pass any of the following:
 * `REGION_US_SOUTH` // ".ng.bluemix.net";
 * `REGION_UK` //".eu-gb.bluemix.net";
 * `REGION_SYDNEY` // ".au-syd.bluemix.net";
+* `REGION_GERMANY` // ".eu-de.bluemix.net"
 
 For example:
 ```
@@ -321,6 +341,16 @@ To enable interactive push notifications, the notification action parameters mus
   BMSPush.initialize(appGUID, clientSecret, options);
 ```
 
+###Handling interactive notifications click
+
+To identify which action clicked use the following,
+
+```
+var showNotification = function(notif) {
+    var identifierName = notif["identifierName"];
+    alert(identifierName);
+};
+```
 ### Adding custom DeviceId for registration
 
 To send `DeviceId`, use the `options` parameter in `initialize method` of `BMSPush` class. For example:
@@ -336,7 +366,7 @@ To send `DeviceId`, use the `options` parameter in `initialize method` of `BMSPu
 
 * For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
-* For video tutorials, visit - [Bluemix Push Notifications](https://www.youtube.com/channel/UCRr2Wou-z91fD6QOYtZiHGA)
+* For video tutorials, visit - [IBM Cloud Push Notifications](https://www.youtube.com/playlist?list=PLTroxxTPN9dIZYn9IU-IOcQePO-u5r0r4)
 
 =======================
 
