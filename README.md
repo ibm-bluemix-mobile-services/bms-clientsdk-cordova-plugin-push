@@ -1,4 +1,4 @@
-# IBM Bluemix Mobile Services - Cordova Plugin Push SDK
+# IBM Cloud Mobile Services - Cordova Plugin Push SDK
 
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push)
@@ -7,7 +7,7 @@
 
 [![npm package](https://nodei.co/npm/bms-push.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bms-push/)
 
-Cordova Plugin for the IBM Bluemix Mobile Services Push SDK
+Cordova Plugin for the IBM Cloud Mobile Services Push SDK
 
 ## Installation
 
@@ -17,7 +17,7 @@ You should already have Node.js/npm and the Cordova package installed. If you do
 
 The Cordova library is also required to use this plugin. You can find instructions to install Cordova and set up your Cordova app at [https://cordova.apache.org/#getstarted](https://cordova.apache.org/#getstarted).
 
-## Installing the Cordova Plugin for Bluemix Mobile Services Push SDK
+## Installing the Cordova Plugin for IBM Cloud Mobile Services Push SDK
 
 ### Creating a Cordova application
 
@@ -72,7 +72,7 @@ From your Cordova application root directory, enter the following command to ins
 cordova plugin add bms-push
 ```
 
-This also installs the Cordova Core plug-in, which initializes your connection to Bluemix.
+This also installs the Cordova Core plug-in, which initializes your connection to IBM Cloud.
 
 From your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
 
@@ -86,7 +86,7 @@ cordova plugin list
 
 ### Configuring Your iOS Development Environment
 
-1. Follow the `Configuring Your iOS Development Environment` instructions from [Bluemix Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core#4configuring-your-platform)
+1. Follow the `Configuring Your iOS Development Environment` instructions from [IBM Cloud Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core#4configuring-your-platform)
 
 #### Updating your client application to use the Push SDK
 
@@ -110,7 +110,7 @@ Add the code below to your application delegate:
 #### Objective-C:
 
 ```Objective-C
-// Register device token with Bluemix Push Notification Service
+// Register device token with IBM Cloud Push Notification Service
 - (void)application:(UIApplication *)application
 	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
 
@@ -157,7 +157,7 @@ Add the code below to your application delegate:
 #### Swift:
 
 ```Swift
-// Register device token with Bluemix Push Notification Service
+// Register device token with IBM Cloud Push Notification Service
 func application(application: UIApplication,
 	didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
 
