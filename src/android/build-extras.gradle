@@ -4,8 +4,8 @@ if (!project.hasProperty('cdvMinSdkVersion') || cdvMinSdkVersion < 15) {
 }
 
 // For Push SDK, SDK version must be at least 23
-if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 23) {
-    ext.cdvCompileSdkVersion = 23;
+if (!project.hasProperty('cdvCompileSdkVersion') || cdvCompileSdkVersion < 26) {
+    ext.cdvCompileSdkVersion = 26;
 }
 
 android {    
@@ -17,10 +17,5 @@ android {
 
 // Include Android Bluemix SDK dependency
 dependencies {
-
-    compile group: 'com.ibm.mobilefirstplatform.clientsdk.android',
-            name: 'push',
-            version: '3.+',
-            ext: 'aar',
-            transitive: true
+    compile 'com.ibm.mobilefirstplatform.clientsdk.android:push:3.+'
 }

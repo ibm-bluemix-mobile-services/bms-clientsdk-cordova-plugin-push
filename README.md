@@ -44,7 +44,7 @@ The Cordova library is also required to use this plugin. You can find instructio
 	```XML
 	<platform name="android">
 		<preference name="android-minSdkVersion" value="15" />
-		<preference name="android-targetSdkVersion" value="23" />
+		<preference name="android-targetSdkVersion" value="26" />
 		<!-- add minimum and target Android API level declaration -->
 	</platform>
 	```
@@ -226,6 +226,20 @@ Go to `[your-app-name]/platforms/android`,
 
     cordova run android
 
+
+For `Android Studion 3.+` users, update the build.gradle file with the folowing - 
+
+Change the,
+```
+debugCompile project(path: 'CordovaLib', configuration: 'debug') 
+releaseCompile project(path: 'CordovaLib', configuration: 'release')
+```
+
+to 
+
+```
+compile project(':CordovaLib')
+```
 
 ## Usage
 
