@@ -1,6 +1,6 @@
 {
   "name": "bms-push",
-  "version": "3.2.4",
+  "version": "3.3.0",
   "description": "Cordova Plugin for the IBM Bluemix Mobile Services Push SDK",
   "cordova": {
     "id": "bms-push",
