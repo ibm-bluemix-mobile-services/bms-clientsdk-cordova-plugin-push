@@ -112,14 +112,14 @@ import UserNotificationsUI
                         }
                         notifOptions.setDeviceId(deviceId: deviceId)
                     }
-                    if bmsNotifOptions["varibales"] != nil {
-                        guard let varibales = bmsNotifOptions.value(forKey:"varibales") as? [String: String] else {
-                            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid BMSPush varibales")
+                    if bmsNotifOptions["variables"] != nil {
+                        guard let variables = bmsNotifOptions.value(forKey:"variables") as? [String: String] else {
+                            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid BMSPush variables")
                             // call success callback
                             self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
                             return
                         }
-                        notifOptions.setPushVariables(pushVaribales: variables)
+                        notifOptions.setPushVariables(pushVariables: variables)
                     }
                     let push = BMSPushClient.sharedInstance;
                         push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret, options: notifOptions);
@@ -399,8 +399,9 @@ import UserNotificationsUI
 
         var notif: [String : AnyObject] = [:]
         if let hasTemplate = notification!["has-template"] as? Int {
-//            BMSPushClient.sharedInstance.didReciveBMSPushNotification(userInfo: notification) { (res, error) in
-//            }
+            BMSPushClient.sharedInstance.didReciveBMSPushNotification(userInfo: notification as! [AnyHashable : Any]) { (res, error) in
+                return
+            }
         } else {
             notif["message"] = ((notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as AnyObject?
             
