@@ -493,7 +493,7 @@ public class CDVBMSPush extends CordovaPlugin {
 
          if (clientOptions.has(PUSHVARIABLES) && (clientOptions.optString(PUSHVARIABLES) != null)){
             if (!(clientOptions.getString(PUSHVARIABLES).equals(""))){
-                options.setPushVariables(clientOptions.getString(PUSHVARIABLES));
+                options.setPushVariables(clientOptions.getJSONObject(PUSHVARIABLES));
             }
         }
 
