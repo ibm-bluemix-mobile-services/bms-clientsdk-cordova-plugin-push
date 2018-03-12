@@ -284,7 +284,7 @@ var clientSecret = "Your Push service clientSecret";
 var options = {}
 BMSPush.initialize(appGUID,clientSecret,options);
 
-// Initialize for iOS actionable push notifications and custom deviceId
+// Initialize for iOS actionable push notifications, custom deviceId and varibales for Parameterize Push Notifications 
 var options ={"categories":{
                       "Category_Name1":[
                         {
@@ -298,7 +298,8 @@ var options ={"categories":{
                           "IconName":"IconName_2"
                         }
                       ]},
-                    "deviceId":"mydeviceId"
+                    "deviceId":"mydeviceId",
+                    "variables":{"username":"ananth","accountNumber":"536475869765475869"}
                   };
 
 BMSPush.initialize(appGUID, clientSecret, options);
@@ -399,6 +400,30 @@ var showNotification = function(notif) {
     alert(identifierName);
 };
 ```
+
+### Parameterize Push Notifications
+
+To enable the Parameterize IBM Cloud Push Notifications, do the following ,
+
+1. Add the variables key vaue pair in the `BMSPush.initialize` options
+    ```
+    var options ={"categories":{
+                        "variables":{"username":"ananth","accountNumber":"536475869765475869"}
+                    };
+    BMSPush.initialize(appGUID, clientSecret, options);
+
+    ```
+2. While sending push notification add the varibale key in {{}}
+
+  ```
+  {
+      "message": {
+          "alert": "hello {{username}} , balance on your account {{accountNumber}} is $1200"
+      }
+  }
+  ```
+
+>Note: If the iOS app is force killed , the Parameterize based notifications may not appear in the device
 
 Property | Description
 --- | ---

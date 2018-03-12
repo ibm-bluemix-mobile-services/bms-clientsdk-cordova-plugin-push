@@ -53,6 +53,7 @@ public class CDVBMSPush extends CordovaPlugin {
     private static String IDENTIFIER_NAME = "IdentifierName";
     private static String ACTION_NAME = "actionName";
     private static String ICON_NAME = "IconName";
+    private static String PUSHVARIABLES = "variables";
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
@@ -487,6 +488,12 @@ public class CDVBMSPush extends CordovaPlugin {
         if (clientOptions.has(DEVICEID) && (clientOptions.optString(DEVICEID) != null)){
             if (!(clientOptions.getString(DEVICEID).equals(""))){
                 options.setDeviceid(clientOptions.getString(DEVICEID));
+            }
+        }
+
+         if (clientOptions.has(PUSHVARIABLES) && (clientOptions.optString(PUSHVARIABLES) != null)){
+            if (!(clientOptions.getString(PUSHVARIABLES).equals(""))){
+                options.setPushVariables(clientOptions.getJSONObject(PUSHVARIABLES));
             }
         }
 
