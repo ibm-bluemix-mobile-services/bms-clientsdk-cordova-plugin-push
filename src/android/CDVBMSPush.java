@@ -426,7 +426,7 @@ public class CDVBMSPush extends CordovaPlugin {
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
 
-        if (!ignoreIncomingNotifications && MFPPush.getInstance() != null) {
+        if (!ignoreIncomingNotifications && MFPPush.getInstance() != null && notificationListener != null) {
             MFPPush.getInstance().listen(notificationListener);
         }
     }
