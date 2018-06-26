@@ -21,7 +21,7 @@ import UserNotifications
 import UserNotificationsUI
 #endif
 
-@objc(CDVBMSPush) class CDVBMSPush : CDVPlugin {
+@objc(CDVBMSPush) @objcMembers class CDVBMSPush : CDVPlugin {
 
     let push = BMSPushClient.sharedInstance;
     static let sharedInstance = CDVBMSPush()
