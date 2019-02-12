@@ -90,139 +90,20 @@ cordova plugin list
 
 #### Updating your client application to use the Push SDK
 
-By default, Cordova creates a native iOS project built with iOS, therefore you will need to import an automatically generated Swift header to use the Push SDK. Add the following Objective-C code snippets to your application delegate class.
+1. Enable the push notification and background capabilities .
+2. Add signing certificates
 
-At the top of your AppDelegate.m:
-
-```Objective-C
-#import "[your-project-name]-Swift.h"
-```
-
-If your project name has spaces or hyphens, replace them with underscores in the import statement. Example:
-
-```Objective-C
-// Project name is "Test Project" or "Test-Project"
-#import "Test_Project-Swift.h"
-```
-
-Add the code below to your application delegate:
-
-#### Objective-C:
-
-```Objective-C
-// Register device token with IBM Cloud Push Notification Service
-- (void)application:(UIApplication *)application
-	 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-
-	   [[CDVBMSPush sharedInstance] didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-}
-
-// Handle error when failed to register device token with APNs
-- (void)application:(UIApplication*)application
-	 didFailToRegisterForRemoteNotificationsWithError:(NSError*)error {
-
-	  [[CDVBMSPush sharedInstance] didFailToRegisterForRemoteNotificationsWithError:error];
-}
-
-// Handle receiving a remote notification
--(void)application:(UIApplication *)application
-	didReceiveRemoteNotification:(NSDictionary *)userInfo
-	fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-
-	[[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInfo];
-}
-
-// Handle receiving a remote notification on launch
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
-
-  -----------
-    if (!launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
-        [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationOnLaunchWithLaunchOptions:launchOptions];
-    }
-  -----------
-}
-
-//HNADLE THE NOTIFICTAION CLICK
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
-    
-    NSMutableDictionary *userInf = [[NSMutableDictionary alloc] init];
-    [userInf addEntriesFromDictionary:userInfo];
-    [userInf setValue:identifier forKey:@"identifierName"];
-    [[CDVBMSPush sharedInstance] didReceiveRemoteNotificationWithNotification:userInf];
-    completionHandler();
-    
-}
-```
-
-#### Swift:
-
-```Swift
-// Register device token with IBM Cloud Push Notification Service
-func application(application: UIApplication,
-	didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-
-	CDVBMSPush.sharedInstance().didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
-}
-
-// Handle error when failed to register device token with APNs
-func application(application: UIApplication,
-	didFailToRegisterForRemoteNotificationsWithError error: NSErrorPointer) {
-
-	CDVBMSPush.sharedInstance().didReceiveRemoteNotificationWithNotification(error)
-}
-
-// Handle receiving a remote notification
-func application(application: UIApplication,
-	didReceiveRemoteNotification userInfo: [NSObject : AnyObject], 	fetchCompletionHandler completionHandler: ) {
-
-	CDVBMSPush.sharedInstance().didReceiveRemoteNotificationWithNotification(userInfo)
-}
-
-// Handle receiving a remote notification on launch
-func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
-  ----------
-  let remoteNotif = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
-
-  if remoteNotif != nil {
-    CDVBMSPush.sharedInstance().didReceiveRemoteNotificationOnLaunchWithLaunchOptions(launchOptions)
-  }
-  --------
-}
-
-func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
- 
-    var userIf:[AnyHashable : Any] = userInfo
-    userIf["identifierName"] = identifier
-    CDVBMSPush.sharedInstance().didReceiveRemoteNotificationWithNotification(userInfo)
-}
-```
 
 ### Configuring Your Android Development Environment
 
 Download your Firebase google-services.json for android, and place them in the root folder of your cordova project: `[your-app-name]/platforms/android`
 
-Go to `[your-app-name]/platforms/android`,
-
-1.) Open file `build.gradle` (Path : platform > android > build.gradle)
-
-2.) find `buildscript` text in `build.gradle` file.
-
-3.) There you will find one classpath line, after that line, please add this line :
-
-	classpath 'com.google.gms:google-services:3.0.0'
-
-4.) Then find "dependencies" .Select that dependencies where you have text `compile` and where that dependecies is getting ended, just after that, add this line :
-
-	apply plugin: 'com.google.gms.google-services'
-
-
-5.) Prepare and build your cordova Android project
+1.) Prepare and build your cordova Android project
 
 	cordova prepare android
 	cordova build android
 
-6.) Run your Cordova android project either opening in android studion or using cordova CLI
+2.) Run your Cordova android project either opening in android studion or using cordova CLI
 
     cordova run android
 

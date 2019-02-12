@@ -1,6 +1,6 @@
 // Minimum SDK Version
-if (!project.hasProperty('cdvMinSdkVersion') || cdvMinSdkVersion < 15) {
-    ext.cdvMinSdkVersion = 15;
+if (!project.hasProperty('cdvMinSdkVersion') || cdvMinSdkVersion < 19) {
+    ext.cdvMinSdkVersion = 19;
 }
 
 // For Push SDK, SDK version must be at least 23
@@ -15,7 +15,29 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.google.gms:google-services:4.2.0'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
 // Include Android Bluemix SDK dependency
 dependencies {
     compile 'com.ibm.mobilefirstplatform.clientsdk.android:push:3.+'
 }
+
+cdvPluginPostBuildExtras.push({
+    apply plugin: com.google.gms.googleservices.GoogleServicesPlugin
+})

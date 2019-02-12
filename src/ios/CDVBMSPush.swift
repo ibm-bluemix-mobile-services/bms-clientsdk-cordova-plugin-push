@@ -28,6 +28,8 @@ import UserNotificationsUI
      var pushUserId = String();
      var bluemixDeviceId = String();
      var shouldRegister:Bool = false
+    var shouldNSInit:Bool = false
+    
      var registerParams = CDVInvokedUrlCommand()
 
     #if swift(>=3.0)
@@ -45,10 +47,27 @@ import UserNotificationsUI
      * Initialize the SDK with appGUID , ClientSecret and BMSPushClientOptions
      */
 
+    private func nsNotificationsinit() {
+        if !CDVBMSPush.sharedInstance.shouldNSInit {
+            
+            CDVBMSPush.sharedInstance.shouldNSInit = true
+            NotificationCenter.default.addObserver(self, selector: #selector(CDVBMSPush.didRegisterForRemoteNotifications(notification:)), name: NSNotification.Name(rawValue: "CDVBMDPushDidRegisterForRemoteNotificationsWithDeviceToken"), object: nil)
+            
+        NotificationCenter.default.addObserver(self, selector: #selector(CDVBMSPush.didFailToRegisterForRemoteNotifications(notification:)), name: NSNotification.Name(rawValue: "CDVBMDushDidFailToRegisterForRemoteNotificationsWithError"), object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(CDVBMSPush.didReceiveRemoteNotification(notification:)), name: NSNotification.Name(rawValue: "CDVBMDPushDidReceiveRemoteNotifications"), object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(CDVBMSPush.didReceiveRemoteNotification(notification:)), name: NSNotification.Name(rawValue: "CDVBMDPushHandleActionWithIdentifier"), object: nil)
+        }
+    }
     #if swift(>=3.0)
 
     func initialize(_ command: CDVInvokedUrlCommand) {
+         self.nsNotificationsinit()
         self.commandDelegate!.run(inBackground: {
+            
+           
+            
             if command.arguments.count > 2 && (command.arguments[2] as! NSDictionary).count > 0 {
 
                 guard let appGUID  = command.arguments[0] as? String else {
@@ -162,7 +181,6 @@ import UserNotificationsUI
 
     }
 
-
     func registerNotificationsCallback(_ command: CDVInvokedUrlCommand) {
         CDVBMSPush.sharedInstance.notifCallbackId = command.callbackId
         CDVBMSPush.sharedInstance.notifCommandDelegate = self.commandDelegate
@@ -178,9 +196,8 @@ import UserNotificationsUI
             registerDeviceAfterTokenRecieve(command)
         }
     }
+    
     func registerDeviceAfterTokenRecieve(_ command: CDVInvokedUrlCommand) {
-
-
         guard let settings = command.arguments[0] as? NSDictionary else {
 
             let message = "Registering for Push Notifications failed. Options parameter is Invalid."
@@ -370,19 +387,33 @@ import UserNotificationsUI
         })
     }
 
-    func didRegisterForRemoteNotifications(deviceToken: Data) {
+    @objc func didRegisterForRemoteNotifications(notification:Notification) {
 
+        guard let token = notification.object as? Data else {
+            print("Error wile getting token")
+            return
+        }
         CDVBMSPush.sharedInstance.shouldRegister = true;
-        CDVBMSPush.sharedInstance.bmsPushToken = deviceToken;
+        CDVBMSPush.sharedInstance.bmsPushToken = token;
         if (CDVBMSPush.sharedInstance.registerCallbackId == nil) {
             return
         }
         registerDeviceAfterTokenRecieve(CDVBMSPush.sharedInstance.registerParams)
     }
 
-    func didFailToRegisterForRemoteNotifications(error: Error) {
+    func didFailToRegisterForRemoteNotifications(notification: Notification) {
 
         if (CDVBMSPush.sharedInstance.registerCallbackId == nil) {
+            return
+        }
+        guard let error = notification.object as? Error else {
+            CDVBMSPush.sharedInstance.registerCommandDelegate!.run(inBackground: {
+                
+                let message = "didFailToRegisterForRemoteNotifications"
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
+                // call error callback
+                CDVBMSPush.sharedInstance.registerCommandDelegate!.send(pluginResult, callbackId:CDVBMSPush.sharedInstance.registerCallbackId)
+            })
             return
         }
 
@@ -395,47 +426,53 @@ import UserNotificationsUI
         })
     }
 
-    func didReceiveRemoteNotification(notification: NSDictionary?) {
+    func didReceiveRemoteNotification(notification:Notification) {
 
+        if (CDVBMSPush.sharedInstance.notifCallbackId == nil) {
+            print("No Notification callback registered")
+            return
+        }
+        
+        self.notifCallbackId = CDVBMSPush.sharedInstance.notifCallbackId;
+        
+        guard let userinfo = notification.userInfo else {
+            
+            let message = "Error in receiving notification"
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
+            pluginResult?.setKeepCallbackAs(true)
+            // call error callback
+            CDVBMSPush.sharedInstance.notifCommandDelegate!.send(pluginResult, callbackId:self.notifCallbackId)
+            return
+        }
+        
+        sendStatus(userInfo: userinfo as NSDictionary);
+        
         var notif: [String : AnyObject] = [:]
-        if let hasTemplate = notification!["has-template"] as? Int {
-            BMSPushClient.sharedInstance.didReciveBMSPushNotification(userInfo: notification as! [AnyHashable : Any]) { (res, error) in
+        if let hasTemplate = userinfo["has-template"] as? Int {
+            BMSPushClient.sharedInstance.didReciveBMSPushNotification(userInfo: userinfo) { (res, error) in
                 return
             }
         } else {
-            notif["message"] = ((notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as AnyObject?
+            notif["message"] = ((userinfo["aps"] as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "body") as AnyObject?
             
-            notif["payload"] = notification?.value(forKey: "payload") as AnyObject?
-            notif["url"] = notification?.value(forKey: "url") as AnyObject?
-            notif["sound"] = (notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "sound") as AnyObject?
-            notif["badge"] = (notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "badge") as AnyObject?
+            notif["payload"] = userinfo["payload"] as AnyObject?
+            notif["url"] = userinfo["url"] as AnyObject?
+            notif["sound"] = (userinfo["aps"] as! NSDictionary).value(forKey: "sound") as AnyObject?
+            notif["badge"] = (userinfo["aps"] as! NSDictionary).value(forKey: "badge") as AnyObject?
             
-            notif["action-loc-key"] = ((notification?.value(forKey: "aps") as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "action-loc-key") as AnyObject?
+            notif["action-loc-key"] = ((userinfo["aps"] as! NSDictionary).value(forKey: "alert") as! NSDictionary).value(forKey: "action-loc-key") as AnyObject?
             
-            if let actionName = notification?.value(forKey: "identifierName") {
+            if let actionName = userinfo["identifierName"] {
                 notif["identifierName"] = actionName as AnyObject
-            }
-            
-            if (CDVBMSPush.sharedInstance.notifCallbackId == nil) {
-                return
             }
             
             CDVBMSPush.sharedInstance.notifCommandDelegate!.run(inBackground: {
                 
-                if (notification == nil) {
-                    let message = "Error in receiving notification"
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: message)
-                    pluginResult?.setKeepCallbackAs(true)
-                    // call error callback
-                    CDVBMSPush.sharedInstance.notifCommandDelegate!.send(pluginResult, callbackId:self.notifCallbackId)
-                }
-                else {
-                    let message = notif
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: message )
-                    pluginResult?.setKeepCallbackAs(true)
-                    // call success callback
-                    CDVBMSPush.sharedInstance.notifCommandDelegate!.send(pluginResult, callbackId:self.notifCallbackId)
-                }
+                let message = notif
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: message )
+                pluginResult?.setKeepCallbackAs(true)
+                // call success callback
+                CDVBMSPush.sharedInstance.notifCommandDelegate!.send(pluginResult, callbackId:self.notifCallbackId)
             })
         }
     }
@@ -444,14 +481,17 @@ import UserNotificationsUI
         let settings = UIApplication.shared.currentUserNotificationSettings
         return (settings?.types.contains(.alert))!
     }
-
-    func didReceiveRemoteNotificationOnLaunch(launchOptions: NSDictionary?) {
-
-        let remoteNotification = launchOptions![UIApplicationLaunchOptionsKey.remoteNotification] as! NSDictionary
-        if remoteNotification.allKeys.count > 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                CDVBMSPush.sharedInstance.didReceiveRemoteNotification(notification: remoteNotification)
-            }
+    
+    private func sendStatus(userInfo: NSDictionary) {
+        let push =  BMSPushClient.sharedInstance
+        let respJson = userInfo.value(forKey: "payload") as! String
+        let data = respJson.data(using: String.Encoding.utf8)
+        
+        let jsonResponse:NSDictionary = try! JSONSerialization.jsonObject(with: data! , options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+        
+        let messageId:String = jsonResponse.value(forKey: "nid") as! String
+        push.sendMessageDeliveryStatus(messageId: messageId) { (res, ss, ee) in
+            print("Send message status to the Push server")
         }
     }
 
