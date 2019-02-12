@@ -92,6 +92,8 @@
             <string>production</string>
         </config-file>
         <source-file src="src/ios/CDVBMSPush.swift" />
+        <source-file src="src/ios/BMDAppDelegate.m" />
+        <source-file src="src/ios/BMDAppDelegate.h" />
         <header-file src="src/ios/Bridging-Header.h" />
     </platform>
 
