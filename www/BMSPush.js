@@ -21,11 +21,32 @@ var BMSPush = function() {
     };
     var failure = function(message) {
         console.log(BMSPushClientString + ": Failure: " + message);
-    };
+	};
+	
+	/**
+     *  Define region constants
+     * @type {string}
+     */
+    this.REGION_US_SOUTH = ".ng.bluemix.net";
+    this.REGION_UK = ".eu-gb.bluemix.net";
+    this.REGION_SYDNEY = ".au-syd.bluemix.net";
+    this.REGION_GERMANY = ".eu-de.bluemix.net";
+    this.REGION_US_EAST = ".us-east.bluemix.net";
+    this.REGION_TOKYO = ".jp-tok.bluemix.net";
 
-    
-	this.initialize = function(pushAppGuid, clientSecret, pushOptions){
-		cordova.exec(success, failure, BMSPushClientString, "initialize", [pushAppGuid, clientSecret,pushOptions]);
+	/**
+     * Sets the base URL for the authorization server.
+     * <p>
+     * This method should be called before you send the first request that requires authorization.
+     * </p>
+	 * @param {string} pushAppGuid 
+	 * @param {string} clientSecret 
+	 * @param {string} bluemixRegion Specifies the region of the application
+	 * @param {json} pushOptions 
+     */
+
+	this.initialize = function(pushAppGuid, clientSecret, bluemixRegion, pushOptions){
+		cordova.exec(success, failure, BMSPushClientString, "initialize", [pushAppGuid, clientSecret,bluemixRegion, pushOptions]);
 	};
 	/**
 	 * Registers the device on to the IMFPush Notification Server
