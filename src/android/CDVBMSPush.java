@@ -356,7 +356,7 @@ public class CDVBMSPush extends CordovaPlugin {
                                 JSONObject notification = new JSONObject();
 
                                 notification.put("message", message.getAlert());
-                               // notification.put("title", message.getAndroidTitle());
+                                notification.put("title", message.getAndroidTitle());
                                 notification.put("payload", message.getPayload());
                                 notification.put("identifierName", message.actionName);
 
