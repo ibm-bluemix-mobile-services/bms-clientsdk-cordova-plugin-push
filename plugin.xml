@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="bms-push" version="3.4.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="bms-push" version="4.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>BMSPush</name>
 
-    <dependency id="bms-core"/>
     <dependency id="cordova-plugin-cocoapod-support"/>
     <dependency id="cordova-plugin-add-swift-support"/>
 

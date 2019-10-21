@@ -13,7 +13,6 @@
 
 import Foundation
 import BMSCore
-import BMSAnalytics
 import BMSPush
 import UIKit
 #if swift(>=3.0)
@@ -68,10 +67,10 @@ import UserNotificationsUI
             
            
             
-            if command.arguments.count > 2 && (command.arguments[2] as! NSDictionary).count > 0 {
+            if command.arguments.count > 3 && (command.arguments[3] as! NSDictionary).count > 0 {
 
                 guard let appGUID  = command.arguments[0] as? String else {
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: CustomErrorMessages.invalidGuid)
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service App GUId")
                     // call success callback
                     self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
                     return
@@ -83,7 +82,14 @@ import UserNotificationsUI
                     return
                 }
 
-                guard let bmsNotifOptions  = command.arguments[2] as? NSDictionary else {
+                guard let bluemixRegion  = command.arguments[2] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service region.")
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+
+                guard let bmsNotifOptions  = command.arguments[3] as? NSDictionary else {
                     let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid BMSPush Options.")
                     // call success callback
                     self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
@@ -154,7 +160,7 @@ import UserNotificationsUI
                 //use category to handle objective-c exception
             } else {
                 guard let appGUID  = command.arguments[0] as? String else {
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: CustomErrorMessages.invalidGuid)
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service App GUId")
                     // call success callback
                     self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
                     return
@@ -166,7 +172,16 @@ import UserNotificationsUI
                     return
                 }
 
+                guard let bluemixRegion  = command.arguments[2] as? String else {
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "Invalid Push service region.")
+                    // call success callback
+                    self.commandDelegate!.send(pluginResult, callbackId:command.callbackId)
+                    return
+                }
+
                 //use category to handle objective-c exception
+
+                BMSClient.sharedInstance.initialize(bluemixRegion: bluemixRegion)
                 let push = BMSPushClient.sharedInstance;
 
                 push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret);
@@ -502,7 +517,7 @@ import UserNotificationsUI
             if command.arguments.count > 2 && (command.arguments[2] as! NSDictionary).count > 0{
 
                 guard let appGUID  = command.arguments[0] as? String else {
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid Push service App GUId")
                     // call success callback
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     return
@@ -594,7 +609,7 @@ import UserNotificationsUI
 
             }else{
                 guard let appGUID  = command.arguments[0] as? String else {
-                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: CustomErrorMessages.invalidGuid)
+                    let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "Invalid Push service App GUId")
                     // call success callback
                     self.commandDelegate!.sendPluginResult(pluginResult, callbackId:command.callbackId)
                     return

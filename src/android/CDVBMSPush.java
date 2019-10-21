@@ -12,6 +12,7 @@
 */
 package com.ibm.mobilefirstplatform.clientsdk.cordovaplugins.push;
 
+import com.ibm.mobilefirstplatform.clientsdk.android.core.api.BMSClient;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationButton;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationCategory;
@@ -66,14 +67,15 @@ public class CDVBMSPush extends CordovaPlugin {
 
             String appGUID = args.getString(0);
             String clientSecret = args.getString(1);
+            String bluemixRegion = args.getString(2);
 
-            if (args.length() > 2 && args.getJSONObject(2).length() > 0){
+            if (args.length() > 3 && args.getJSONObject(3).length() > 0){
 
                 MFPPushNotificationOptions options = getOptions(args);
-                this.initializePush(appGUID,clientSecret,options);
+                this.initializePush(appGUID,clientSecret,bluemixRegion,options);
 
             }else {
-                this.initializePush(appGUID,clientSecret);
+                this.initializePush(appGUID,clientSecret,bluemixRegion);
             }
 
 
@@ -125,9 +127,10 @@ public class CDVBMSPush extends CordovaPlugin {
      * @param clientSecret - push service clientSecret
      * @param options - push service MFPPushNotificationOptions - category and deviceId
      */
-    private void initializePush(final String appGUID, final String clientSecret, final MFPPushNotificationOptions options ) {
+    private void initializePush(final String appGUID, final String clientSecret, final String bluemixRegion, final MFPPushNotificationOptions options ) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
+                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), bluemixRegion);
                 MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret,options);
             }
         });
@@ -138,9 +141,10 @@ public class CDVBMSPush extends CordovaPlugin {
      * @param appGUID - push service app GUID
      * @param clientSecret - push service clientSecret
      */
-    private void initializePush(final String appGUID, final String clientSecret) {
+    private void initializePush(final String appGUID, final String clientSecret, final String bluemixRegion) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
+                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), bluemixRegion);
                 MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret);
             }
         });
@@ -352,6 +356,7 @@ public class CDVBMSPush extends CordovaPlugin {
                                 JSONObject notification = new JSONObject();
 
                                 notification.put("message", message.getAlert());
+                                notification.put("title", message.getAndroidTitle());
                                 notification.put("payload", message.getPayload());
                                 notification.put("identifierName", message.actionName);
 
