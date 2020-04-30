@@ -1,4 +1,5 @@
-# IBM Cloud Mobile Services - Cordova Plugin Push SDK
+IBM Cloud Push Notifications Cordova SDK
+===================================================
 
 [![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push)
@@ -7,106 +8,102 @@
 
 [![npm package](https://nodei.co/npm/bms-push.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bms-push/)
 
-Cordova Plugin for the IBM Cloud Mobile Services Push SDK
+The [IBM Cloud Push Notifications service](https://cloud.ibm.com/catalog/services/push-notifications) provides a unified push service to send real-time notifications to mobile and web applications. The Push Notifications Cordova Plugin Push SDK enables Cordova apps to receive notifications sent from the service. 
+
+Ensure that you go through [IBM Cloud Push Notifications service documentation](https://cloud.ibm.com/docs/services/mobilepush?topic=mobile-pushnotification-gettingstartedtemplate#gettingstartedtemplate) before you start.
+
+## Contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Initialize SDK](#initialize-sdk)
+  - [Initialize the core plugin](#initialize-the-core-plugin)
+  - [Initialize the Push plugin](#initialize-the-push-plugin)
+- [Register for notifications](#register-for-notifications)
+  - [Receiving notifications](#receiving-notifications)
+- [Push Notification service tags](#push-notification-service-tags)
+  - [Retrieve available tags](#retrieve-available-tags)
+  - [Subscribe to tags](#subscribe-to-tags)
+  - [Retrieve subscribed tags](#retrieve-subscribed-tags)
+  - [Unsubscribing from tags](#unsubscribing-from-tags)
+- [Notification Options](#notification-options)
+  - [Interactive notifications](#interactive-notifications)
+	- [Handling interactive notifications click](#handling-interactive-notifications-click)
+  - [Adding custom DeviceId for registration](#adding-custom-deviceid-for-registration)
+- [Methods usage](#usage)
+- [Samples and Videos](#samples-and-videos)
+
+
+## Prerequisites 
+
+* [Android Studio](https://developer.android.com/studio/index.html)
+* Xcode
+* [Cordova CLI](https://cordova.apache.org/docs/en/latest/guide/cli/))
+* [Node.js/npm](https://docs.npmjs.com/getting-started/installing-node))
 
 ## Installation
 
-### Installing necessary libraries
+You need to create a Cordova project and add platforms before adding the IBM Cloud Push Notifications Cordova Plugin Push SDK. Complete the following steps:
 
-You should already have Node.js/npm and the Cordova package installed. If you don't, you can download and install Node from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+1. Create a Cordova application:
 
-The Cordova library is also required to use this plugin. You can find instructions to install Cordova and set up your Cordova app at [https://cordova.apache.org/#getstarted](https://cordova.apache.org/#getstarted).
+	1. Run the following commands to create a new Cordova application. Alternatively, you can use an existing application as well.
+		```Bash
+		cordova create {your_app_name}
+		cd {your_app_name}
+		```
+	2. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default `HelloCordova`.
+	3. In the `config.xml` file, update the `<platform name="ios">` element with a deployment target declaration. See the code snippet.
+		```XML
+		<platform name="ios">
+			<preference name="deployment-target" value="8.0" />
+			<!-- add deployment target declaration -->
+		</platform>
+		```
+	3. In the `config.xml` file update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.
+		```XML
+		<platform name="android">
+			<preference name="android-minSdkVersion" value="15" />
+			<preference name="android-targetSdkVersion" value="26" />
+			<!-- add minimum and target Android API level declaration -->
+		</platform>
+		```
 
-## Installing the Cordova Plugin for IBM Cloud Mobile Services Push SDK
+	>**Note**: The minSdkVersion should be above 15 and the targetSdkVersion should always reflect the latest Android SDK available from Google.
 
-### Creating a Cordova application
+2. Add the Cordova platforms. Run either of the following commands, based on your platform:
+	- For iOS: `cordova platform add ios`
+	- For Android: `cordova platform add android`
+	
+	Ensure that you use the iOS version specified through this command for the Cordova platform. It is required to build the Cordova app.
 
-1. Run the following commands to create a new Cordova application. Alternatively you can use an existing application as well.
-
-	```Bash
-	cordova create {your_app_name}
-	cd {your_app_name}
+3. Add the Cordova IBM Cloud Push plugin. From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
+	```
+	cordova plugin add bms-push
 	```
 
-1. Edit `config.xml` file and set the desired application name in the `<name>` element instead of a default HelloCordova.
+	This also installs the `Cordova Core plug-in`, which initializes your connection to IBM Cloud.
 
-1. Continue editing `config.xml`. Update the `<platform name="ios">` element with a deployment target declaration as shown in the code snippet below.
-
-	```XML
-	<platform name="ios">
-		<preference name="deployment-target" value="8.0" />
-		<!-- add deployment target declaration -->
-	</platform>
+4. From your app root folder, verify that the Cordova `Core plugin` and `Push plugin` were installed successfully, using the command:
+	```
+	cordova plugin list
 	```
 
-1. Continue editing `config.xml`. Update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.
-
-	```XML
-	<platform name="android">
-		<preference name="android-minSdkVersion" value="15" />
-		<preference name="android-targetSdkVersion" value="26" />
-		<!-- add minimum and target Android API level declaration -->
-	</platform>
-	```
-
-	> The minSdkVersion should be above 15.
-
-	> The targetSdkVersion should always reflect the latest Android SDK available from Google.
-
-### Adding Cordova platforms
-
-Run the following commands according to which platform you want to add to your Cordova application
-
-```Bash
-cordova platform add ios
-
-cordova platform add android
-```
-**IMPORTANT: Make sure you use this iOS version for the cordova platform. It is required for the cordova app to build.**
-
-### Adding the Cordova plugin
-
-From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
-
-```Bash
-cordova plugin add bms-push
-```
-
-This also installs the Cordova Core plug-in, which initializes your connection to IBM Cloud.
-
-From your app root folder, verify that the Cordova Core and Push plugin were installed successfully, using the following command.
-
-```Bash
-cordova plugin list
-```
-
->Note: Existing 3rd party push notification plugins (e.g., phonegap) may interfere with bms-push. Be sure to remove these plugins to ensure proper funcitonality.
-
-## Configuration
-
-### Configuring Your iOS Development Environment
-
-1. Follow the `Configuring Your iOS Development Environment` instructions from [IBM Cloud Mobile Services Core SDK plugin](https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-core#4configuring-your-platform)
-
-#### Updating your client application to use the Push SDK
-
-1. Enable the push notification and background capabilities .
-2. Add signing certificates
+>**Note**: Existing vendor-acquired Push Notification plugins (e.g., phonegap) may interfere with bms-push. Remove these plugins to ensure proper functionality.
 
 
-### Configuring Your Android Development Environment
+## Initialize SDK
 
-Download your Firebase google-services.json for android, and place them in the root folder of your cordova project: `[your-app-name]/platforms/android`
+Choose either of the following steps, based on your platform:
 
-1.) Prepare and build your cordova Android project
+- For iOS: 
 
-	cordova prepare android
-	cordova build android
+	1. In the Capabilities, enable `push notifications` and `Background modes`. Under `Background modes` enable the `Remote notification` and `background fetch`.
+    2. Add signing certificates
 
-2.) Run your Cordova android project either opening in android studion or using cordova CLI
+- For Android App
 
-    cordova run android
-
+	1. Download your Firebase google-services.json for android, and place them in the root folder of your cordova project -`[your-app-name]/platforms/android`.
 
 For `Android Studion 3.+` users, update the build.gradle file with the folowing - 
 
@@ -120,6 +117,228 @@ to
 
 ```
 compile project(':CordovaLib')
+```
+
+### Initialize the core plugin
+
+Initialize the `bms-core` plugin. Run the following snippet:
+
+```
+onDeviceReady: function() {
+    app.receivedEvent('deviceready');
+    BMSClient.initialize("YOUR APP REGION");
+    }
+```
+For the region, pass any of the following:
+
+* `REGION_US_SOUTH` // ".ng.bluemix.net";
+* `REGION_UK` //".eu-gb.bluemix.net";
+* `REGION_SYDNEY` // ".au-syd.bluemix.net";
+* `REGION_GERMANY` // ".eu-de.bluemix.net"
+* `REGION_TOKYO` // ".jp-tok.bluemix.net"
+* `REGION_US_EAST` // ".us-east.bluemix.net"
+
+For example:
+```
+  BMSClient.initialize(BMSClient.REGION_US_SOUTH);
+```
+
+### Initialize the Push plugin
+
+Initialize the `BMSPush`. Run the following snippet:
+
+- Initialize without options
+
+  ```
+
+    // Initialize for normal push notifications
+    var options =  {};
+    BMSPush.initialize(appGUID,clientSecret,options);
+  ```
+
+- Initialize with options
+
+  ```
+    // Initialize for iOS actionable push notifications, custom deviceId and varibales for Parameterize Push Notifications 
+    var options = {"categories":{
+                "Category_Name1":[
+                    { "IdentifierName":"IdentifierName_1",
+                      "actionName":"actionName_1",
+                      "IconName":"IconName_1"
+                    },
+                    { "IdentifierName":"IdentifierName_2",
+                      "actionName":"actionName_2",
+                      "IconName":"IconName_2"
+                    }
+                ]},
+                "deviceId":"mydeviceId",
+                "variables":{"username":"UserName","accountNumber":"536475869765475869"}
+            };
+
+    BMSPush.initialize(appGUID, clientSecret, options);
+  ```
+
+Where `appGUID` is the Push service instance Id value, clientSecret` is the Push service instance client secret value and `options`can be notification options such as interactive notifiaction and custom deviceId.
+
+
+## Register for notifications
+
+Use the `BMSPush.registerDevice()` API to register the device with Push Notifications service. 
+
+The following options are supported:
+
+
+- Register without UserId
+
+	To register without userId, use the following pattern:
+	  ```
+	  var success = function(response) { console.log("Success: " + response); };
+	  var failure = function(response) { console.log("Error: " + response); };
+	  var options = {};
+	  BMSPush.registerDevice(options, success, failure);
+	  ```
+
+- Register with UserId
+
+	The `userId` can be specified while registering the device with Push Notifications service. The register method will accept one more parameter - `userId`
+
+	  ```
+	  var success = function(response) { console.log("Success: " + response); };
+	  var failure = function(response) { console.log("Error: " + response); };
+	  var options = {"userId": "Your User Id value"};
+	  BMSPush.registerDevice(options, success, failure);
+	  ```
+
+	Where ÙserId is the user identifier value you want to register the device in the push service instance.
+
+	>**Note**: If userId is provided, the client secret value must be provided.
+
+- Unregister from notifications
+
+	Use the following code snippet to unregister the device from push notification service instance:
+		```
+		var success = function(response) { console.log("Success: " + response); };
+		var failure = function(response) { console.log("Error: " + response); };
+		BMSPush.unregisterDevice(options, success, failure);
+		```
+
+- Unregister the device from UserId
+
+	To unregister from the `UserId` based registration you have to call the registration method - without userId.
+
+
+### Receiving notifications
+
+To receive push notification call back, add the following code snippet:
+
+```
+  var handleNotificationCallback = function(notification) {
+  	// notification is a JSON object
+  	alert(notification.message);
+  }
+  BMSPush.registerNotificationsCallback(handleNotificationCallback);
+```
+
+## Push Notification service tags
+
+### Retrieve available tags
+
+The `retrieveAvailableTags()` API returns the list of tags to which the device
+can subscribe. After the device is subscribes to a particular tag, the device can receive notifications that are sent for that tag.
+
+Add the following code snippets to your Swift mobile application to get a list of tags to which the device can subscribe:
+
+```
+  var failure = function(response) { console.log("Error: " + response); };
+  BMSPush.retrieveAvailableTags(function(tags) {
+  	alert(tags);
+  }, failure);
+```
+
+### Subscribe to tags
+
+The `subscribe()` API will subscribe the iOS device for the list of given tags. After the device is subscribed to a particular tag, the device can receive push notifications that are sent for that tag.
+
+Add the following code snippets to your Swift mobile application to subscribe to a list of tags:
+
+```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
+  var tag = "YourTag";
+  BMSPush.subscribe(tag, success, failure);
+```
+
+### Retrieve subscribed tags
+
+The `retrieveSubscriptions()` API will return the list of tags to which the device is subscribed. 
+
+Add the following code snippets to your Swift mobile application to get the  subscription list:
+```
+  var failure = function(response) { console.log("Error: " + response); };
+  BMSPush.retrieveSubscriptions(function(tags) {
+  	alert(tags);
+  }, failure);
+```
+
+### Unsubscribing from tags
+
+The `unsubscribe()` API will remove the device subscription from the list tags.
+
+Use the following code snippets to unsubsribe from tags:
+
+```
+  var success = function(response) { console.log("Success: " + response); };
+  var failure = function(response) { console.log("Error: " + response); };
+  var tag = "YourTag";
+  BMSPush.unsubscribe(tag, success, failure);
+```
+
+
+## Notification options
+
+The following notification options are supported.
+
+### Interactive notifications
+
+To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object. For example:
+
+```
+  var options ={"categories":{
+                        "Category_Name1":[
+                          {
+                            "IdentifierName":"IdentifierName_1",
+                            "actionName":"actionName_1",
+                            "IconName":"IconName_1"
+                          },
+                          {
+                            "IdentifierName":"IdentifierName_2",
+                            "actionName":"actionName_2",
+                            "IconName":"IconName_2"
+                          }
+                        ]
+                    };
+  BMSPush.initialize(appGUID, clientSecret, options);
+```
+
+###Handling interactive notifications click
+
+To identify which action clicked use the following,
+
+```
+var showNotification = function(notif) {
+    var identifierName = notif["identifierName"];
+    alert(identifierName);
+};
+```
+### Adding custom DeviceId for registration
+
+To send `DeviceId`, use the `options` parameter in `initialize method` of `BMSPush` class. For example:
+
+```
+  var options ={
+    "devieID":"mydeviceId"
+  };
+  BMSPush.initialize(appGUID, clientSecret, options);
 ```
 
 ## Usage
@@ -145,265 +364,15 @@ The following native Android function is available.
 CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push notifications plugin handles all incoming Push Notification by tunnelling them to JavaScript callback. Use this method to override the plugin's default behavior in case you want to manually handle incoming push notifications in native code.
 
 
-## Examples
+## Samples and Videos
 
-### Using BMSPush
+* For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
-#### Register for Push Notifications
+* For video tutorials, visit - [IBM Cloud Push Notifications](https://www.youtube.com/playlist?list=PLTroxxTPN9dIZYn9IU-IOcQePO-u5r0r4)
 
+=======================
 
-```Javascript
-
-// initialize BMSCore SDK
-BMSClient.initialize("Your Push service region");
-
-// initialize BMSPush SDK
-var appGUID = "Your Push service appGUID";
-var clientSecret = "Your Push service clientSecret";
-
-// Initialize for normal push notifications
-var options = {}
-BMSPush.initialize(appGUID,clientSecret,options);
-
-// Initialize for iOS actionable push notifications, custom deviceId and varibales for Parameterize Push Notifications 
-var options ={"categories":{
-                      "Category_Name1":[
-                        {
-                          "IdentifierName":"IdentifierName_1",
-                          "actionName":"actionName_1",
-                          "IconName":"IconName_1"
-                        },
-                        {
-                          "IdentifierName":"IdentifierName_2",
-                          "actionName":"actionName_2",
-                          "IconName":"IconName_2"
-                        }
-                      ]},
-                    "deviceId":"mydeviceId",
-                    "variables":{"username":"ananth","accountNumber":"536475869765475869"}
-                  };
-
-BMSPush.initialize(appGUID, clientSecret, options);
-
-
-var success = function(response) { console.log("Success: " + response); };
-var failure = function(response) { console.log("Error: " + response); };
-
-
-// Register device for push notification without UserId
-var options = {};
-BMSPush.registerDevice(options, success, failure);
-
-// Register device for push notification with UserId
-var options = {"userId": "Your User Id value"};
-BMSPush.registerDevice(options, success, failure);
-```
-
-**IMPORTANT: Deprecated this way of adding Category in the Initialize method :- var category = {"Category_Name":[{"IdentifierName_1":"actionName_1"},{"IdentifierName_2":"actionName_2"}]}
-.**
-
-
-You can access the contents of the success response parameter in Javascript using `JSON.parse`:
-
-```Javascript
-var token = JSON.parse(response).token
-```
-
-Available keys |
---- |
-token |
-userId |
-deviceId |
-
-To unregister for push notifications, simply call the following:
-
-```Javascript
-BMSPush.unregisterDevice(success, failure);
-```
-
-#### Retrieving Tags
-
-In the following examples, the function parameter is a success callback that receives an array of tags. The second parameter is a callback function called on error.
-
-To retrieve an array of tags to which the user is currently subscribed, use the following Javascript function:
-
-```Javascript
-BMSPush.retrieveSubscriptions(function(tags) {
-	alert(tags);
-}, failure);
-```
-
-To retrieve an array of tags that are available to subscribe, use the following Javascript function:
-
-```Javascript
-BMSPush.retrieveAvailableTags(function(tags) {
-	alert(tags);
-}, failure);
-```
-
-#### Subscribe and Unsubscribe to/from Tags
-
-```Javascript
-var tag = "YourTag";
-BMSPush.subscribe(tag, success, failure);
-BMSPush.unsubscribe(tag, success, failure);
-```
-
-### Receiving a Notification
-
-```Javascript
-var handleNotificationCallback = function(notification) {
-	// notification is a JSON object
-	alert(notification.message);
-}
-
-BMSPush.registerNotificationsCallback(handleNotificationCallback);
-```
-
-### Receiving a Notification Status
-
-```Javascript
- var showNotification = function(notif) {
-          alert(JSON.stringify(notif));
-        };
- BMSPush.setNotificationStatusListener(showNotification);
-```
-
-The following table describes the properties of the notification object:
-
-### Handling Notification Actions Click
- 
-  To identify which action clicked use the following,
-
-```
-var showNotification = function(notif) {
-    var identifierName = notif["identifierName"];
-    alert(identifierName);
-};
-```
-
-### Parameterize Push Notifications
-
-To enable the Parameterize IBM Cloud Push Notifications, do the following ,
-
-1. Add the variables key vaue pair in the `BMSPush.initialize` options
-    ```
-    var options ={"categories":{
-                        "variables":{"username":"ananth","accountNumber":"536475869765475869"}
-                    };
-    BMSPush.initialize(appGUID, clientSecret, options);
-
-    ```
-2. While sending push notification add the varibale key in {{}}
-
-  ```
-  {
-      "message": {
-          "alert": "hello {{username}} , balance on your account {{accountNumber}} is $1200"
-      }
-  }
-  ```
-
->Note: If the iOS app is force killed , the Parameterize based notifications may not appear in the device
-
-Property | Description
---- | ---
-message | Push notification message text
-payload | JSON object containing additional notification payload.
-sound | The name of a sound file in the app bundle or in the Library/Sounds folder of the app’s data container (iOS only).
-badge | The number to display as the badge of the app icon. If this property is absent, the badge is not changed. To remove the badge, set the value of this property to 0 (iOS only).
-action-loc-key | The string is used as a key to get a localized string in the current localization to use for the right button’s title instead of “View” (iOS only).
-
-Example Notification structure:
-
-```Javascript
-// iOS
-notification = {
-	message: "Something has happened",
-	payload: {
-		customProperty:12345
-	},
-	sound: "mysound.mp3",
-	badge: 7,
-	action-loc-key: "Click me"
-}
-
-// Android
-notification = {
-	message: "Something has happened",
-	payload: {
-		customProperty:12345
-	},
-	id: <id>,
-	url: <url>
-}
-```
-
-## Adding Auto signing in iOS
-
-To set signing credentials iOS create file `build.json` in your app root. Follow the below patter,
-
-Xcode 8 and iOS 10:
-
-```
-{
-    "ios": {
-        "debug": {
-            "codeSignIdentity": "iPhone Developer",
-            "developmentTeam": "FG35JLLMXX4A",
-            "packageType": "development",
-            "buildFlag": [
-                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-                "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-                "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
-            ]
-        },
-        "release": {
-            "codeSignIdentity": "iPhone Developer",
-            "developmentTeam": "FG35JLLMXX4A",
-            "packageType": "app-store",
-            "buildFlag": [
-                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-                "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-                "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
-            ]
-        }
-    }
-}
-```
-
-Earlier versions:
-
-```
-{
-    "ios": {
-        "debug": {
-            "codeSignIdentity": "iPhone Development",
-            "provisioningProfile": "926c2bd6-8de9-4c2f-8407-1016d2d12954",
-            "developmentTeam": "FG35JLLMXX4A",
-            "packageType": "development"
-        },
-        "release": {
-            "codeSignIdentity": "iPhone Distribution",
-            "provisioningProfile": "70f699ad-faf1-4adE-8fea-9d84738fb306",
-            "developmentTeam": "FG35JLLMXX4A",
-            "packageType": "app-store"
-        }
-    }
-}
-```
-
-Change teh bundle identifier in `config.xml` file.
-After that to build ios use the `--buildConfig` flag in `cordova build` command
-
-```
-  cordova build ios --buildConfig
-```
-
- 
-## Release Notes
-
-Copyright 2016-17 IBM Corp.
+Copyright 2020-21 IBM Corp.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
