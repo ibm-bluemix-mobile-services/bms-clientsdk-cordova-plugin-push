@@ -191,36 +191,38 @@ The following options are supported:
 - Register without UserId
 
 	To register without userId, use the following pattern:
-	  ```
+	 
+  ```JS
 	  var success = function(response) { console.log("Success: " + response); };
 	  var failure = function(response) { console.log("Error: " + response); };
 	  var options = {};
 	  BMSPush.registerDevice(options, success, failure);
-	  ```
+	```
 
 - Register with UserId
 
 	The `userId` can be specified while registering the device with Push Notifications service. The register method will accept one more parameter - `userId`
 
-	  ```
+	```JS
 	  var success = function(response) { console.log("Success: " + response); };
 	  var failure = function(response) { console.log("Error: " + response); };
 	  var options = {"userId": "Your User Id value"};
 	  BMSPush.registerDevice(options, success, failure);
-	  ```
+	```
 
-	Where ÙserId is the user identifier value you want to register the device in the push service instance.
+	Where UserId is the user identifier value you want to register the device in the push service instance.
 
 	>**Note**: If userId is provided, the client secret value must be provided.
 
 - Unregister from notifications
 
 	Use the following code snippet to unregister the device from push notification service instance:
-		```
+		
+  ```JS
 		var success = function(response) { console.log("Success: " + response); };
 		var failure = function(response) { console.log("Error: " + response); };
 		BMSPush.unregisterDevice(options, success, failure);
-		```
+	```
 
 - Unregister the device from UserId
 
@@ -231,7 +233,7 @@ The following options are supported:
 
 To receive push notification call back, add the following code snippet:
 
-```
+```JS
   var handleNotificationCallback = function(notification) {
   	// notification is a JSON object
   	alert(notification.message);
@@ -248,7 +250,7 @@ can subscribe. After the device is subscribes to a particular tag, the device ca
 
 Add the following code snippets to your Swift mobile application to get a list of tags to which the device can subscribe:
 
-```
+```JS
   var failure = function(response) { console.log("Error: " + response); };
   BMSPush.retrieveAvailableTags(function(tags) {
   	alert(tags);
@@ -320,7 +322,7 @@ To enable interactive push notifications, the notification action parameters mus
   BMSPush.initialize(appGUID, clientSecret, options);
 ```
 
-###Handling interactive notifications click
+### Handling interactive notifications click
 
 To identify which action clicked use the following,
 
