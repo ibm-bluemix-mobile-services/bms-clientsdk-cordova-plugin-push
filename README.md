@@ -61,7 +61,8 @@ You need to create a Cordova project and add platforms before adding the IBM Clo
 		</platform>
 		```
 	3. In the `config.xml` file update the `<platform name="android">` element with a minimum and target SDK versions as shown in the code snippet below.
-		```XML
+		
+    ```XML
 		<platform name="android">
 			<preference name="android-minSdkVersion" value="15" />
 			<preference name="android-targetSdkVersion" value="26" />
@@ -79,17 +80,17 @@ You need to create a Cordova project and add platforms before adding the IBM Clo
 
 3. Add the Cordova IBM Cloud Push plugin. From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
 	
-  ```JS
-	cordova plugin add bms-push
-	```
+     ```XML
+   	 cordova plugin add bms-push
+     ```
 
-	This also installs the `Cordova Core plug-in`, which initializes your connection to IBM Cloud.
+    This also installs the `Cordova Core plug-in`, which initializes your connection to IBM Cloud.
 
 4. From your app root folder, verify that the Cordova `Core plugin` and `Push plugin` were installed successfully, using the command:
 	
-  ```JS
-	cordova plugin list
-	```
+    ```XML
+    cordova plugin list
+    ```
 
 >**Note**: Existing vendor-acquired Push Notification plugins (e.g., phonegap) may interfere with bms-push. Remove these plugins to ensure proper functionality.
 
