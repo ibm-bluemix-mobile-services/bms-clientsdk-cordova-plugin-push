@@ -78,14 +78,16 @@ You need to create a Cordova project and add platforms before adding the IBM Clo
 	Ensure that you use the iOS version specified through this command for the Cordova platform. It is required to build the Cordova app.
 
 3. Add the Cordova IBM Cloud Push plugin. From your Cordova application root directory, enter the following command to install the Cordova Push plugin.
-	```
+	
+  ```JS
 	cordova plugin add bms-push
 	```
 
 	This also installs the `Cordova Core plug-in`, which initializes your connection to IBM Cloud.
 
 4. From your app root folder, verify that the Cordova `Core plugin` and `Push plugin` were installed successfully, using the command:
-	```
+	
+  ```JS
 	cordova plugin list
 	```
 
@@ -108,14 +110,15 @@ Choose either of the following steps, based on your platform:
 For `Android Studion 3.+` users, update the build.gradle file with the folowing - 
 
 Change the,
-```
+
+```XML
 debugCompile project(path: 'CordovaLib', configuration: 'debug') 
 releaseCompile project(path: 'CordovaLib', configuration: 'release')
 ```
 
 to 
 
-```
+```XML
 compile project(':CordovaLib')
 ```
 
@@ -123,11 +126,11 @@ compile project(':CordovaLib')
 
 Initialize the `bms-core` plugin. Run the following snippet:
 
-```
+```JS
 onDeviceReady: function() {
-    app.receivedEvent('deviceready');
-    BMSClient.initialize("YOUR APP REGION");
-    }
+  app.receivedEvent('deviceready');
+  BMSClient.initialize("YOUR APP REGION");
+}
 ```
 For the region, pass any of the following:
 
@@ -307,19 +310,18 @@ To enable interactive push notifications, the notification action parameters mus
 
 ```JS
   var options ={"categories":{
-                        "Category_Name1":[
-                          {
-                            "IdentifierName":"IdentifierName_1",
-                            "actionName":"actionName_1",
-                            "IconName":"IconName_1"
-                          },
-                          {
-                            "IdentifierName":"IdentifierName_2",
-                            "actionName":"actionName_2",
-                            "IconName":"IconName_2"
-                          }
-                        ]
-                    };
+                "Category_Name1":[
+                  {
+                    "IdentifierName":"IdentifierName_1",
+                    "actionName":"actionName_1",
+                    "IconName":"IconName_1"
+                 },
+                {
+                   "IdentifierName":"IdentifierName_2",
+                   "actionName":"actionName_2",
+                   "IconName":"IconName_2"
+                }
+              ]};
   BMSPush.initialize(appGUID, clientSecret, options);
 ```
 
