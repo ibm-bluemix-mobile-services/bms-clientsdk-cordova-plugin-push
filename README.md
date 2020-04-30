@@ -149,7 +149,7 @@ Initialize the `BMSPush`. Run the following snippet:
 
 - Initialize without options
 
-  ```
+  ```JS
 
     // Initialize for normal push notifications
     var options =  {};
@@ -158,7 +158,7 @@ Initialize the `BMSPush`. Run the following snippet:
 
 - Initialize with options
 
-  ```
+  ```JS
     // Initialize for iOS actionable push notifications, custom deviceId and varibales for Parameterize Push Notifications 
     var options = {"categories":{
                 "Category_Name1":[
@@ -263,7 +263,7 @@ The `subscribe()` API will subscribe the iOS device for the list of given tags. 
 
 Add the following code snippets to your Swift mobile application to subscribe to a list of tags:
 
-```
+```JS
   var success = function(response) { console.log("Success: " + response); };
   var failure = function(response) { console.log("Error: " + response); };
   var tag = "YourTag";
@@ -275,7 +275,8 @@ Add the following code snippets to your Swift mobile application to subscribe to
 The `retrieveSubscriptions()` API will return the list of tags to which the device is subscribed. 
 
 Add the following code snippets to your Swift mobile application to get the  subscription list:
-```
+
+```JS
   var failure = function(response) { console.log("Error: " + response); };
   BMSPush.retrieveSubscriptions(function(tags) {
   	alert(tags);
@@ -288,7 +289,7 @@ The `unsubscribe()` API will remove the device subscription from the list tags.
 
 Use the following code snippets to unsubsribe from tags:
 
-```
+```JS
   var success = function(response) { console.log("Success: " + response); };
   var failure = function(response) { console.log("Error: " + response); };
   var tag = "YourTag";
@@ -304,7 +305,7 @@ The following notification options are supported.
 
 To enable interactive push notifications, the notification action parameters must be passed in as part of the notification object. For example:
 
-```
+```JS
   var options ={"categories":{
                         "Category_Name1":[
                           {
@@ -326,7 +327,7 @@ To enable interactive push notifications, the notification action parameters mus
 
 To identify which action clicked use the following,
 
-```
+```JS
 var showNotification = function(notif) {
     var identifierName = notif["identifierName"];
     alert(identifierName);
@@ -336,8 +337,8 @@ var showNotification = function(notif) {
 
 To send `DeviceId`, use the `options` parameter in `initialize method` of `BMSPush` class. For example:
 
-```
-  var options ={
+```JS
+  var options = {
     "devieID":"mydeviceId"
   };
   BMSPush.initialize(appGUID, clientSecret, options);
