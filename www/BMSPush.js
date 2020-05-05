@@ -23,25 +23,23 @@ var BMSPush = function() {
         console.log(BMSPushClientString + ": Failure: " + message);
 	};
 	
-	/**
-     *  Define region constants
-     * @type {string}
-     */
+	
     this.REGION_US_SOUTH = ".ng.bluemix.net";
     this.REGION_UK = ".eu-gb.bluemix.net";
     this.REGION_SYDNEY = ".au-syd.bluemix.net";
     this.REGION_GERMANY = ".eu-de.bluemix.net";
     this.REGION_US_EAST = ".us-east.bluemix.net";
+    this.REGION_JP_TOK = ".jp-tok.bluemix.net";
 
 	/**
      * Sets the base URL for the authorization server.
      * <p>
      * This method should be called before you send the first request that requires authorization.
      * </p>
-	 * @param {string} pushAppGuid 
-	 * @param {string} clientSecret 
+	 * @param {string} pushAppGuid AppGUID from IBM cloud Push Notifications instance
+	 * @param {string} clientSecret ClientSecret from IBM cloud Push Notifications instance
 	 * @param {string} bluemixRegion Specifies the region of the application
-	 * @param {json} pushOptions 
+	 * @param {json} pushOptions  Initialize options like categories, deviceId and variable
      */
 
 	this.initialize = function(pushAppGuid, clientSecret, bluemixRegion, pushOptions){
@@ -50,10 +48,10 @@ var BMSPush = function() {
 	/**
 	 * Registers the device on to the IMFPush Notification Server
 	 *
-	 * @param settings 
+	 * @param {json} settings 
 	 *        userId: user id value
-	 * @param success callback
-	 * @param failure callback
+	 * @param {Object} success callback
+	 * @param {Object} failure callback
 	 */
 	this.registerDevice = function(settings,success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "registerDevice", [settings]);
@@ -62,8 +60,8 @@ var BMSPush = function() {
 	/**
 	 * Gets the Tags that are subscribed by the device 
 	 * 
-	 * @param success callback - recieves array of subscribed tags
-	 * @param failure callback 
+	 * @param {Object} success callback - recieves array of subscribed tags
+	 * @param {Object} failure callback 
 	 */
 	this.retrieveSubscriptions = function(success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "retrieveSubscriptions", []);
@@ -72,8 +70,8 @@ var BMSPush = function() {
 	/**
 	 * Gets all the available Tags for the backend mobile application
 	 * 
-	 * @param success callback
-	 * @param failure callback
+	 * @param {Object} success callback
+	 * @param {Object} failure callback
 	 */
 	this.retrieveAvailableTags = function(success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "retrieveAvailableTags", []);
@@ -82,9 +80,9 @@ var BMSPush = function() {
 	/**
 	 * Subscribes to a particular backend mobile application Tag(s)
 	 * 
-	 * @param tags - The Tag array to subscribe to.
-	 * @param success callback
-	 * @param failure callback
+	 * @param {string[]} tags - The Tag array to subscribe to.
+	 * @param {Object} success callback
+	 * @param {Object} failure callback
 	 */
 
 	this.subscribe = function(tag, success, failure) {
@@ -94,9 +92,9 @@ var BMSPush = function() {
 	/**
 	 * Unsubscribes from an backend mobile application Tag(s)
 	 * 
-	 * @param  tags - The Tag name array to unsubscribe from.
-	 * @param  success callback
-	 * @param  failure callback
+	 * @param  {string[]} tags - The Tag name array to unsubscribe from.
+	 * @param  {Object} success callback
+	 * @param  {Object} failure callback
 	 */
 
 	this.unsubscribe = function(tag, success, failure) {
@@ -108,26 +106,26 @@ var BMSPush = function() {
 	/**
 	 * Unregisters the device from the IMFPush Notification Server
 	 * 
-	 * @param success callback
-	 * @param failure callback
+	 * @param {Object} success callback
+	 * @param {Object} failure callback
 	 */
 	this.unregisterDevice = function(success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "unregisterDevice", []);
 	};
 
 	/**
-	 * [registerIncomingNotificationListener description]
+	 * A listner to the incoming notifications 
 	 * 
-	 * @param callback [description]
+	 * @param {Object} callback [description]
 	 */
 	this.registerNotificationsCallback = function(callback) {
 		cordova.exec(callback, failure, BMSPushClientString , "registerNotificationsCallback", []);
 	};
 
 	/**
-	 * [setNotificationStatusListener description]
+	 * A listner to changes in the notifications status
 	 * 
-	 * @param callback [description]
+	 * @param {Object} callback [description]
 	 */
 	this.setNotificationStatusListener = function(callback) {
     	cordova.exec(callback, failure, BMSPushClientString , "setNotificationStatusListener", []);
