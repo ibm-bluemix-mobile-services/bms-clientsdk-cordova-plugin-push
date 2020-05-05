@@ -12,6 +12,10 @@
 */
 var exec = require('cordova/exec');
 
+/**
+ * Cordova module to handle devive requests.
+ * @module BMSPush
+ */
 
 var BMSPush = function() {
 
@@ -40,6 +44,7 @@ var BMSPush = function() {
 	 * @param {string} clientSecret ClientSecret from IBM cloud Push Notifications instance
 	 * @param {string} bluemixRegion Specifies the region of the application
 	 * @param {json} pushOptions  Initialize options like categories, deviceId and variable
+	 * @method module:BMSPush#initialize
      */
 
 	this.initialize = function(pushAppGuid, clientSecret, bluemixRegion, pushOptions){
@@ -52,6 +57,7 @@ var BMSPush = function() {
 	 *        userId: user id value
 	 * @param {Object} success callback
 	 * @param {Object} failure callback
+	 * @method module:BMSPush#registerDevice
 	 */
 	this.registerDevice = function(settings,success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "registerDevice", [settings]);
@@ -61,7 +67,8 @@ var BMSPush = function() {
 	 * Gets the Tags that are subscribed by the device 
 	 * 
 	 * @param {Object} success callback - recieves array of subscribed tags
-	 * @param {Object} failure callback 
+	 * @param {Object} failure callback
+	 * @method module:BMSPush#retrieveSubscriptions 
 	 */
 	this.retrieveSubscriptions = function(success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "retrieveSubscriptions", []);
@@ -72,6 +79,7 @@ var BMSPush = function() {
 	 * 
 	 * @param {Object} success callback
 	 * @param {Object} failure callback
+	 * @method module:BMSPush#retrieveAvailableTags 
 	 */
 	this.retrieveAvailableTags = function(success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "retrieveAvailableTags", []);
@@ -83,8 +91,8 @@ var BMSPush = function() {
 	 * @param {string[]} tags - The Tag array to subscribe to.
 	 * @param {Object} success callback
 	 * @param {Object} failure callback
+	 * @method module:BMSPush#subscribe 
 	 */
-
 	this.subscribe = function(tag, success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "subscribe", [tag]);
 	};
@@ -95,8 +103,8 @@ var BMSPush = function() {
 	 * @param  {string[]} tags - The Tag name array to unsubscribe from.
 	 * @param  {Object} success callback
 	 * @param  {Object} failure callback
+	 * @method module:BMSPush#unsubscribe 
 	 */
-
 	this.unsubscribe = function(tag, success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "unsubscribe", [tag]);
 	};
@@ -108,6 +116,7 @@ var BMSPush = function() {
 	 * 
 	 * @param {Object} success callback
 	 * @param {Object} failure callback
+	 * @method module:BMSPush#unregisterDevice
 	 */
 	this.unregisterDevice = function(success, failure) {
 		cordova.exec(success, failure, BMSPushClientString, "unregisterDevice", []);
@@ -116,7 +125,8 @@ var BMSPush = function() {
 	/**
 	 * A listner to the incoming notifications 
 	 * 
-	 * @param {Object} callback [description]
+	 * @param {Object} callback A listner object
+	 * @method module:BMSPush#registerNotificationsCallback
 	 */
 	this.registerNotificationsCallback = function(callback) {
 		cordova.exec(callback, failure, BMSPushClientString , "registerNotificationsCallback", []);
@@ -125,7 +135,8 @@ var BMSPush = function() {
 	/**
 	 * A listner to changes in the notifications status
 	 * 
-	 * @param {Object} callback [description]
+	 * @param {Object} callback A listner object
+	 * @method module:BMSPush#setNotificationStatusListener
 	 */
 	this.setNotificationStatusListener = function(callback) {
     	cordova.exec(callback, failure, BMSPushClientString , "setNotificationStatusListener", []);
