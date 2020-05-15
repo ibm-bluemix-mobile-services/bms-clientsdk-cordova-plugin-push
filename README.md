@@ -1,7 +1,7 @@
 IBM Cloud Push Notifications Cordova SDK
 ===================================================
 
-[![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6d5d0f8e1b5a4ad3baaf29a96a19628c)](https://www.codacy.com/gh/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push&amp;utm_campaign=Badge_Grade)
 [![npm](https://img.shields.io/npm/v/bms-push.svg)](https://www.npmjs.com/package/bms-push)
 [![npm](https://img.shields.io/npm/dm/bms-push.svg)](https://www.npmjs.com/package/bms-push)
 
