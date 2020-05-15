@@ -23,6 +23,6 @@ mv "${docs_directory}"/bms-push/"${version}"/* "${docs_directory}"
 # Publish docs
 cd ibm-bluemix-mobile-services.github.io
 git add .
-git commit -m "Published docs for BMSPush Swift SDK version ${version}"
+git commit -m "Published docs for Push Cordova plugin ${version}"
 git rebase master
 git push --set-upstream origin master
