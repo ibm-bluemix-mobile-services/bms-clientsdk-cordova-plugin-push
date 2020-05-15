@@ -1,6 +1,6 @@
 cd ~/Documents;
 git clone https://ibm-bluemix-mobile-services:${GH_TOKEN}@github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.git;
-cd bms-clientsdk-cordova-plugin-core;
+cd bms-clientsdk-cordova-plugin-push;
 git remote rm origin;
 git remote add origin https://ibm-bluemix-mobile-services:${GH_TOKEN}@github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.git;
 echo $token >> $HOME/.npmrc;
