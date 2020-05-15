@@ -27,8 +27,8 @@ before_script:
     - cordova plugin add https://github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.git
     # have to fix this.
     #- cordova build android
-    - if [ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "master" ] && [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
-        bash scripts/release.sh;
-        bash scripts/publish-docs.sh;
-      fi
+    # - if [ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "master" ] && [[ "${TRAVIS_JOB_NUMBER}" = *".2"* ]]; then
+    #     bash scripts/release.sh;
+    #     bash scripts/publish-docs.sh;
+    #   fi
 
