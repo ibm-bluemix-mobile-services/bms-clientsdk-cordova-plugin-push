@@ -28,12 +28,12 @@ var BMSPush = function() {
 	};
 	
 	
-    this.REGION_US_SOUTH = ".ng.bluemix.net";
-    this.REGION_UK = ".eu-gb.bluemix.net";
-    this.REGION_SYDNEY = ".au-syd.bluemix.net";
-    this.REGION_GERMANY = ".eu-de.bluemix.net";
-    this.REGION_US_EAST = ".us-east.bluemix.net";
-    this.REGION_JP_TOK = ".jp-tok.bluemix.net";
+    this.REGION_US_SOUTH = "us-south";
+    this.REGION_UK = "eu-gb";
+    this.REGION_SYDNEY = "au-syd";
+    this.REGION_GERMANY = "eu-de";
+    this.REGION_US_EAST = "us-east";
+    this.REGION_JP_TOK = "jp-tok";
 
 	/**
      * Sets the base URL for the authorization server.

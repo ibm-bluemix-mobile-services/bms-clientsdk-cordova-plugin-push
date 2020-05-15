@@ -130,7 +130,7 @@ public class CDVBMSPush extends CordovaPlugin {
     private void initializePush(final String appGUID, final String clientSecret, final String bluemixRegion, final MFPPushNotificationOptions options ) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), bluemixRegion);
+                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), this.getRegion(bluemixRegion));
                 MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret,options);
             }
         });
@@ -144,12 +144,42 @@ public class CDVBMSPush extends CordovaPlugin {
     private void initializePush(final String appGUID, final String clientSecret, final String bluemixRegion) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), bluemixRegion);
+                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), this.getRegion(bluemixRegion));
                 MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret);
             }
         });
     }
 
+    /**
+     * Get region for Core SDK.
+     * @param bluemixRegion - New cloud url
+     */
+    private String getRegion(final String bluemixRegion) {
+        String region = BMSClient.REGION_US_SOUTH;
+        switch(bluemixRegion) {
+            case "us-south":
+                region = BMSClient.REGION_US_SOUTH;
+                break;
+            case "eu-gb":
+                region = BMSClient.REGION_UK;
+                break;
+            case "au-syd":
+                region = BMSClient.REGION_SYDNEY;
+                break;
+            case "eu-de":
+                region = BMSClient.REGION_GERMANY;
+                break;
+            case "us-east":
+                region = BMSClient.REGION_US_EAST;
+                break;
+            case "jp-tok":
+                region = BMSClient.REGION_TOKYO;
+                break;
+            default:
+                region = BMSClient.REGION_US_SOUTH;
+        }
+        return region
+    }
     /**
      * Registers the device for Push notifications with the given alias and consumerId
      * @param callbackContext Javascript callback

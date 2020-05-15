@@ -1,7 +1,6 @@
 IBM Cloud Push Notifications Cordova SDK
 ===================================================
 
-[![](https://img.shields.io/badge/bluemix-powered-blue.svg)](https://bluemix.net)
 [![Build Status](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push)
 [![npm](https://img.shields.io/npm/v/bms-push.svg)](https://www.npmjs.com/package/bms-push)
 [![npm](https://img.shields.io/npm/dm/bms-push.svg)](https://www.npmjs.com/package/bms-push)
@@ -17,7 +16,6 @@ Ensure that you go through [IBM Cloud Push Notifications service documentation](
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Initialize SDK](#initialize-sdk)
-  - [Initialize the core plugin](#initialize-the-core-plugin)
   - [Initialize the Push plugin](#initialize-the-push-plugin)
 - [Register for notifications](#register-for-notifications)
   - [Receiving notifications](#receiving-notifications)
@@ -84,8 +82,6 @@ You need to create a Cordova project and add platforms before adding the IBM Clo
    	 cordova plugin add bms-push
      ```
 
-    This also installs the `Cordova Core plug-in`, which initializes your connection to IBM Cloud.
-
 4. From your app root folder, verify that the Cordova `Core plugin` and `Push plugin` were installed successfully, using the command:
 	
     ```XML
@@ -123,30 +119,6 @@ to
 compile project(':CordovaLib')
 ```
 
-### Initialize the core plugin
-
-Initialize the `bms-core` plugin. Run the following snippet:
-
-```JS
-onDeviceReady: function() {
-  app.receivedEvent('deviceready');
-  BMSClient.initialize("YOUR APP REGION");
-}
-```
-For the region, pass any of the following:
-
-* `REGION_US_SOUTH` // ".ng.bluemix.net";
-* `REGION_UK` //".eu-gb.bluemix.net";
-* `REGION_SYDNEY` // ".au-syd.bluemix.net";
-* `REGION_GERMANY` // ".eu-de.bluemix.net"
-* `REGION_TOKYO` // ".jp-tok.bluemix.net"
-* `REGION_US_EAST` // ".us-east.bluemix.net"
-
-For example:
-```
-  BMSClient.initialize(BMSClient.REGION_US_SOUTH);
-```
-
 ### Initialize the Push plugin
 
 Initialize the `BMSPush`. Run the following snippet:
@@ -157,8 +129,18 @@ Initialize the `BMSPush`. Run the following snippet:
 
     // Initialize for normal push notifications
     var options =  {};
-    BMSPush.initialize(appGUID,clientSecret,options);
+    BMSPush.initialize(appGUID, clientSecret, bluemixRegion, options);
   ```
+
+For the `bluemixRegion`, pass any of the following:
+
+* `BMSPush.REGION_US_SOUTH` // Dallas
+* `BMSPush.REGION_UK` // London
+* `BMSPush.REGION_SYDNEY` // Sydney
+* `BMSPush.REGION_GERMANY` // Frankfurt
+* `BMSPush.REGION_JP_TOK` // Tokyo
+* `BMSPush.REGION_US_EAST` // Washington DC 
+
 
 - Initialize with options
 
@@ -179,7 +161,7 @@ Initialize the `BMSPush`. Run the following snippet:
                 "variables":{"username":"UserName","accountNumber":"536475869765475869"}
             };
 
-    BMSPush.initialize(appGUID, clientSecret, options);
+    BMSPush.initialize(appGUID, clientSecret, bluemixRegion, options);
   ```
 
 Where `appGUID` is the Push service instance Id value, clientSecret` is the Push service instance client secret value and `options`can be notification options such as interactive notifiaction and custom deviceId.
