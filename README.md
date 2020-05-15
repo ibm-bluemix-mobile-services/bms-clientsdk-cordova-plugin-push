@@ -129,10 +129,10 @@ Initialize the `BMSPush`. Run the following snippet:
 
     // Initialize for normal push notifications
     var options =  {};
-    BMSPush.initialize(appGUID, clientSecret, bluemixRegion, options);
+    BMSPush.initialize(appGUID, clientSecret, cloudRegion, options);
   ```
 
-For the `bluemixRegion`, pass any of the following:
+For the `cloudRegion`, pass any of the following:
 
 * `BMSPush.REGION_US_SOUTH` // Dallas
 * `BMSPush.REGION_UK` // London
@@ -161,7 +161,7 @@ For the `bluemixRegion`, pass any of the following:
                 "variables":{"username":"UserName","accountNumber":"536475869765475869"}
             };
 
-    BMSPush.initialize(appGUID, clientSecret, bluemixRegion, options);
+    BMSPush.initialize(appGUID, clientSecret, cloudRegion, options);
   ```
 
 Where `appGUID` is the Push service instance Id value, clientSecret` is the Push service instance client secret value and `options`can be notification options such as interactive notifiaction and custom deviceId.
