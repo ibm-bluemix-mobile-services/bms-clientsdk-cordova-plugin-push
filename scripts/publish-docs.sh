@@ -6,7 +6,6 @@
 set -ev
 
 # Clone the repository where the docs will be hosted
-# GITHUB_TOKEN required for Travis to have permissions to push to the BMSPush repository
 git clone https://ibm-bluemix-mobile-services:${GITHUB_TOKEN}@github.com/ibm-bluemix-mobile-services/ibm-bluemix-mobile-services.github.io.git
 cd ibm-bluemix-mobile-services.github.io
 git remote rm origin
