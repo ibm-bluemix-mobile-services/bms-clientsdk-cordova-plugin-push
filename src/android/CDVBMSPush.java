@@ -178,7 +178,7 @@ public class CDVBMSPush extends CordovaPlugin {
             default:
                 region = BMSClient.REGION_US_SOUTH;
         }
-        return region
+        return region;
     }
     /**
      * Registers the device for Push notifications with the given alias and consumerId
