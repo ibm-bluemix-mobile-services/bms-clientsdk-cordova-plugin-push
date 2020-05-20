@@ -181,7 +181,7 @@ import UserNotificationsUI
 
                 //use category to handle objective-c exception
 
-                BMSClient.sharedInstance.initialize(bluemixRegion: bluemixRegion)
+                BMSClient.sharedInstance.initialize(bluemixRegion: getRegion(bluemixRegion))
                 let push = BMSPushClient.sharedInstance;
 
                 push.initializeWithAppGUID(appGUID: appGUID, clientSecret: clientSecret);
@@ -194,6 +194,33 @@ import UserNotificationsUI
 
         })
 
+    }
+
+    private func getRegion(_ bluemixRegion: String) -> String {
+        var region = BMSClient.Region.usSouth
+        switch bluemixRegion {
+        case "us-south":
+            region = BMSClient.Region.usSouth
+            break;
+        case "eu-gb":
+            region = BMSClient.Region.unitedKingdom
+            break;
+        case "au-syd":
+            region = BMSClient.Region.sydney
+            break;
+        case "eu-de":
+            region = BMSClient.Region.germany
+            break;
+        case "us-east":
+            region = BMSClient.Region.usEast
+            break;
+        case "jp-tok":
+            region = BMSClient.Region.jpTok
+            break;
+        default:
+            region = BMSClient.Region.usSouth
+        }
+        return region
     }
 
     func registerNotificationsCallback(_ command: CDVInvokedUrlCommand) {

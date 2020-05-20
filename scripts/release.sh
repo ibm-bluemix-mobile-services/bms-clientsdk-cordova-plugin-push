@@ -1,0 +1,11 @@
+cd ~/Documents;
+git clone https://ibm-bluemix-mobile-services:${GH_TOKEN}@github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.git;
+cd bms-clientsdk-cordova-plugin-push;
+git remote rm origin;
+git remote add origin https://ibm-bluemix-mobile-services:${GH_TOKEN}@github.com/ibm-bluemix-mobile-services/bms-clientsdk-cordova-plugin-push.git;
+echo $token >> $HOME/.npmrc;
+version=$(jq '.version' package.json | tr -d '"');
+git tag "${version}";
+git push origin --tags;
+npm publish;
+echo "Published Cordova Push plugin version ${version}";

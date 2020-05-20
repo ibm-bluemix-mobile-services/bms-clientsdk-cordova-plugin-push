@@ -1,0 +1,22 @@
+{
+  "source": {
+    "include": [ "./www" ],
+    "exclude": [
+      "./.git/",
+      "./tests/",
+      "./src/"
+    ]
+  },
+  "opts": {
+    "package": "package.json",
+    "readme": "README.md",
+    "recurse": true,
+    "destination": "./doc/"
+  },
+  "templates": {
+        "default": {
+            "outputSourceFiles": false
+        }
+    },
+  "plugins": ["plugins/markdown"]
+}
