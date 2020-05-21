@@ -130,7 +130,7 @@ public class CDVBMSPush extends CordovaPlugin {
     private void initializePush(final String appGUID, final String clientSecret, final String bluemixRegion, final MFPPushNotificationOptions options ) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), this.getRegion(bluemixRegion));
+                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), getRegion(bluemixRegion));
                 MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret,options);
             }
         });
@@ -144,7 +144,7 @@ public class CDVBMSPush extends CordovaPlugin {
     private void initializePush(final String appGUID, final String clientSecret, final String bluemixRegion) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), this.getRegion(bluemixRegion));
+                BMSClient.getInstance().initialize(cordova.getActivity().getApplicationContext(), getRegion(bluemixRegion));
                 MFPPush.getInstance().initialize(cordova.getActivity().getApplicationContext(),appGUID,clientSecret);
             }
         });
@@ -386,7 +386,6 @@ public class CDVBMSPush extends CordovaPlugin {
                                 JSONObject notification = new JSONObject();
 
                                 notification.put("message", message.getAlert());
-                                notification.put("title", message.getAndroidTitle());
                                 notification.put("payload", message.getPayload());
                                 notification.put("identifierName", message.actionName);
 
