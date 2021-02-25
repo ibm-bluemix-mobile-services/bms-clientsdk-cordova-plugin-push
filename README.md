@@ -31,6 +31,7 @@ Ensure that you go through [IBM Cloud Push Notifications service documentation](
   - [Adding custom DeviceId for registration](#adding-custom-deviceid-for-registration)
 - [Methods usage](#usage)
 - [Samples and Videos](#samples-and-videos)
+- [Contributing](#contributing)
 
 
 ## Prerequisites 
@@ -368,6 +369,12 @@ CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 * For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
 * For video tutorials, visit - [IBM Cloud Push Notifications](https://www.youtube.com/playlist?list=PLTroxxTPN9dIZYn9IU-IOcQePO-u5r0r4)
+
+
+## Contributing
+
+We would love any and all help! If you would like to contribute, please read our [CONTRIBUTING](.github/CONTRIBUTING.md) documentation with information on getting started.
+
 
 =======================
 
