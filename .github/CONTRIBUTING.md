@@ -10,9 +10,8 @@ See the [issue template](issue_template.md).
 
 # Coding Style
 
-- [Android coding style reference 1](https://source.android.com/setup/contribute/code-style)
-- [Android coding style reference 2](https://developer.android.com/kotlin/style-guide)
-- [Android coding style reference 3](https://source.android.com/devices/architecture/hidl/code-style)
+- [Cordova reference 1](https://cordova.apache.org/docs/en/10.x/guide/overview/)
+- [Cordova reference 2](https://cordova.apache.org/docs/en/10.x/guide/platforms/android/)
 
 # Pull Requests
 
