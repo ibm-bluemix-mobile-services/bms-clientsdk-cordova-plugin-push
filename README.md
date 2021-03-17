@@ -15,6 +15,7 @@ Ensure that you go through [IBM Cloud Push Notifications service documentation](
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Authentication](#authentication)
 - [Initialize SDK](#initialize-sdk)
   - [Initialize the Push plugin](#initialize-the-push-plugin)
 - [Register for notifications](#register-for-notifications)
@@ -30,6 +31,7 @@ Ensure that you go through [IBM Cloud Push Notifications service documentation](
   - [Adding custom DeviceId for registration](#adding-custom-deviceid-for-registration)
 - [Methods usage](#usage)
 - [Samples and Videos](#samples-and-videos)
+- [Contributing](#contributing)
 
 
 ## Prerequisites 
@@ -90,6 +92,16 @@ You need to create a Cordova project and add platforms before adding the IBM Clo
 
 >**Note**: Existing vendor-acquired Push Notification plugins (e.g., phonegap) may interfere with bms-push. Remove these plugins to ensure proper functionality.
 
+## Authentication
+In order to use an IBM Push Notifications service in a your application, you will need to create an instance and authenticate first. The following describes the typical path you need to take to do so.
+
+### Create Instance
+Credentials to use an IBM Push Notifications service are obtained via IBM Cloud. You will need an active account and a service instance for the service that you wish to use prior to authenticating in your application.
+
+You can access the service credentials for your instance by taking the following steps:
+1. Go to the [IBM Cloud Dashboard](https://cloud.ibm.com) page.
+2. Either click an existing Push Notification service instance in your resource list or goto [Catalog](https://cloud.ibm.com/catalog) -> Search for Push Notifications -> fill the required information, select your plan and region and create a service instance
+3. Click on the Service Credentials tab in the left navigation bar to get required credentials.
 
 ## Initialize SDK
 
@@ -357,6 +369,12 @@ CDVBMSPush. setIgnoreIncomingNotifications(boolean ignore) | By default, push no
 * For samples, visit - [Github Sample](https://github.com/ibm-bluemix-mobile-services/bms-samples-cordova-hellopush)
 
 * For video tutorials, visit - [IBM Cloud Push Notifications](https://www.youtube.com/playlist?list=PLTroxxTPN9dIZYn9IU-IOcQePO-u5r0r4)
+
+
+## Contributing
+
+We would love any and all help! If you would like to contribute, please read our [CONTRIBUTING](.github/CONTRIBUTING.md) documentation with information on getting started.
+
 
 =======================
 
