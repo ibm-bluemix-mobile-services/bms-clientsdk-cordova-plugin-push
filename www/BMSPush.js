@@ -34,7 +34,6 @@ var BMSPush = function() {
     this.REGION_GERMANY = "eu-de";
     this.REGION_US_EAST = "us-east";
     this.REGION_JP_TOK = "jp-tok";
-    this.REGION_JP_OSA = "jp-osa";
 
 	/**
      * Sets the base URL for the authorization server.
