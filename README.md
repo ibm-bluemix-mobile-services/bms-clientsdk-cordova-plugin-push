@@ -151,7 +151,6 @@ For the `cloudRegion`, pass any of the following:
 * `BMSPush.REGION_SYDNEY` // Sydney
 * `BMSPush.REGION_GERMANY` // Frankfurt
 * `BMSPush.REGION_JP_TOK` // Tokyo
-* `BMSPush.REGION_JP_OSA` // Osaka
 * `BMSPush.REGION_US_EAST` // Washington DC 
 
 

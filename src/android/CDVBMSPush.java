@@ -175,9 +175,6 @@ public class CDVBMSPush extends CordovaPlugin {
             case "jp-tok":
                 region = BMSClient.REGION_TOKYO;
                 break;
-            case "jp-osa":
-                region = BMSClient.REGION_JP_OSA;
-                break;
             default:
                 region = BMSClient.REGION_US_SOUTH;
         }
